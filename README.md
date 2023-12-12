@@ -1,4 +1,4 @@
-# SIHIPIN (SISTEM INFORMASI HIBAR PENELITIAN INTERNAL)
+# SIHIPIN (SISTEM INFORMASI HIBAH PENELITIAN INTERNAL)
 
 <p align="center">
 <a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
