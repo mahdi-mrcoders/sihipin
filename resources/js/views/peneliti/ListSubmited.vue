@@ -535,7 +535,6 @@ export default {
                         } else if (this.isOnValidationRejected(steps1, steps2, steps3)) {
                             const rejected = data.progress.find(item => item.validasi === 'Tolak' && item.id_pengajuan == data.id)
                             this.uploadlaporanStepsOne(`Re-upload ${rejected.jenis_laporan}`, detailData, rejected, data.id)
-                            console.log(rejected)
                         } else if (!this.isWithinTimeFrame(steps1.times) || !this.isWithinTimeFrame(steps2.times) || !this.isWithinTimeFrame(steps3.times)) {
                             this.showStatusError('Oops...', 'Mohon Maaf Portal Upload Laporan Sudah Di Tutup');
                         }
