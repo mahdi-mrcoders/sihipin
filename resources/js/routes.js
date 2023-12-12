@@ -169,5 +169,10 @@ export const routes = [
         path: "/informasi",
         component: () => import("./views/Informasi"),
     },
+    {
+        name: "Data Validasi Kontrak",
+        path: "/validasi-submited",
+        component: () => import("./views/direktur/List"),
+    },
 
 ];

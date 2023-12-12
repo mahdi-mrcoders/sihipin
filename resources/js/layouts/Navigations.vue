@@ -121,6 +121,21 @@
                     </router-link>
                 </li>
             </ul>
+            <ul class="nav page-navigation" v-if="level == 4">
+                <li class="nav-item">
+                    <router-link to="/dashboard" class="nav-link">
+                        <i class="fa-solid fa-house mb-2"></i>
+                        <span class="menu-title">Dashboard</span>
+                    </router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link to="/validasi-submited" class="nav-link">
+                        <i class="fa-solid fa-folder-tree mb-2"></i>
+                        <span class="menu-title">Validation Kontrak</span>
+                    </router-link>
+                </li>
+                
+            </ul>
         </div>
     </nav>
 </template>
