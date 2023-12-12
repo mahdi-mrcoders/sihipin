@@ -1,4 +1,4 @@
-<p align="center">
+<p align="center" font-size="19px">
 #SIHIPIN
 </p>
 
