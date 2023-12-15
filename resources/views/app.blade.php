@@ -45,10 +45,10 @@
                     if (current === "") {
                         //for root url
                         if (element.attr('href').indexOf("index.html") !== -1) {
-                            element.parents('.nav-item').last().addClass('');
+                            element.parents('.nav-item').last().addClass('active');
                             if (element.parents('.sub-menu').length) {
                                 element.closest('.collapse').addClass('show');
-                                element.addClass('');
+                                element.addClass('active');
                             }
                         }
                     } else {
@@ -57,10 +57,10 @@
                             element.parents('.nav-item').last().addClass('');
                             if (element.parents('.sub-menu').length) {
                                 element.closest('.collapse').addClass('show');
-                                element.addClass('');
+                                element.addClass('active');
                             }
                             if (element.parents('.submenu-item').length) {
-                                element.addClass('');
+                                element.addClass('active');
                             }
                         }
                     }

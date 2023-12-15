@@ -31,6 +31,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     this.getListDosen();
   },
   methods: {
+    newTitle: function newTitle() {
+      var names = this.$route.name;
+      if (names.includes('-')) {
+        var title = names.split('-');
+        var text = '';
+        title.forEach(function (element, index) {
+          if (index !== 0) {
+            text += ' ';
+          }
+          text += element.charAt(0).toUpperCase() + element.slice(1);
+        });
+        return text;
+      } else {
+        return names;
+      }
+    },
     getListDosen: function getListDosen() {
       var _this = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
@@ -42,7 +58,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this.tableList = response.data;
               })["catch"](function (error) {
                 var _console;
-                /* eslint-disable */(_console = console).log.apply(_console, _toConsumableArray(oo_oo("2766838710_83_16_83_34_4", error)));
+                /* eslint-disable */(_console = console).log.apply(_console, _toConsumableArray(oo_oo("1046576199_101_16_101_34_4", error)));
               });
             case 2:
             case "end":
@@ -74,7 +90,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           });
         })["catch"](function (error) {
           var _console2;
-          /* eslint-disable */(_console2 = console).log.apply(_console2, _toConsumableArray(oo_oo("2766838710_107_20_107_38_4", error)));
+          /* eslint-disable */(_console2 = console).log.apply(_console2, _toConsumableArray(oo_oo("1046576199_125_20_125_38_4", error)));
         });
       });
     }
@@ -172,7 +188,7 @@ var _hoisted_14 = ["onClick"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
   var _component_router_view = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-view");
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.$route.name), 1 /* TEXT */)])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.newTitle()), 1 /* TEXT */)])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     to: {
       name: "data-dosen-add"
     },

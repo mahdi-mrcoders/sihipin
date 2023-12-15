@@ -1,6 +1,5 @@
 <template>
-    <div class="content-wrapper">
-        <div class="row d-flex justify-content-center">
+    <div class="row d-flex justify-content-center">
             <div class="col-md-6 grid-margin stretch-card ">
                 <div class="card">
                     <div class="card-body">
@@ -58,7 +57,6 @@
                 </div>
             </div>
         </div>
-    </div>
 </template>
 <script>
 export default {

@@ -9,26 +9,32 @@ export const routes = [
         name: "dashboard",
         path: "/dashboard",
         meta: { layout: "Panel" },
+        title:'Dashboard',
         component: () => import("./views/Dashboard.vue"),
     },
     {
         name: "data-dosen",
         path: "/data-dosen",
         redirect: "/data-dosen",
+        meta: { layout: "Panel" },
+        title:'Data Dosen',
         children: [
             {
                 name: "data-dosen",
                 path: "/data-dosen",
+                title:'Data Dosen',
                 component: () => import("./views/data-dosen/Index.vue"),
             },
             {
                 name: "data-dosen-add",
                 path: "/data-dosen/add",
+                title:'Form Tambah Data Dosen',
                 component: () => import("./views/data-dosen/Add.vue"),
             },
             {
                 name: "data-dosen-edit",
                 path: "/data-dosen/:id/edit",
+                title:'Form Ubah Data Dosen',
                 component: () => import("./views/data-dosen/Edit.vue"),
             },
         ],

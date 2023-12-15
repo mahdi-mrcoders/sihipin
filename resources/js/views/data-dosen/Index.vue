@@ -10,7 +10,7 @@
             <div class="col-sm-6 mb-4 mb-xl-0">
                 <div class="d-lg-flex align-items-center">
                     <div>
-                        <h3 class="text-dark font-weight-bold mb-2">{{ this.$route.name }}</h3>
+                        <h3 class="text-dark font-weight-bold mb-2"> {{ newTitle() }}</h3>
                     </div>
                 </div>
             </div>
@@ -74,8 +74,26 @@ export default {
     },
     created() {
         this.getListDosen()
+
     },
     methods: {
+        newTitle() {
+            let names = this.$route.name;
+            if (names.includes('-')) {
+                let title = names.split('-');
+                let text = '';
+                title.forEach((element, index) => {
+                    if (index !== 0) {
+                        text += ' ';
+                    }
+                    text += element.charAt(0).toUpperCase() + element.slice(1);
+                });
+                return text;
+            } else {
+                return names;
+            }
+        },
+
         async getListDosen() {
             await this.axios.get('/api/datadosen').then(response => {
                 this.tableList = response.data
@@ -103,7 +121,7 @@ export default {
                     }).then((result) => {
                         this.getListDosen()
                     })
-                }).catch(error=>{
+                }).catch(error => {
                     console.log(error)
                 })
 

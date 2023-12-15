@@ -20088,6 +20088,7 @@ var routes = [{
   meta: {
     layout: "Panel"
   },
+  title: 'Dashboard',
   component: function component() {
     return __webpack_require__.e(/*! import() */ "resources_js_views_Dashboard_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Dashboard.vue */ "./resources/js/views/Dashboard.vue"));
   }
@@ -20095,21 +20096,28 @@ var routes = [{
   name: "data-dosen",
   path: "/data-dosen",
   redirect: "/data-dosen",
+  meta: {
+    layout: "Panel"
+  },
+  title: 'Data Dosen',
   children: [{
     name: "data-dosen",
     path: "/data-dosen",
+    title: 'Data Dosen',
     component: function component() {
       return __webpack_require__.e(/*! import() */ "resources_js_views_data-dosen_Index_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./views/data-dosen/Index.vue */ "./resources/js/views/data-dosen/Index.vue"));
     }
   }, {
     name: "data-dosen-add",
     path: "/data-dosen/add",
+    title: 'Form Tambah Data Dosen',
     component: function component() {
       return __webpack_require__.e(/*! import() */ "resources_js_views_data-dosen_Add_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./views/data-dosen/Add.vue */ "./resources/js/views/data-dosen/Add.vue"));
     }
   }, {
     name: "data-dosen-edit",
     path: "/data-dosen/:id/edit",
+    title: 'Form Ubah Data Dosen',
     component: function component() {
       return __webpack_require__.e(/*! import() */ "resources_js_views_data-dosen_Edit_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./views/data-dosen/Edit.vue */ "./resources/js/views/data-dosen/Edit.vue"));
     }
