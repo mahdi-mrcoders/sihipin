@@ -50,7 +50,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       _this.dataPeriode = response.data;
     })["catch"](function (error) {
       var _console;
-      /* eslint-disable */(_console = console).log.apply(_console, _toConsumableArray(oo_oo("2419035994_236_12_236_30_4", error)));
+      /* eslint-disable */(_console = console).log.apply(_console, _toConsumableArray(oo_oo("4082579616_236_12_236_30_4", error)));
     });
   },
   methods: {
@@ -70,7 +70,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
                 _this2.getDataDosen(response.data.email_dosen);
               })["catch"](function (error) {
                 var _console2;
-                /* eslint-disable */(_console2 = console).log.apply(_console2, _toConsumableArray(oo_oo("2419035994_251_16_251_34_4", error)));
+                /* eslint-disable */(_console2 = console).log.apply(_console2, _toConsumableArray(oo_oo("4082579616_251_16_251_34_4", error)));
               });
             case 2:
             case "end":
@@ -92,7 +92,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
                 _this3.getListSubmited();
               })["catch"](function (error) {
                 var _console3;
-                /* eslint-disable */(_console3 = console).log.apply(_console3, _toConsumableArray(oo_oo("2419035994_261_16_261_34_4", error)));
+                /* eslint-disable */(_console3 = console).log.apply(_console3, _toConsumableArray(oo_oo("4082579616_261_16_261_34_4", error)));
               });
             case 2:
             case "end":
@@ -113,7 +113,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
                 _this4.tableList = response.data;
               })["catch"](function (error) {
                 var _console4;
-                /* eslint-disable */(_console4 = console).log.apply(_console4, _toConsumableArray(oo_oo("2419035994_269_20_269_38_4", error)));
+                /* eslint-disable */(_console4 = console).log.apply(_console4, _toConsumableArray(oo_oo("4082579616_269_20_269_38_4", error)));
               });
             case 3:
               _context3.next = 7;
@@ -139,7 +139,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
                 _this5.listSkema = response.data;
               })["catch"](function (error) {
                 var _console5;
-                /* eslint-disable */(_console5 = console).log.apply(_console5, _toConsumableArray(oo_oo("2419035994_280_16_280_34_4", error)));
+                /* eslint-disable */(_console5 = console).log.apply(_console5, _toConsumableArray(oo_oo("4082579616_280_16_280_34_4", error)));
               });
             case 2:
             case "end":
@@ -398,10 +398,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
                 var _console6;
                 _this8.getDataUser();
                 /* eslint-disable */
-                (_console6 = console).log.apply(_console6, _toConsumableArray(oo_oo("2419035994_483_32_483_58_4", response.data)));
+                (_console6 = console).log.apply(_console6, _toConsumableArray(oo_oo("4082579616_483_32_483_58_4", response.data)));
               })["catch"](function (error) {
                 var _console7;
-                /* eslint-disable */(_console7 = console).log.apply(_console7, _toConsumableArray(oo_oo("2419035994_485_32_485_50_4", error)));
+                /* eslint-disable */(_console7 = console).log.apply(_console7, _toConsumableArray(oo_oo("4082579616_485_32_485_50_4", error)));
               });
             case 23:
             case "end":
@@ -434,7 +434,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         if (data.kontrak === null) {
           this.showStatusError('Oops...', 'Action Tidak Dapat Dilakukan, No Kontrak Belum Digenerate, Please Wait');
         } else {
-          if (data.kontrak.pihak_dua !== null) {
+          if (data.kontrak.pihak_dua !== null & data.kontrak.mengetahui != null) {
             var steps1 = data.progress.find(function (item) {
               return item.steps === 1;
             });
@@ -460,6 +460,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             } else if (!this.isWithinTimeFrame(steps1.times) || !this.isWithinTimeFrame(steps2.times) || !this.isWithinTimeFrame(steps3.times)) {
               this.showStatusError('Oops...', 'Mohon Maaf Portal Upload Laporan Sudah Di Tutup');
             }
+          } else if (data.kontrak.mengetahui == null) {
+            this.showStatusError('Oops...', 'Action Tidak Dapat Dilakukan, No Kontrak Belum di validasi direktur, Please Wait');
           }
         }
       }
@@ -539,7 +541,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
                 }
               }).then(function (response) {
                 var _console8;
-                /* eslint-disable */(_console8 = console).log.apply(_console8, _toConsumableArray(oo_oo("2419035994_609_20_609_46_4", response.data)));
+                /* eslint-disable */(_console8 = console).log.apply(_console8, _toConsumableArray(oo_oo("4082579616_611_20_611_46_4", response.data)));
                 _this9.getDataUser();
               })["catch"](function (error) {
                 console.log();
@@ -594,7 +596,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
                 }
               }).then(function (response) {
                 var _console9;
-                /* eslint-disable */(_console9 = console).log.apply(_console9, _toConsumableArray(oo_oo("2419035994_643_20_643_46_4", response.data)));
+                /* eslint-disable */(_console9 = console).log.apply(_console9, _toConsumableArray(oo_oo("4082579616_645_20_645_46_4", response.data)));
                 _this10.getDataUser();
               })["catch"](function (error) {
                 console.log();
@@ -636,7 +638,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
               container = document.querySelector("#container-file");
               docx.renderAsync(blob, container, null, docxOptions).then(function (x) {
                 var _console10;
-                /* eslint-disable */(_console10 = console).log.apply(_console10, _toConsumableArray(oo_oo("2419035994_666_28_666_42_4", x)));
+                /* eslint-disable */(_console10 = console).log.apply(_console10, _toConsumableArray(oo_oo("4082579616_668_28_668_42_4", x)));
               });
               $('#previewFile').modal('show');
               _context10.next = 17;
@@ -708,7 +710,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       }))();
     },
     getFileExtension: function getFileExtension(filename) {
+      var _console11;
       var ext = filename.slice((filename.lastIndexOf('.') - 1 >>> 0) + 2);
+      /* eslint-disable */
+      (_console11 = console).log.apply(_console11, _toConsumableArray(oo_oo("4082579616_703_12_703_28_4", ext)));
       if (ext == 'docx') {
         return 'fa-file-word';
       } else if (ext == 'pdf') {
@@ -814,7 +819,7 @@ var _hoisted_11 = {
 var _hoisted_12 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "No"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Tanggal Submit"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     style: {
-      "width": "5%"
+      "width": "15%"
     }
   }, "File"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Nama Skema & Judul Penelitain/PKM"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Ketua Peneliti & Anggota"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Status Pengajuan"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Status Pelaporan"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Keterangan"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Aksi")])], -1 /* HOISTED */);
 });
@@ -823,7 +828,7 @@ var _hoisted_13 = {
 };
 var _hoisted_14 = ["title", "onClick"];
 var _hoisted_15 = ["title", "onClick"];
-var _hoisted_16 = ["title"];
+var _hoisted_16 = ["title", "onClick"];
 var _hoisted_17 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
 });
@@ -1064,11 +1069,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
         key: fileP.id
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
-        "class": "fa-regular fa-file-word fa-lg me-1 cursor-pointer",
+        "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["fa-regular fa-lg me-1 cursor-pointer", $options.getFileExtension(fileP.file_progress)]),
         "data-toggle": "tooltip",
         "data-placement": "top",
-        title: "".concat(fileP.jenis_laporan, ":").concat(fileP.file_progress)
-      }, null, 8 /* PROPS */, _hoisted_16), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, fileP.validasi != 'No Upload' ? true : false]])]);
+        title: "".concat(fileP.jenis_laporan, ":").concat(fileP.file_progress),
+        onClick: function onClick($event) {
+          return $options.fetchDocxFile(fileP.file_progress);
+        }
+      }, null, 10 /* CLASS, PROPS */, _hoisted_16), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, fileP.validasi != 'No Upload' ? true : false]])]);
     }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.nama_skema), 1 /* TEXT */), _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.informasi.judul_penelitian), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Ketua : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.ketua_peneliti) + " ", 1 /* TEXT */), _hoisted_18, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(list.anggota, function (anggota, anggotaIndex) {
       return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
         key: anggota.id

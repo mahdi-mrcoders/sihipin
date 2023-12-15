@@ -28,7 +28,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Tanggal Submit</th>
-                                    <th style="width:5%">File</th>
+                                    <th style="width:15%">File</th>
                                     <th>Nama Skema & Judul Penelitain/PKM</th>
                                     <th>Ketua Peneliti & Anggota</th>
                                     <th>Status Pengajuan</th>
@@ -52,9 +52,9 @@
                                             @click="fetchPptFile(list.file_presentasi)"
                                             v-show="list.file_presentasi != null ? true : false"></i>
                                         <span v-for="fileP in list.progress" :key="fileP.id">
-                                            <i class="fa-regular fa-file-word fa-lg me-1 cursor-pointer"
-                                                data-toggle="tooltip" data-placement="top"
-                                                :title="`${fileP.jenis_laporan}:${fileP.file_progress}`"
+                                            <i class="fa-regular fa-lg me-1 cursor-pointer"
+                                                data-toggle="tooltip" data-placement="top" :class="getFileExtension(fileP.file_progress)"
+                                                :title="`${fileP.jenis_laporan}:${fileP.file_progress}`" @click="fetchDocxFile(fileP.file_progress)"
                                                 v-show="fileP.validasi != 'No Upload' ? true : false"></i>
                                         </span>
 
@@ -519,7 +519,7 @@ export default {
                 if (data.kontrak === null) {
                     this.showStatusError('Oops...', 'Action Tidak Dapat Dilakukan, No Kontrak Belum Digenerate, Please Wait');
                 } else {
-                    if (data.kontrak.pihak_dua !== null) {
+                    if (data.kontrak.pihak_dua !== null & data.kontrak.mengetahui != null) {
                         const steps1 = data.progress.find(item => item.steps === 1);
                         const steps2 = data.progress.find(item => item.steps === 2);
                         const steps3 = data.progress.find(item => item.steps === 3);
@@ -538,6 +538,8 @@ export default {
                         } else if (!this.isWithinTimeFrame(steps1.times) || !this.isWithinTimeFrame(steps2.times) || !this.isWithinTimeFrame(steps3.times)) {
                             this.showStatusError('Oops...', 'Mohon Maaf Portal Upload Laporan Sudah Di Tutup');
                         }
+                    }else if(data.kontrak.mengetahui == null){
+                        this.showStatusError('Oops...', 'Action Tidak Dapat Dilakukan, No Kontrak Belum di validasi direktur, Please Wait');
                     }
                 }
             }
@@ -698,6 +700,7 @@ export default {
         },
         getFileExtension(filename) {
             const ext = filename.slice((filename.lastIndexOf('.') - 1 >>> 0) + 2)
+            console.log(ext)
             if (ext == 'docx') {
                 return 'fa-file-word'
             } else if (ext == 'pdf') {

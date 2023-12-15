@@ -19,7 +19,7 @@
                                     <label class="badge bg-info" v-if="user.level == 4">Direktur</label>
                                 </small></span>
                             <span class="online-status"></span>
-                            <img src="/assets/images/logop3m.png" alt="profile" />
+                            <img :src="foto == null ? '/assets/images/logop3m.png' : foto" alt="profile" />
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
                             <a class="dropdown-item" href="#" @click="myprofile">
@@ -47,7 +47,8 @@ export default {
         return {
             user: {},
             loggedIn: localStorage.getItem('loggedIn'),
-            uuid: localStorage.getItem('uuid')
+            uuid: localStorage.getItem('uuid'),
+            foto:null
         }
     },
     created() {
@@ -65,12 +66,17 @@ export default {
                 this.user.level = response.data.level
                 this.user.username = response.data.username
                 this.user.email = response.data.email_dosen
+                this.getFoto(response.data.email_dosen)
             }).catch(error => {
                 // console.log(error)
             })
         },
         myprofile() {
             return this.$router.push({ path: '/my-profile' })
+        },
+        async getFoto(email){
+            const response = await this.axios.get(`/api/dosen/byemail/${email}`)
+            this.foto = `/storage/${response.data.foto}`
         }
     },
     mounted() {
