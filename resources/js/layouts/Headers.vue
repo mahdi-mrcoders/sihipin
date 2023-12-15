@@ -19,7 +19,7 @@
                                     <label class="badge bg-info" v-if="user.level == 4">Direktur</label>
                                 </small></span>
                             <span class="online-status"></span>
-                            <img :src="foto == null ? '/assets/images/logop3m.png' : foto" alt="profile" />
+                            <img :src="foto == '/storage/null' ? '/assets/images/logop3m.png' : foto" alt="profile" />
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
                             <a class="dropdown-item" href="#" @click="myprofile">
