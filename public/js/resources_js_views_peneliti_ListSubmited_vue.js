@@ -431,11 +431,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               return item.steps === 3;
             });
             if (this.shouldOpenForm1(steps1)) {
-              this.uploadlaporanStepsOne(detailData, steps1, data.id);
-            } else if (this.shouldOpenForm2('Upload Laporan Progress', steps1, steps2)) {
-              this.uploadlaporanStepsOne(detailData, steps2, data.id);
+              this.uploadlaporanStepsOne('Porgress', detailData, steps1, data.id);
+            } else if (this.shouldOpenForm2(steps1, steps2)) {
+              this.uploadlaporanStepsOne('Lap 75', detailData, steps2, data.id);
             } else if (this.shouldOpenForm3(steps2, steps3)) {
-              this.uploadlaporanStepsOne('upload Laporan 75', detailData, steps3, data.id);
+              this.uploadlaporanStepsOne('upload Akhir', detailData, steps3, data.id);
             } else if (this.isOnValidationProcess(steps1, steps2, steps3)) {
               this.showStatusError('Oops...', 'Mohon Maaf Status laporan anda Masih Dalam Proses Validasi');
             } else if (this.isOnValidationRejected(steps1, steps2, steps3)) {
@@ -443,7 +443,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return item.validasi === 'Tolak' && item.id_pengajuan == data.id;
               });
               this.uploadlaporanStepsOne("Re-upload ".concat(rejected.jenis_laporan), detailData, rejected, data.id);
-              console.log(rejected);
             } else if (!this.isWithinTimeFrame(steps1.times) || !this.isWithinTimeFrame(steps2.times) || !this.isWithinTimeFrame(steps3.times)) {
               this.showStatusError('Oops...', 'Mohon Maaf Portal Upload Laporan Sudah Di Tutup');
             }
