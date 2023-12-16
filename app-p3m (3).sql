@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Waktu pembuatan: 11 Des 2023 pada 23.58
+-- Waktu pembuatan: 16 Des 2023 pada 10.03
 -- Versi server: 8.0.30
 -- Versi PHP: 7.3.9
 
@@ -46,7 +46,9 @@ INSERT INTO `auths` (`id_pengguna`, `email_dosen`, `username`, `password`, `leve
 (2, 'fitri@poltek-kampar.ac.id', 'Fitri, S.T., M.Sc.', '6f6931c2fb2015b5abb48d0c4d5db302', '3', '2023-12-11 11:56:05', '2023-12-11 11:56:05'),
 (3, 'ridwan@poltek-kampar.ac.id', 'Muhammad Ridwan, ST., MT', 'e564651c529eb4f666ebb2ec04578d65', '2', '2023-12-11 11:56:16', '2023-12-11 11:56:16'),
 (4, 'ade@poltek-kampar.ac.id', 'Ade Kurniawan, S.Kom.', 'a98373cf4abb4668951d84af9cbe36e0', '2', '2023-12-11 11:56:30', '2023-12-11 11:56:30'),
-(5, 'fenty@poltek-kampar.ac.id', 'Fenty Kurnia Oktorina,ST., M.Sc.', '24a0227d12e18c97232935fb6ce91b7b', '3', '2023-12-11 13:31:48', '2023-12-11 13:31:48');
+(5, 'fenty@poltek-kampar.ac.id', 'Fenty Kurnia Oktorina,ST., M.Sc.', '24a0227d12e18c97232935fb6ce91b7b', '3', '2023-12-11 13:31:48', '2023-12-11 13:31:48'),
+(6, 'nina@poltek-kampar.ac.id', 'Nina Veronika, S.T., M.Sc.', '23eddd1be98b7d83be14e20dac46e450', '4', '2023-12-12 02:40:24', '2023-12-12 02:40:24'),
+(7, 'ann@poltek-kampar.ac.id', 'Anna Dhora, S.TP.,M.P', '9f9a0f525a45572188c9cb19878e427a', '3', '2023-12-15 11:35:20', '2023-12-15 11:35:20');
 
 -- --------------------------------------------------------
 
@@ -139,9 +141,9 @@ CREATE TABLE `data_jenis_laporans` (
 --
 
 INSERT INTO `data_jenis_laporans` (`id`, `jenis_laporan`, `start`, `end`, `created_at`, `updated_at`) VALUES
-(1, 'Progress', '2023-12-06 19:07:00', '2023-12-09 19:07:00', '2023-12-02 12:07:51', '2023-12-05 12:25:58'),
-(2, 'laporan 75', '2023-12-02 19:07:51', '2023-12-16 19:07:51', '2023-12-02 12:08:54', '2023-12-02 12:08:54'),
-(3, 'Laporan Akhir', '2023-12-02 19:08:54', '2023-12-23 19:08:54', '2023-12-02 12:08:54', '2023-12-02 12:08:54');
+(1, 'Progress', '2023-12-06 19:07:00', '2023-12-30 19:07:00', '2023-12-02 12:07:51', '2023-12-15 01:31:30'),
+(2, 'laporan 75', '2023-12-02 19:07:00', '2023-12-30 19:07:00', '2023-12-02 12:08:54', '2023-12-15 01:31:37'),
+(3, 'Laporan Akhir', '2023-12-02 19:08:00', '2023-12-31 19:08:00', '2023-12-02 12:08:54', '2023-12-15 01:31:43');
 
 -- --------------------------------------------------------
 
@@ -194,11 +196,39 @@ CREATE TABLE `dosens` (
 --
 
 INSERT INTO `dosens` (`id`, `nrp`, `nidn`, `nama`, `no_hp`, `prodi`, `jabatan_fungsional`, `pangkat_golongan`, `email`, `foto`, `created_at`, `updated_at`) VALUES
-(1, '111019084', '111019084', 'Andri Nofiar. AM, S.Kom., M.Kom', '-', 'TIF', 'Asisten Ahli (AA)', 'Penata Muda, III/a', 'andrinofiar@poltek-kampar.ac.id', NULL, '2023-12-11 18:11:30', '2023-12-11 11:34:15'),
-(2, '110306007', '110306007', 'Fitri, S.T., M.Sc.', '98', 'TIF', 'Asisten Ahli (AA)', 'Penata Muda, III/a', 'fitri@poltek-kampar.ac.id', NULL, '2023-12-11 11:54:34', '2023-12-11 11:54:34'),
-(3, '110907026', '110907026', 'Muhammad Ridwan, ST., MT', '9999', 'TIF', 'Asisten Ahli (AA)', 'Penata Muda Tk. I, III/b', 'ridwan@poltek-kampar.ac.id', NULL, '2023-12-11 11:55:09', '2023-12-11 11:55:09'),
-(4, '110809041', '110809041', 'Ade Kurniawan, S.Kom.', '99999', 'TIF', 'Asisten Ahli (AA)', 'Penata Muda, III/a', 'ade@poltek-kampar.ac.id', NULL, '2023-12-11 11:55:46', '2023-12-11 11:55:46'),
-(5, '110306006', '110306006', 'Fenty Kurnia Oktorina,ST., M.Sc.', '9', 'TIF', 'Asisten Ahli (AA)', 'Penata Muda, III/a', 'fenty@poltek-kampar.ac.id', NULL, '2023-12-11 13:31:35', '2023-12-11 13:31:35');
+(1, '111019084', '1002119002', 'Andri Nofiar. AM, S.Kom., M.Kom', '-', 'TIF', 'Lektor (L)', 'Penata Muda, III/a', 'andrinofiar@poltek-kampar.ac.id', NULL, '2023-12-11 18:11:30', '2023-12-15 10:14:41'),
+(2, '110306007', '110306007', 'Fitri, S.T., M.Sc.', '0', 'TIF', 'Lektor (L)', 'Penata Muda, III/a', 'fitri@poltek-kampar.ac.id', 'profile.jpg', '2023-12-11 11:54:34', '2023-12-15 11:41:24'),
+(3, '110907026', '1003018202', 'Muhammad Ridwan, ST., MT', '0', 'TIF', 'Lektor (L)', 'Penata Muda Tk. I, III/b', 'ridwan@poltek-kampar.ac.id', NULL, '2023-12-11 11:55:09', '2023-12-15 10:21:39'),
+(4, '110809041', '9910676773', 'Ade Kurniawan, S.Kom.', '0', 'TIF', '', 'Penata Muda, III/a', 'ade@poltek-kampar.ac.id', NULL, '2023-12-11 11:55:46', '2023-12-15 10:24:35'),
+(5, '110306006', '110306006', 'Fenty Kurnia Oktorina,ST., M.Sc.', '0', 'TIF', 'Lektor (L)', 'Penata Muda, III/a', 'fenty@poltek-kampar.ac.id', NULL, '2023-12-11 13:31:35', '2023-12-15 10:25:07'),
+(6, '110306009', '1024057902', 'Nina Veronika, S.T., M.Sc.', '0', 'TPS', 'Lektor (L)', 'Penata Muda, III/a', 'nina@poltek-kampar.ac.id', NULL, '2023-12-12 02:40:07', '2023-12-15 10:24:49'),
+(7, '110907021', '1030088201', 'Anna Dhora, S.TP.,M.P', '0', 'TPKS', 'Lektor (L)', '', 'ann@poltek-kampar.ac.id', NULL, '2023-12-15 09:34:28', '2023-12-15 10:25:16'),
+(8, '110922102', '1022129101', 'Niken ellani Paititis,S.P.,M.T', '0', 'TPKS', '', '', 'niken@poltek-kampar.ac.id', NULL, '2023-12-15 09:37:19', '2023-12-15 10:25:23'),
+(9, '110320085', '1023088402', 'Razita Hariani,ST.,MT', '0', 'TPKS', 'Asisten Ahli (AA)', '', 'razita@poltek-kampar.ac.id', NULL, '2023-12-15 09:41:23', '2023-12-15 09:41:23'),
+(10, '110306005', '1001088001', 'Fatmayati, S.T., M.Si', '0', 'TPS', 'Lektor (L)', '', 'dakufatma@poltek-kampar.ac.id', NULL, '2023-12-15 09:43:50', '2023-12-15 09:43:50'),
+(11, '130809039', '1007128601', 'Hanifa Khairiah, S.St., M.T', '0', 'TPS', 'Asisten Ahli (AA)', '', 'hanifah.khairiah@poltek-kampar.ac.id', NULL, '2023-12-15 09:45:33', '2023-12-15 09:45:33'),
+(12, '110306010', '1011018202', 'Nur Asma Deli, S.T,. M.Si', '0', 'TPS', 'Lektor (L)', '', 'nur_asma@poltek-kampar.ac.id', NULL, '2023-12-15 09:48:00', '2023-12-15 09:48:00'),
+(13, '110907028', '1014048204', 'Sri Wahyuni, S.P., M.Si', '0', 'TPS', 'Lektor (L)', '', 'u_nie@poltek-kampar.ac.id', NULL, '2023-12-15 09:51:39', '2023-12-15 09:51:39'),
+(14, '141211050', '9910691091', 'Antonius J. Sihotang, SP', '0', 'TPS', '', '', 'antonius@poltek-kampar.ac.id', NULL, '2023-12-15 09:53:56', '2023-12-15 09:53:56'),
+(15, '141211049', '9910691092', 'Umar Linggom, SP', '0', 'TPS', '', '', 'umar@poltek-kampar.ac.id', NULL, '2023-12-15 09:56:02', '2023-12-15 09:56:02'),
+(16, '110306011', '1004057901', 'Romiyadi, S.T., M.T', '0', 'PPM', 'Lektor (L)', '', 'romi@poltek-kampar.ac.id', NULL, '2023-12-15 09:57:14', '2023-12-15 09:57:14'),
+(17, '110907027', '1020047802', 'Purnama Irwan, S.T., M.T', '0', 'PPM', 'Lektor (L)', '', 'irwan@poltek-kampar.ac.id', NULL, '2023-12-15 10:00:07', '2023-12-15 10:00:07'),
+(18, '110306015', '1028027502', 'yudi Dwianda, ST,. MT', '0', 'PPM', 'Asisten Ahli (AA)', '', 'yudi@poltek-kampar.ac.id', NULL, '2023-12-15 10:01:59', '2023-12-15 10:01:59'),
+(19, '141211051', '1022028503', 'Adi Febrianton, S.T., M.T', '0', 'PPM', 'Lektor (L)', '', 'adi.febrianton@poltek-kampar.ac.id', NULL, '2023-12-15 10:04:57', '2023-12-15 10:04:57'),
+(20, '110809042', '1021018606', 'Indah Purnama Putri, S.Pd., M.S', '0', 'PPM', 'Lektor (L)', '', 'indah@poltek-kampar.ac.id', NULL, '2023-12-15 10:06:36', '2023-12-15 10:06:36'),
+(21, '110821089', '1028059302', 'Widya sinta Mustika', '0', 'PPM', 'Asisten Ahli (AA)', '', 'widya_sm.dlb@poltek-kampae.ac.id', NULL, '2023-12-15 10:08:24', '2023-12-15 10:08:24'),
+(22, '141211052', '9910677229', 'Aden Yoga Putra, ST', '0', 'PPM', '', '', 'yoga@poltek-kampar.ac.id', NULL, '2023-12-15 10:11:14', '2023-12-15 10:11:14'),
+(23, '141211053', '9910677206', 'Masriyanto, ST', '0', 'PPM', '', '', 'masriyanto@poltek-kampar.ac.id', NULL, '2023-12-15 10:12:38', '2023-12-15 10:12:38'),
+(24, '131121092', '9910691100', 'Darwis Kurniawan, ST', '0', 'PPM', '', '', 'darwis@poltek-kampar.ac.id', NULL, '2023-12-15 10:13:40', '2023-12-15 10:13:40'),
+(25, '110421088', '1014059401', 'Dzulhijjah Yetti', '0', 'ABI', 'Asisten Ahli (AA)', '', 'yetti@poltek-kampar.ac.id', NULL, '2023-12-15 10:16:11', '2023-12-15 10:16:40'),
+(26, '110322096', '1001038703', 'Antoni Pribadi, S.Pd., M.Kom', '0', 'TIF', 'Asisten Ahli (AA)', '', 'antonipribadi@poltek-kampar.ac.id', NULL, '2023-12-15 10:18:14', '2023-12-15 10:18:14'),
+(27, '110922099', '102029001', 'Fina Nasari, S. Kom., M. Kom', '0', 'TIF', 'Lektor (L)', '', 'finanasari@poltek-kampar.ac.id', NULL, '2023-12-15 10:20:19', '2023-12-15 10:25:54'),
+(28, '140714074', '1008088804', 'Slamet Triyanto, S.ST., M.Kom', '0', 'TIF', '', '', 'slamet@poltek-kampar.ac.id', NULL, '2023-12-15 10:23:30', '2023-12-15 10:23:45'),
+(29, '110918081', '1002116703', 'Harmi Yelmi', '0', 'ABI', 'Asisten Ahli (AA)', '', 'harmiyelmi@poltek-kampar.ac.id', NULL, '2023-12-15 10:27:14', '2023-12-15 10:27:14'),
+(30, '110918081', '1019058604', 'Merlia Rahmayani', '0', 'ABI', 'Asisten Ahli (AA)', '', 'merlia@poltek-kampar.ac.id', NULL, '2023-12-15 10:28:36', '2023-12-15 10:28:36'),
+(31, '8972460022', '8972460022', 'Nurbit., S.IP., MH', '0', 'ABI', '', '', 'nurbit@poltek-kampar.ac.id', NULL, '2023-12-15 10:30:15', '2023-12-15 10:30:15'),
+(32, '110820087', '1011039502', 'Rahmad akbar', '0', 'ABI', 'Lektor (L)', '', 'rahmadakbar@poltek-kampar.ac.id', NULL, '2023-12-15 10:31:40', '2023-12-15 10:31:40'),
+(33, '110922101', '1031078903', 'Ardiansyah Hamid', '0', 'TPKS', '', '', 'ardiansyahhamid@poltek-kampar.ac.id', NULL, '2023-12-15 10:35:06', '2023-12-15 10:35:06');
 
 -- --------------------------------------------------------
 
@@ -296,6 +326,14 @@ CREATE TABLE `penelitianpkms_anggota` (
   `nama_anggota` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data untuk tabel `penelitianpkms_anggota`
+--
+
+INSERT INTO `penelitianpkms_anggota` (`id`, `id_pengajuan`, `nama_anggota`) VALUES
+(1, 1, 'Andri Nofiar. AM, S.Kom., M.Kom'),
+(2, 1, 'Ade Kurniawan, S.Kom.');
+
 -- --------------------------------------------------------
 
 --
@@ -325,6 +363,13 @@ CREATE TABLE `penelitianpkms_informasi` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data untuk tabel `penelitianpkms_informasi`
+--
+
+INSERT INTO `penelitianpkms_informasi` (`id`, `id_pengajuan`, `judul_penelitian`, `bidang_ilmu`, `nama_lengkap`, `nrp`, `nidn`, `pangkat_golongan`, `jabatan_fungsional`, `program_studi`, `alamat_kantor`, `faks_kantor`, `alamat_rumah`, `telp`, `email`, `lokasi`, `jangka_waktu`, `biaya`, `created_at`, `updated_at`) VALUES
+(1, 1, 'teeeeeeee', 'teeeeee', 'Fitri, S.T., M.Sc.', '110306007', '110306007', 'Penata Muda, III/a', 'Asisten Ahli (AA)', 'TIF', 'teee', 'teee', 'ettt', '98', 'fitri@poltek-kampar.ac.id', 'teeee', '12', '50000000', '2023-12-15 01:26:35', '2023-12-15 01:26:35');
+
 -- --------------------------------------------------------
 
 --
@@ -342,6 +387,13 @@ CREATE TABLE `penelitianpkms_kontraks` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data untuk tabel `penelitianpkms_kontraks`
+--
+
+INSERT INTO `penelitianpkms_kontraks` (`id`, `id_pengajuan`, `no_kontrak`, `pihak_satu`, `pihak_dua`, `mengetahui`, `created_at`, `updated_at`) VALUES
+(1, 1, '12/P3M/2023', '2023-12-15', '2023-12-15', NULL, '2023-12-15 01:30:51', '2023-12-15 01:30:59');
+
 -- --------------------------------------------------------
 
 --
@@ -358,6 +410,15 @@ CREATE TABLE `penelitianpkms_laporanprogres` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `penelitianpkms_laporanprogres`
+--
+
+INSERT INTO `penelitianpkms_laporanprogres` (`id`, `id_pengajuan`, `id_jenis_progress`, `file_progress`, `validasi`, `steps`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 'example (1).pdf', 'Terima', 1, '2023-12-15 01:26:35', '2023-12-15 01:36:15'),
+(2, 1, 2, 'export.pdf', 'Terima', 2, '2023-12-15 01:26:35', '2023-12-15 01:36:49'),
+(3, 1, 3, 'surat.pdf', 'Terima', 3, '2023-12-15 01:26:35', '2023-12-15 01:39:35');
 
 -- --------------------------------------------------------
 
@@ -378,6 +439,13 @@ CREATE TABLE `penelitianpkms_pengajuans` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data untuk tabel `penelitianpkms_pengajuans`
+--
+
+INSERT INTO `penelitianpkms_pengajuans` (`id`, `id_periode`, `id_dosen`, `id_skema`, `file_proposal`, `file_presentasi`, `status_pengajuan`, `status_pemenang`, `created_at`, `updated_at`) VALUES
+(1, 1, 2, 1, 'example.pdf', 'samplepptx.pptx', 'Terima', 'Pemenang', '2023-12-15 01:26:35', '2023-12-15 01:30:32');
+
 -- --------------------------------------------------------
 
 --
@@ -392,6 +460,14 @@ CREATE TABLE `penelitianpkms_reviewers` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `penelitianpkms_reviewers`
+--
+
+INSERT INTO `penelitianpkms_reviewers` (`id`, `id_pengajuan`, `id_dosen`, `nama_reviewer`, `created_at`, `updated_at`) VALUES
+(1, 1, 3, 'Muhammad Ridwan, ST., MT', '2023-12-15 01:26:49', '2023-12-15 01:26:49'),
+(2, 1, 4, 'Ade Kurniawan, S.Kom.', '2023-12-15 01:26:49', '2023-12-15 01:26:49');
 
 -- --------------------------------------------------------
 
@@ -491,6 +567,14 @@ CREATE TABLE `penilaian_reviewers` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data untuk tabel `penilaian_reviewers`
+--
+
+INSERT INTO `penilaian_reviewers` (`id`, `id_reviewer`, `id_pengajuan`, `id_dosen_reviewer`, `catatan`, `total_nilai`, `hasil_review`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 3, '-', 425, 1, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
+(2, 2, 1, 4, '-', 360, 1, '2023-12-15 01:29:55', '2023-12-15 01:29:55');
+
 -- --------------------------------------------------------
 
 --
@@ -508,6 +592,38 @@ CREATE TABLE `penilaian_reviewer_kriterias` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `penilaian_reviewer_kriterias`
+--
+
+INSERT INTO `penilaian_reviewer_kriterias` (`id`, `id_penilaian_review`, `id_pengajuan`, `id_dosen_review`, `id_indikator`, `skor`, `bobot_x_skor`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 3, 1, 5, 50, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
+(2, 1, 1, 3, 2, 5, 50, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
+(3, 1, 1, 3, 3, 5, 50, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
+(4, 1, 1, 3, 4, 5, 50, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
+(5, 1, 1, 3, 5, 5, 50, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
+(6, 1, 1, 3, 6, 5, 50, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
+(7, 1, 1, 3, 7, 5, 50, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
+(8, 1, 1, 3, 13, 3, 15, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
+(9, 1, 1, 3, 8, 3, 15, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
+(10, 1, 1, 3, 9, 2, 10, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
+(11, 1, 1, 3, 10, 2, 10, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
+(12, 1, 1, 3, 11, 3, 15, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
+(13, 1, 1, 3, 12, 2, 10, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
+(14, 2, 1, 4, 1, 5, 50, '2023-12-15 01:29:55', '2023-12-15 01:29:55'),
+(15, 2, 1, 4, 2, 5, 50, '2023-12-15 01:29:55', '2023-12-15 01:29:55'),
+(16, 2, 1, 4, 3, 3, 30, '2023-12-15 01:29:55', '2023-12-15 01:29:55'),
+(17, 2, 1, 4, 4, 3, 30, '2023-12-15 01:29:55', '2023-12-15 01:29:55'),
+(18, 2, 1, 4, 5, 2, 20, '2023-12-15 01:29:55', '2023-12-15 01:29:55'),
+(19, 2, 1, 4, 6, 3, 30, '2023-12-15 01:29:55', '2023-12-15 01:29:55'),
+(20, 2, 1, 4, 7, 3, 30, '2023-12-15 01:29:55', '2023-12-15 01:29:55'),
+(21, 2, 1, 4, 13, 4, 20, '2023-12-15 01:29:55', '2023-12-15 01:29:55'),
+(22, 2, 1, 4, 8, 5, 25, '2023-12-15 01:29:55', '2023-12-15 01:29:55'),
+(23, 2, 1, 4, 9, 5, 25, '2023-12-15 01:29:55', '2023-12-15 01:29:55'),
+(24, 2, 1, 4, 10, 5, 25, '2023-12-15 01:29:55', '2023-12-15 01:29:55'),
+(25, 2, 1, 4, 11, 2, 10, '2023-12-15 01:29:55', '2023-12-15 01:29:55'),
+(26, 2, 1, 4, 12, 3, 15, '2023-12-15 01:29:55', '2023-12-15 01:29:55');
 
 -- --------------------------------------------------------
 
@@ -547,10 +663,9 @@ CREATE TABLE `skemas` (
 --
 
 INSERT INTO `skemas` (`id`, `kode_program`, `nama_skema`, `status_skema`, `ketua_jabfung`, `jumlah_anggota`, `created_at`, `updated_at`) VALUES
-(1, 'P-PL', 'Penelitian Dasar', 1, 'Asisten Ahli (AA)', 3, '2023-11-09 21:01:26', '2023-12-11 11:04:56'),
-(2, 'P-PL', 'Penilitan Pemula', 1, 'Asisten Ahli (AA)', 3, '2023-11-09 21:01:26', '2023-12-11 11:05:03'),
-(3, 'P-PKM', 'Pengabdian Kepada Masyarakat', 1, 'Asisten Ahli (AA)', 9, '2023-11-09 21:01:26', '2023-12-11 11:05:11'),
-(4, 'P-PL', 'asdfasd', 0, 'Asisten Ahli (AA)', 2, '2023-11-09 14:54:25', '2023-12-11 11:05:18');
+(1, 'P-PL', 'Penelitian Dosen Muda', 1, 'Asisten Ahli (AA)', 2, '2023-11-09 21:01:26', '2023-12-15 10:40:10'),
+(2, 'P-PL', 'Penilitan Dasar', 1, 'Lektor (L)', 2, '2023-11-09 21:01:26', '2023-12-15 10:44:39'),
+(3, 'P-PKM', 'Pengabdian Kepada Masyarakat', 1, 'Asisten Ahli (AA)', 5, '2023-11-09 21:01:26', '2023-12-15 10:49:36');
 
 -- --------------------------------------------------------
 
@@ -571,16 +686,17 @@ CREATE TABLE `syarats` (
 --
 
 INSERT INTO `syarats` (`id`, `id_skema`, `persyaratan`, `created_at`, `updated_at`) VALUES
-(1, 1, 'testase', NULL, '2023-12-11 11:04:56'),
-(2, 1, 'adfasdf', NULL, '2023-12-11 11:04:56'),
-(5, 1, 'adsfasd', NULL, '2023-12-11 11:04:56'),
-(6, 1, 'sdfa34wawf34', NULL, '2023-12-11 11:04:56'),
-(7, 2, '34524aw', NULL, '2023-12-11 11:05:03'),
-(8, 2, '34523452', NULL, '2023-12-11 11:05:03'),
-(9, 3, 'sdfasd', NULL, '2023-12-11 11:05:11'),
-(10, 3, 'sdfasd', NULL, '2023-12-11 11:05:11'),
-(11, 4, 's4325rd', NULL, '2023-12-11 11:05:18'),
-(12, 4, 'tesstt', NULL, '2023-12-11 11:05:18');
+(1, 1, 'Dosen atau peneliti di lingkungan Politeknik Kampar', NULL, '2023-12-15 10:40:10'),
+(2, 1, 'Jumlah peneliti terdiri minimal oleh 2 (dua) orang dengan satu disiplin ilmu', NULL, '2023-12-15 10:40:10'),
+(5, 1, 'Ketua Peneliti memiliki gelar akademik S2', NULL, '2023-12-15 10:40:10'),
+(6, 1, 'Ketua peneliti belum memiliki jabatan fungsional atau maksimal Asisten Ahli (AA)', NULL, '2023-12-15 10:40:10'),
+(7, 2, 'Dosen atau peneliti dilingkungan Politeknik Kampar', NULL, '2023-12-15 10:44:39'),
+(8, 2, 'Jumlah peneliti terdiri dari minimal 2 (dua) orang, baik yang satu disiplin ilmu dan atau lintas disiplin', NULL, '2023-12-15 10:44:39'),
+(9, 3, 'Dosen yang akan melakukan  pengabdian  kepada masyarakat dengan dana internal Politeknik Kampar terdiri dari % orang dengan satu disiplin ilmu atau lintas disiplin ilmu', NULL, '2023-12-15 10:49:36'),
+(10, 3, 'Dosen yang mengajukan sebagai Ketua pelaksana pengabdian kepada masyarakat memiliki jabatan fungsional minimal Asisten Ashi (AA)', NULL, '2023-12-15 10:49:36'),
+(13, 2, 'ketua penelitian minimal memiliki gelar akademik S2', NULL, NULL),
+(14, 2, 'Ketua penelitian memiliki jabatan fungsional minimal Lektor', NULL, NULL),
+(15, 2, 'Tugas dan peran setiap peneliti diuraikan dengan jelas dan ditanda tangani', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -589,13 +705,13 @@ INSERT INTO `syarats` (`id`, `id_skema`, `persyaratan`, `created_at`, `updated_a
 -- (Lihat di bawah untuk tampilan aktual)
 --
 CREATE TABLE `v_pengguna` (
-`email` varchar(255)
-,`id` int unsigned
+`id` int unsigned
+,`nrp` varchar(255)
+,`nidn` varchar(255)
+,`email` varchar(255)
+,`nama` varchar(255)
 ,`id_pengguna` int unsigned
 ,`level` varchar(255)
-,`nama` varchar(255)
-,`nidn` varchar(255)
-,`nrp` varchar(255)
 );
 
 -- --------------------------------------------------------
@@ -758,7 +874,7 @@ ALTER TABLE `syarats`
 -- AUTO_INCREMENT untuk tabel `auths`
 --
 ALTER TABLE `auths`
-  MODIFY `id_pengguna` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_pengguna` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT untuk tabel `data_golongan_pangkats`
@@ -794,7 +910,7 @@ ALTER TABLE `data_periodes`
 -- AUTO_INCREMENT untuk tabel `dosens`
 --
 ALTER TABLE `dosens`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT untuk tabel `jadwal_submited_skemas`
@@ -818,37 +934,37 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT untuk tabel `penelitianpkms_anggota`
 --
 ALTER TABLE `penelitianpkms_anggota`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `penelitianpkms_informasi`
 --
 ALTER TABLE `penelitianpkms_informasi`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `penelitianpkms_kontraks`
 --
 ALTER TABLE `penelitianpkms_kontraks`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `penelitianpkms_laporanprogres`
 --
 ALTER TABLE `penelitianpkms_laporanprogres`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `penelitianpkms_pengajuans`
 --
 ALTER TABLE `penelitianpkms_pengajuans`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `penelitianpkms_reviewers`
 --
 ALTER TABLE `penelitianpkms_reviewers`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `penilaian_indikators`
@@ -866,13 +982,13 @@ ALTER TABLE `penilaian_kriterias`
 -- AUTO_INCREMENT untuk tabel `penilaian_reviewers`
 --
 ALTER TABLE `penilaian_reviewers`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `penilaian_reviewer_kriterias`
 --
 ALTER TABLE `penilaian_reviewer_kriterias`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT untuk tabel `penilaian_reviewer_penolakans`
@@ -890,7 +1006,7 @@ ALTER TABLE `skemas`
 -- AUTO_INCREMENT untuk tabel `syarats`
 --
 ALTER TABLE `syarats`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
