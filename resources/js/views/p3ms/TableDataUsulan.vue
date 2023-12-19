@@ -83,6 +83,7 @@ export default {
             idsn: null,
             datatPenelitian: null,
             docxFile: null,
+            dataPengajuan: {},
 
         }
     },
