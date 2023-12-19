@@ -52,9 +52,10 @@
                                             @click="fetchPptFile(list.file_presentasi)"
                                             v-show="list.file_presentasi != null ? true : false"></i>
                                         <span v-for="fileP in list.progress" :key="fileP.id">
-                                            <i class="fa-regular fa-lg me-1 cursor-pointer"
-                                                data-toggle="tooltip" data-placement="top" :class="getFileExtension(fileP.file_progress)"
-                                                :title="`${fileP.jenis_laporan}:${fileP.file_progress}`" @click="fetchDocxFile(fileP.file_progress)"
+                                            <i class="fa-regular fa-lg me-1 cursor-pointer" data-toggle="tooltip"
+                                                data-placement="top" :class="getFileExtension(fileP.file_progress)"
+                                                :title="`${fileP.jenis_laporan}:${fileP.file_progress}`"
+                                                @click="fetchDocxFile(fileP.file_progress)"
                                                 v-show="fileP.validasi != 'No Upload' ? true : false"></i>
                                         </span>
 
@@ -525,9 +526,9 @@ export default {
                         const steps3 = data.progress.find(item => item.steps === 3);
 
                         if (this.shouldOpenForm1(steps1)) {
-                            this.uploadlaporanStepsOne('Porgress',detailData, steps1, data.id)
+                            this.uploadlaporanStepsOne('Porgress', detailData, steps1, data.id)
                         } else if (this.shouldOpenForm2(steps1, steps2)) {
-                            this.uploadlaporanStepsOne('Lap 75',detailData, steps2, data.id)
+                            this.uploadlaporanStepsOne('Lap 75', detailData, steps2, data.id)
                         } else if (this.shouldOpenForm3(steps2, steps3)) {
                             this.uploadlaporanStepsOne('upload Akhir', detailData, steps3, data.id)
                         } else if (this.isOnValidationProcess(steps1, steps2, steps3)) {
@@ -538,7 +539,7 @@ export default {
                         } else if (!this.isWithinTimeFrame(steps1.times) || !this.isWithinTimeFrame(steps2.times) || !this.isWithinTimeFrame(steps3.times)) {
                             this.showStatusError('Oops...', 'Mohon Maaf Portal Upload Laporan Sudah Di Tutup');
                         }
-                    }else if(data.kontrak.mengetahui == null){
+                    } else if (data.kontrak.mengetahui == null) {
                         this.showStatusError('Oops...', 'Action Tidak Dapat Dilakukan, No Kontrak Belum di validasi direktur, Please Wait');
                     }
                 }
@@ -688,11 +689,11 @@ export default {
         },
         async fetchPptFile(filename) {
             try {
-                const response = await this.axios.get(`/api/fileppt/${filename}`,{ responseType: 'blob' });
+                const response = await this.axios.get(`/api/fileppt/${filename}`, { responseType: 'blob' });
                 const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.presentationml.presentation' });
                 // this.pdfDocument = ;
                 // window.URL.createObjectURL()
-                window.location.href =`/api/fileppt/${filename}`
+                window.location.href = `/api/fileppt/${filename}`
                 // $('#previewFile').modal('show');
             } catch (error) {
                 console.error('Error fetching docx:', error);

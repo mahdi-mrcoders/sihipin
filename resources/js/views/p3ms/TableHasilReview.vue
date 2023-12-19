@@ -48,7 +48,8 @@
                     </td>
                     <td>
                         <li v-for="(rev, key) in list.reviewer" :key="rev.id" style="list-style-type:none">
-                             <span class="d-block">REV {{ key + 1 }} : </span><span>{{ getHasilREview(rev, list.datanilai, key) }}</span>
+                            <span class="d-block">REV {{ key + 1 }} : </span><span>{{ getHasilREview(rev, list.datanilai,
+                                key) }}</span>
                         </li>
                     </td>
                     <td>
@@ -87,8 +88,8 @@
 
                     </td>
                     <td>
-                        <label class="badge bg-info" @click="validasiHasil(list)">Validasi Usulan</label>
-                        <hr>
+                        <!-- <label class="badge bg-info" @click="validasiHasil(list)">Validasi Usulan</label>
+                        <hr> -->
                         <label class="badge bg-info" @click="validasiPemenang(list)">Validasi Akhir</label>
                         <hr>
                         <label class="badge bg-info" @click="createKontrak(list)">Kontrak Usulan</label>

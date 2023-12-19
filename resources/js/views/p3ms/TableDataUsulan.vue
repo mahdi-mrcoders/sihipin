@@ -34,7 +34,11 @@
                             :
                             {{ rev.nama_reviewer }}</li>
                     </td>
-                    <td><label class="badge bg-info" @click="setReviewer(list.id)">Atur Reviewer</label></td>
+                    <td>
+                        <label class="badge bg-danger" @click="validasiHasil(list)">Tolak Usulan</label>
+                        <hr>
+                        <label class="badge bg-info" @click="setReviewer(list.id)">Terima dan Atur Reviewer</label>
+                    </td>
                 </tr>
 
             </tbody>
@@ -151,6 +155,52 @@ export default {
             } catch (error) {
                 console.error('Error fetching docx:', error);
             }
+        },
+        async validasiHasil(data) {
+            const detailData = `
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Kode Usulan :</strong> <br><label class="text-muted lh-sm">${data.kode_skema}-${data.id}</label></li>
+                <li class="list-group-item"><strong>Nama Skema :</strong><br><label class="text-muted lh-sm">${data.nama_skema}</label></li>
+                <li class="list-group-item"><strong>Judul Usulan :</strong> <br><label class="text-muted lh-sm">${data.informasi.judul_penelitian}</label></li>
+            </ul>
+            `;
+            const inputOptions = new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve({
+                        "Tolak": "Tolak",
+                        // "Terima": "Terima"
+                    });
+                }, 100);
+            });
+
+
+            const { value: status } = await this.$swal({
+                title: "Validasi Usulan Di Tolak",
+                html: detailData,
+                input: "radio",
+                inputValue: "Tolak",
+                inputOptions,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showCancelButton: true,
+                inputValidator: (value) => {
+                    if (!value) {
+                        return "Anda perlu memilih sesuatu!";
+                    }
+                }
+            });
+            if (status) {
+                this.dataPengajuan.id = data.id
+                this.dataPengajuan.status = status
+                await this.axios.post('/api/updatevalidasi', this.dataPengajuan).then(response => {
+                    this.getDataUser()
+                }).catch(error => {
+                    console.log(error)
+                })
+
+            }
+
+
         },
     }
 }
