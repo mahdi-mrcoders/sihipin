@@ -63,11 +63,16 @@
                             </div>
                             <hr>
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Ketua Peneliti Jabfung</label>
-                                <select name="" id="" class="form-control" required v-model="dataForm.ketua_jabfung">
-                                    <option value="" selected>Pilih Jabfung</option>
-                                    <option  v-for="jabfung in listData" :key="jabfung.id" :value="jabfung.nama_jabfung">{{ jabfung.nama_jabfung }}</option>
-                                </select>
+                                <label for="exampleInputEmail1" class="d-block">Ketua Peneliti Jabfung</label>
+                                <div class="form-check form-check-inline" v-for="(jabfung, index) in listData"
+                                    :key="jabfung.id">
+                                    <input class="form-check-input" type="checkbox" :id="'inlineCheckbox' + index"
+                                        :value="jabfung.nama_jabfung" v-model="selectedCheck">
+                                    <label class="form-check-label" :for="'inlineCheckbox' + index"
+                                        style="margin-left:.5rem">{{
+                                            jabfung.nama_jabfung
+                                        }}</label>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Persyaratan</label>
@@ -82,12 +87,12 @@
                             </div>
                             <div class="form-group">
                                 <ol>
-                                    <li v-for="(list,index) in jumlahInput" :key="index">
+                                    <li v-for="(list, index) in jumlahInput" :key="index">
                                         <input type="text" class="form-control mt-2 " v-model="dataForm.syarat[index]">
                                     </li>
                                 </ol>
-                                
-                                
+
+
                             </div>
                             <button type="submit" class="btn btn-primary me-2">Submit</button>
                             <router-link class="btn btn-light" :to='{ name: "data-skema" }'>Cancel</router-link>
@@ -102,14 +107,15 @@
 export default {
     data() {
         return {
+            selectedCheck: [],
             jumlahInput: 1,
-            listData:{},
+            listData: {},
             dataForm: {
                 syarat: []
             }
         }
     },
-    created(){
+    created() {
         this.getDataJabfung()
     },
     methods: {
@@ -121,10 +127,10 @@ export default {
                 this.jumlahInput = this.jumlahInput - 1;
             }
         },
-        async getDataJabfung(){
-            await this.axios.get('/api/datajabfung').then(response=>{
+        async getDataJabfung() {
+            await this.axios.get('/api/datajabfung').then(response => {
                 this.listData = response.data
-            }).catch(error=>{
+            }).catch(error => {
                 console.log(error)
             })
         },

@@ -404,8 +404,9 @@ export default {
             }
         },
         checkingSyaratKhusus(data) {
-            return this.dosens.jabatan_fungsional == data
-            console.log()
+            // return this.dosens.jabatan_fungsional == data
+            const datas = data.split(',').map(item => item.trim())
+            return datas.includes(this.dosens.jabatan_fungsional)
         },
         updateCountdown(targetDate, html) {
             const now = moment();

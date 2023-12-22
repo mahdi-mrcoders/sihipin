@@ -17,19 +17,19 @@ class DataSkemaController extends Controller
      */
     public function index()
     {
-        $periodeAktif = DataPeriode::where('status_periode','Y')->first();
-        if($periodeAktif){
+        $periodeAktif = DataPeriode::where('status_periode', 'Y')->first();
+        if ($periodeAktif) {
             $dataSkema = DataSkema::all();
             foreach ($dataSkema as $key => $skema) {
-                $jadwal = JadwaSubmited::where('id_periode',$periodeAktif->id)->where('id_skema',$skema->id)->first();
+                $jadwal = JadwaSubmited::where('id_periode', $periodeAktif->id)->where('id_skema', $skema->id)->first();
                 $dataSyarat = DataSyarat::where('id_skema', $skema->id)->get();
-                $dataSkema[$key]['jadwal']= $jadwal ? ['start'=>$jadwal->start,'end'=>$jadwal->end]:null;
+                $dataSkema[$key]['jadwal'] = $jadwal ? ['start' => $jadwal->start, 'end' => $jadwal->end] : null;
                 $dataSkema[$key]['syarat'] = $dataSyarat;
             }
-        }else{
+        } else {
             $dataSkema = (object)[];
         }
-        
+
         return response()->json($dataSkema);
     }
 
@@ -55,8 +55,8 @@ class DataSkemaController extends Controller
             'nama_skema' => $request->nama_skema,
             'jumlah_anggota' => $request->jumlah_anggota,
             'status_skema' => $request->status_skema,
-            'kode_program'=>$request->program_skema,
-            'ketua_jabfung'=>$request->ketua_jabfung
+            'kode_program' => $request->program_skema,
+            'ketua_jabfung' => $request->ketua_jabfung
         ];
         $InsertSkema = DataSkema::create($dataSkema);
         $last_id = $InsertSkema->getKey();
@@ -112,31 +112,31 @@ class DataSkemaController extends Controller
             'nama_skema' => $request->nama_skema,
             'jumlah_anggota' => $request->jumlah_anggota,
             'status_skema' => $request->status_skema,
-            'kode_program'=>$request->program_skema,
-            'ketua_jabfung'=>$request->ketua_jabfung
+            'kode_program' => $request->program_skema,
+            'ketua_jabfung' => join(',', $request->post('ketua_jabfung'))
         ];
-        DataSkema::where('id',$dataSkemas)->update($dataSkema);
+        DataSkema::where('id', $dataSkemas)->update($dataSkema);
         foreach ($request->syarat as $key => $value) {
-            $idsyarat[]=[
-                'id'=>$request->idsyarat[$key]
+            $idsyarat[] = [
+                'id' => $request->idsyarat[$key]
             ];
             if ($request->idsyarat[$key] == 0) {
-                $InsertSyarat= [
+                $InsertSyarat = [
                     'id_skema' => $dataSkemas,
                     'persyaratan' => $value,
                 ];
                 DataSyarat::insert($InsertSyarat);
             } else {
-                $UpdateSyarat=[
-                    'id_skema'=>$dataSkemas,
-                    'persyaratan'=>$value,
+                $UpdateSyarat = [
+                    'id_skema' => $dataSkemas,
+                    'persyaratan' => $value,
                 ];
-                DataSyarat::where('id',$request->idsyarat[$key])->update($UpdateSyarat);
+                DataSyarat::where('id', $request->idsyarat[$key])->update($UpdateSyarat);
             }
         }
         return response()->json([
             'message' => 'data stored',
-            'data' => ''
+            'data' => join(',', $request->post('ketua_jabfung'))
         ]);
     }
 
@@ -148,10 +148,10 @@ class DataSkemaController extends Controller
      */
     public function destroy($dataSkema)
     {
-        DataSkema::where('id',$dataSkema)->delete();
-        DataSyarat::where('id_skema',$dataSkema)->delete();
+        DataSkema::where('id', $dataSkema)->delete();
+        DataSyarat::where('id_skema', $dataSkema)->delete();
         return response()->json([
-            'message'=>'data dosen Deleted Successfully!!'
+            'message' => 'data dosen Deleted Successfully!!'
         ]);
     }
 }

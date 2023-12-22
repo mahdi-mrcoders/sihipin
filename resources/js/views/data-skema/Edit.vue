@@ -63,11 +63,16 @@
                             </div>
                             <hr>
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Ketua Peneliti Jabfung</label>
-                                <select name="" id="" class="form-control" required v-model="dataForm.ketua_jabfung">
-                                    <option value="" selected>Pilih Jabfung</option>
-                                    <option  v-for="jabfung in listData" :key="jabfung.id" :value="jabfung.nama_jabfung">{{ jabfung.nama_jabfung }}</option>
-                                </select>
+                                <label for="exampleInputEmail1" class="d-block">Syarat Jabfung Ketua Peneliti</label>
+                                <div class="form-check form-check-inline" v-for="(jabfung, index) in listData"
+                                    :key="jabfung.id">
+                                    <input class="form-check-input" type="checkbox" :id="'inlineCheckbox' + index"
+                                        :value="jabfung.nama_jabfung" v-model="selectedCheck">
+                                    <label class="form-check-label" :for="'inlineCheckbox' + index"
+                                        style="margin-left:.5rem">{{
+                                            jabfung.nama_jabfung
+                                        }}</label>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Persyaratan</label>
@@ -103,21 +108,28 @@
 export default {
     data() {
         return {
+            selectedCheck: [],
             jumlahInput: 1,
             jumlahData: 0,
-            listData:{},
+            listData: {},
             dataForm: {
                 syarat: [],
                 idsyarat: [],
+
             }
         }
     },
     created() {
         this.getDataJabfung()
         this.getDataSkema()
-        
+
     },
     methods: {
+        updateSelectedValues(evt) {
+            // Update nilai yang terpilih ke array selectedCheck
+            this.selectedCheck = this.listData.map(item => item.nama_jabfung);
+            console.log(evt.value)
+        },
         addInput() {
             this.jumlahInput = this.jumlahInput + 1;
             this.dataForm.idsyarat.push(0);
@@ -138,16 +150,16 @@ export default {
             }
 
         },
-        async getDataJabfung(){
-            await this.axios.get('/api/datajabfung').then(response=>{
+        async getDataJabfung() {
+            await this.axios.get('/api/datajabfung').then(response => {
                 this.listData = response.data
-            }).catch(error=>{
+            }).catch(error => {
                 console.log(error)
             })
         },
         async getDataSkema() {
             await this.axios.get(`/api/dataskema/${this.$route.params.id}`).then(response => {
-                const { nama_skema, jumlah_anggota, kode_program, status_skema, syarat,ketua_jabfung } = response.data
+                const { nama_skema, jumlah_anggota, kode_program, status_skema, syarat, ketua_jabfung } = response.data
                 this.dataForm.nama_skema = nama_skema
                 this.dataForm.jumlah_anggota = jumlah_anggota
                 this.dataForm.status_skema = status_skema
@@ -155,6 +167,7 @@ export default {
                 this.jumlahData = response.data.syarat.length
                 this.dataForm.program_skema = kode_program
                 this.dataForm.ketua_jabfung = ketua_jabfung
+                this.selectedCheck = ketua_jabfung.split(',').map(item => item.trim())
                 this.dataForm._method = 'patch'
                 syarat.forEach((item) => {
                     const { id, persyaratan } = item
@@ -167,6 +180,7 @@ export default {
             })
         },
         async update() {
+            this.dataForm.ketua_jabfung = this.selectedCheck
             this.axios.post(`/api/dataskema/${this.$route.params.id}`, this.dataForm).then(response => {
                 this.$swal({
                     position: "top-end",
