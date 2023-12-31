@@ -80,6 +80,9 @@
                                                     Review</label>
                                                 <label class="badge bg-success"
                                                     v-if="list.status_pengajuan == 'Terima'">Terima</label>
+                                                <i class="fa-solid fa-circle-info fa-lg"
+                                                    v-if="list.status_pengajuan == 'Tolak'" style="cursor:pointer"
+                                                    @click="showInfo(list.alasan_tolak)"></i>
                                             </li>
                                             <li style="list-style-type:none">
                                                 Hasil : {{ list.status_pemenang }}
@@ -91,10 +94,13 @@
                                         <label for="" v-if="list.progress == null">-</label>
                                         <ul style="font-size:10px;padding-left:0;margin-bottom:0" v-else>
                                             <li v-for="progres in list.progress" :key="progres"
-                                                style="list-style-type:none"> {{
-                                                    progres.jenis_laporan }}: <br><span class="badge "
+                                                style="list-style-type:none">
+                                                {{ progres.jenis_laporan }}: <br><span class="badge "
                                                     :class="progres.validasi == 'prosess' ? 'bg-info' : progres.validasi == 'Terima' ? 'bg-success' : 'bg-danger'">{{
-                                                        progres.validasi }}</span></li>
+                                                        progres.validasi }}</span>
+                                                <i class="fa-solid fa-circle-info fa-lg" v-if="progres.validasi == 'Tolak'"
+                                style="cursor:pointer" @click="showInfo(progres.alasan_tolak)"></i>
+                                            </li>
                                         </ul>
 
                                     </td>
@@ -713,6 +719,17 @@ export default {
             this.docxFile = null
             this.pdfDocument = null
             $('#previewFile').modal('hide');
+        },
+        showInfo(info) {
+            this.$swal({
+                title: "<strong>Alasan Penolakan</strong>",
+                icon: "info",
+                html: info,
+                showConfirmButton: false,
+                showCloseButton: false,
+                showCancelButton: true,
+                cancelButtonText: `Tutup`,
+            });
         }
 
     }

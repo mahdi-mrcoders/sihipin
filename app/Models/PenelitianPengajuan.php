@@ -18,7 +18,7 @@ class PenelitianPengajuan extends Model
 {
     use HasFactory;
     protected $table = 'penelitianpkms_pengajuans';
-    protected $fillable =['id_periode','id_dosen','id_skema','file_proposal'];
+    protected $fillable = ['id_periode', 'id_dosen', 'id_skema', 'file_proposal', 'status_pengajuan', 'status_pemenang', 'alasan_tolak'];
     public $timestamps = true;
 
     public function informasi()
@@ -43,23 +43,24 @@ class PenelitianPengajuan extends Model
 
     public function dataKontrak()
     {
-        return $this->hasOne(Kontrak::class,'id_pengajuan','id');
+        return $this->hasOne(Kontrak::class, 'id_pengajuan', 'id');
     }
 
     public function dataProgress()
     {
-        return $this->hasMany(Progress::class,'id_pengajuan','id');
+        return $this->hasMany(Progress::class, 'id_pengajuan', 'id');
     }
     public function dataReviewer()
     {
-        return $this->hasMany(Reviewer::class,'id_pengajuan','id');
+        return $this->hasMany(Reviewer::class, 'id_pengajuan', 'id');
     }
-    public function dataNilai(){
-        return $this->hasMany(Nilai::class,'id_pengajuan','id');
+    public function dataNilai()
+    {
+        return $this->hasMany(Nilai::class, 'id_pengajuan', 'id');
     }
 
     public function periode()
     {
-        return $this->hasOne(Periode::class,'id','id_periode');
+        return $this->hasOne(Periode::class, 'id', 'id_periode');
     }
 }

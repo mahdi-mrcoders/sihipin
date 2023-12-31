@@ -67,6 +67,7 @@
                                         <td>Progress</td>
                                         <td>File</td>
                                         <td>Uploded</td>
+                                        <td>Alasan Tolak</td>
                                         <td>Status</td>
                                         <td>Action</td>
                                     </tr>
@@ -76,8 +77,13 @@
                                     <tr v-for="(progres, ind) in list.progress" :key="progres.id">
                                         <td>{{ ind + 1 }}</td>
                                         <td>{{ progres.jenis_laporan }}</td>
-                                        <td>{{ progres.file_progress }}</td>
+                                        <td><i class="fa-solid fa-download" style="cursor:pointer;"
+                                                @click="fetchFile(progres.file_progress)"></i> {{
+                                                    progres.file_progress }}</td>
                                         <td>{{ progres.created_at }}</td>
+                                        <td>
+                                            {{ progres.alasan_tolak }}
+                                        </td>
                                         <td>
                                             <label class="badge bg-danger" v-if="progres.validasi == 'No Upload'">No
                                                 Upload</label>
@@ -86,6 +92,7 @@
                                             <label class="badge bg-success"
                                                 v-if="progres.validasi == 'Terima'">Terima</label>
                                         </td>
+
                                         <td>
                                             <label for="" class="badge bg-warning"
                                                 v-show="progres.file_progress == null ? false : true"
@@ -150,9 +157,9 @@ export default {
         },
         async getListSubmited() {
             await this.axios.get(`/api/penelitian?level=${this.level}&idsn=${this.idsn}`).then(response => {
-                
+
                 response.data.forEach(item => {
-                    if(item.status_pengajuan == 'Terima' && item.status_pemenang == 'Pemenang'){
+                    if (item.status_pengajuan == 'Terima' && item.status_pemenang == 'Pemenang') {
                         this.dataTable = [item]
                     }
                 });
@@ -222,9 +229,10 @@ export default {
                         }
                     }
                 });
-                if (validasi) {
+                if (validasi == 'Terima') {
                     const dataProgress = {
                         validasi: validasi,
+                        alasan: null,
                         _method: "patch"
                     }
                     await this.axios.post(`/api/validasiprogress/${id}`, dataProgress).then(response => {
@@ -232,10 +240,42 @@ export default {
                     }).catch(error => {
                         console.log(error)
                     })
+                } else {
+                    const { value: text } = await this.$swal({
+                        input: "textarea",
+                        inputLabel: "Alasan Penolakan",
+                        inputPlaceholder: "Type your message here...",
+                        inputAttributes: {
+                            "aria-label": "Type your message here"
+                        },
+                        showCancelButton: true,
+                        confirmButtonText: 'Kirim'
+                    });
+                    if (text) {
+                        const dataProgress = {
+                            validasi: validasi,
+                            alasan: text,
+                            _method: "patch"
+                        }
+                        await this.axios.post(`/api/validasiprogress/${id}`, dataProgress).then(response => {
+                            this.getDataUser()
+                        }).catch(error => {
+                            console.log(error)
+                        })
+                    }
+
                 }
             }
 
-        }
+        },
+        async fetchFile(filename) {
+            try {
+                window.location.href = `/api/file/${filename}`
+                // $('#previewFile').modal('show');
+            } catch (error) {
+                console.error('Error fetching docx:', error);
+            }
+        },
 
     }
 }

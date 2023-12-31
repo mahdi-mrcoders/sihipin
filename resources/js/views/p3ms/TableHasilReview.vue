@@ -61,8 +61,10 @@
                         <li style="list-style-type:none">Status usulan : <br>
                             <label class="badge bg-info" v-if="list.status_pengajuan == 'Prosess'">Proses</label>
                             <label class="badge bg-warning" v-if="list.status_pengajuan == 'In Review'">In Review</label>
-                            <label class="badge bg-danger" v-if="list.status_pengajuan == 'Tolak'">Tolak</label>
+                            <label class="badge bg-danger" v-if="list.status_pengajuan == 'Tolak'">Tolak </label>
                             <label class="badge bg-success" v-if="list.status_pengajuan == 'Terima'">Terima</label>
+                            <i class="fa-solid fa-circle-info fa-lg" v-if="list.status_pengajuan == 'Tolak'"
+                                style="cursor:pointer" @click="showInfo(list.alasan_tolak)"></i>
                         </li>
                         <li style="list-style-type:none">Status Review : <br>
                             <label class="badge bg-warning" v-if="list.status_pemenang == 'In Review'">In Review</label>
@@ -344,6 +346,17 @@ export default {
                 }
             }
 
+        },
+        showInfo(info) {
+            this.$swal({
+                title: "<strong>Alasan Penolakan</strong>",
+                icon: "info",
+                html: info,
+                showConfirmButton: false,
+                showCloseButton: false,
+                showCancelButton: true,
+                cancelButtonText: `Tutup`,
+            });
         }
 
     }

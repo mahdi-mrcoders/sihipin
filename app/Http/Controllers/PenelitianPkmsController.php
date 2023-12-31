@@ -97,6 +97,7 @@ class PenelitianPkmsController extends Controller
             'id_skema' => $submited->id_skema,
             'id_dosen' => $submited->id_dosen,
             'status_pengajuan' => $submited->status_pengajuan,
+            'alasan_tolak' => $submited->alasan_tolak,
             'status_pemenang' => $submited->status_pemenang,
             'file_proposal' => $submited->file_proposal,
             'file_presentasi' => $submited->file_presentasi,
@@ -255,6 +256,8 @@ class PenelitianPkmsController extends Controller
         } else {
             $datastatus = [
                 'status_pengajuan' => $request->status,
+                'status_pemenang' => 'Tolak',
+                'alasan_tolak' => $request->alasan
             ];
         }
         Pengajuan::where('id', $request->id)->update($datastatus);
@@ -330,7 +333,7 @@ class PenelitianPkmsController extends Controller
 
     public function validasiprogres(Request $request, $id)
     {
-        LProgress::where('id', $id)->update(['validasi' => $request->validasi]);
+        LProgress::where('id', $id)->update(['validasi' => $request->validasi, 'alasan_tolak' => $request->alasan]);
         return response()->json(['id' => $id, 'req' => $request->all()]);
     }
 

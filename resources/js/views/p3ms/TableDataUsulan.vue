@@ -163,6 +163,8 @@ export default {
                 <li class="list-group-item"><strong>Kode Usulan :</strong> <br><label class="text-muted lh-sm">${data.kode_skema}-${data.id}</label></li>
                 <li class="list-group-item"><strong>Nama Skema :</strong><br><label class="text-muted lh-sm">${data.nama_skema}</label></li>
                 <li class="list-group-item"><strong>Judul Usulan :</strong> <br><label class="text-muted lh-sm">${data.informasi.judul_penelitian}</label></li>
+                <li class="list-group-item"><strong>Alasan Penolakan :</strong> <br><textarea class="form-control"></textarea></li>
+                
             </ul>
             `;
             const inputOptions = new Promise((resolve) => {
@@ -184,6 +186,12 @@ export default {
                 allowOutsideClick: false,
                 allowEscapeKey: false,
                 showCancelButton: true,
+                preConfirm: () => {
+                    const textValue = this.$swal.getPopup().querySelector('textarea').value;
+                    if (!textValue) {
+                        this.$swal.showValidationMessage('Please enter some text');
+                    }
+                },
                 inputValidator: (value) => {
                     if (!value) {
                         return "Anda perlu memilih sesuatu!";
@@ -193,6 +201,7 @@ export default {
             if (status) {
                 this.dataPengajuan.id = data.id
                 this.dataPengajuan.status = status
+                this.dataPengajuan.alasan = this.$swal.getPopup().querySelector('textarea').value;
                 await this.axios.post('/api/updatevalidasi', this.dataPengajuan).then(response => {
                     this.getDataUser()
                 }).catch(error => {

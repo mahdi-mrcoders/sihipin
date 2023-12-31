@@ -67,12 +67,13 @@ Route::get('dosen/byemail/{email}', [DataDosenController::class, 'byemail']);
 Route::get('/file/{filename}', function ($filename) {
     $path = storage_path('app/public/uploads/' . $filename);
     $url = Storage::url('app/public/uploads/' . $filename);
-    return response()->json(url($url));
+    // return response()->json(url($url));
+    return response()->download($path, $filename);
 });
 
-Route::get('bukupanduan',[DataFileController::class, 'filemedia']);
-Route::post('bukupanduan',[DataFileController::class, 'filemediacreate']);
-Route::patch('bukupanduan/{id}',[DataFileController::class, 'filemediaupdate']);
+Route::get('bukupanduan', [DataFileController::class, 'filemedia']);
+Route::post('bukupanduan', [DataFileController::class, 'filemediacreate']);
+Route::patch('bukupanduan/{id}', [DataFileController::class, 'filemediaupdate']);
 
 
 Route::patch('uploadppt/{id}', [DataFileController::class, 'filepresentasi']);

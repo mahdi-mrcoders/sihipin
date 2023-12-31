@@ -43,6 +43,7 @@
                             </div>
                             <div class="col-sm-12">
                                 <button class="btn btn-primary btn-block" @click="applyFilter">Filter</button>
+                                <button class="btn btn-warning btn-block" @click="printTable">Print Data</button>
                             </div>
                         </div>
                         <hr>
@@ -111,46 +112,36 @@ export default {
             listPeriode: {},
             filteredItems: [],
             selectedFilter: {
-                periode:null,
-                skema:null,
-                datepengajuan:null
+                periode: null,
+                skema: null,
+                datepengajuan: null
             },
         }
     },
-    // computed: {
-    //     filteredItems() {
-    //         const searchTerm = this.searchTerm.toLowerCase();
-    //         return this.dataTable.filter(item => {
-    //             return item.kode_skema.toLowerCase().includes(searchTerm) ||
-    //                 item.periode.toLowerCase().includes(searchTerm) ||
-    //                 item.tanggal_pengajuan.toLowerCase().includes(searchTerm)
-    //         });
-    //     }
-    // },
     mounted() {
         this.getDataUser()
         this.getSkema()
         this.getPeriode()
-        
+
     },
     methods: {
         applyFilter() {
             const searchTerm = this.selectedFilter;
-            if(searchTerm.periode || searchTerm.skema || searchTerm.datepengajuan){
-                    this.filteredItems = this.dataTable.filter(item => {
-                        if(searchTerm.periode != null && searchTerm.skema == null && searchTerm.datepengajuan == null){
-                            return item.id_periode === this.selectedFilter.periode 
-                        }else if(searchTerm.periode != null && searchTerm.skema != null && searchTerm.datepengajuan == null){
-                            return item.id_periode === this.selectedFilter.periode && item.id_skema == this.selectedFilter.skema;
-                        }else if(searchTerm.periode != null && searchTerm.skema != null && searchTerm.datepengajuan != null){
-                            return item.id_periode === this.selectedFilter.periode && item.id_skema == this.selectedFilter.skema && item.tanggal_pengajuan == searchTerm.datepengajuan;
-                        }
-                        
+            if (searchTerm.periode || searchTerm.skema || searchTerm.datepengajuan) {
+                this.filteredItems = this.dataTable.filter(item => {
+                    if (searchTerm.periode != null && searchTerm.skema == null && searchTerm.datepengajuan == null) {
+                        return item.id_periode === this.selectedFilter.periode
+                    } else if (searchTerm.periode != null && searchTerm.skema != null && searchTerm.datepengajuan == null) {
+                        return item.id_periode === this.selectedFilter.periode && item.id_skema == this.selectedFilter.skema;
+                    } else if (searchTerm.periode != null && searchTerm.skema != null && searchTerm.datepengajuan != null) {
+                        return item.id_periode === this.selectedFilter.periode && item.id_skema == this.selectedFilter.skema && item.tanggal_pengajuan == searchTerm.datepengajuan;
+                    }
+
                 });
-            }else{
+            } else {
                 this.filteredItems = this.dataTable
             }
-           
+
         },
         ResultState(result) {
             this.isClicked = false
@@ -196,6 +187,47 @@ export default {
             }).catch(error => {
 
             })
+        },
+        printTable() {
+            // Create a new window for printing
+            const printWindow = window.open('', '_blank');
+            printWindow.document.open();
+
+            // Retrieve the table HTML content from the DOM
+            const tableContent = document.querySelector('.table-responsive').outerHTML;
+
+            // Create a basic HTML structure in the print window
+            printWindow.document.write(`
+        <html>
+          <head>
+            <title>Print Table</title>
+            <style>
+              /* Define styles for the table (optional) */
+              /* Include any styles for the table you want to print */
+              .table {
+                border-collapse: collapse;
+                width: 100%;
+              }
+              .table, th, td {
+                border: 1px solid #ccc;
+                padding: 8px;
+                text-align: left;
+              }
+            </style>
+          </head>
+          <body>
+            ${tableContent}
+          </body>
+        </html>
+      `);
+
+            // Close the HTML structure and document
+            printWindow.document.close();
+
+            // Focus and print the window
+            printWindow.focus();
+            printWindow.print();
+            printWindow.close();
         }
     }
 }
