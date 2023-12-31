@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Waktu pembuatan: 16 Des 2023 pada 10.03
+-- Waktu pembuatan: 31 Des 2023 pada 19.14
 -- Versi server: 8.0.30
 -- Versi PHP: 7.3.9
 
@@ -119,7 +119,9 @@ INSERT INTO `data_jabfungs` (`id`, `nama_jabfung`, `created_at`, `updated_at`) V
 (1, 'Asisten Ahli (AA)', NULL, '2023-12-04 09:23:11'),
 (3, 'Lektor (L)', '2023-12-04 09:23:20', '2023-12-04 09:23:20'),
 (4, 'Lektor Kepala (LK)', '2023-12-04 09:23:28', '2023-12-04 09:23:28'),
-(5, 'Profesor (Prof)', '2023-12-04 09:23:36', '2023-12-04 09:23:36');
+(5, 'Profesor (Prof)', '2023-12-04 09:23:36', '2023-12-04 09:23:36'),
+(6, 'Tenaga Pengajar', '2023-12-21 06:38:52', '2023-12-21 06:38:52'),
+(7, 'All Jabfunga', '2023-12-21 06:42:15', '2023-12-21 06:45:14');
 
 -- --------------------------------------------------------
 
@@ -183,7 +185,7 @@ CREATE TABLE `dosens` (
   `nama` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `no_hp` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `prodi` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `jabatan_fungsional` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jabatan_fungsional` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `pangkat_golongan` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `foto` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -202,7 +204,7 @@ INSERT INTO `dosens` (`id`, `nrp`, `nidn`, `nama`, `no_hp`, `prodi`, `jabatan_fu
 (4, '110809041', '9910676773', 'Ade Kurniawan, S.Kom.', '0', 'TIF', '', 'Penata Muda, III/a', 'ade@poltek-kampar.ac.id', NULL, '2023-12-11 11:55:46', '2023-12-15 10:24:35'),
 (5, '110306006', '110306006', 'Fenty Kurnia Oktorina,ST., M.Sc.', '0', 'TIF', 'Lektor (L)', 'Penata Muda, III/a', 'fenty@poltek-kampar.ac.id', NULL, '2023-12-11 13:31:35', '2023-12-15 10:25:07'),
 (6, '110306009', '1024057902', 'Nina Veronika, S.T., M.Sc.', '0', 'TPS', 'Lektor (L)', 'Penata Muda, III/a', 'nina@poltek-kampar.ac.id', NULL, '2023-12-12 02:40:07', '2023-12-15 10:24:49'),
-(7, '110907021', '1030088201', 'Anna Dhora, S.TP.,M.P', '0', 'TPKS', 'Lektor (L)', '', 'ann@poltek-kampar.ac.id', NULL, '2023-12-15 09:34:28', '2023-12-15 10:25:16'),
+(7, '110907021', '1030088201', 'Anna Dhora, S.TP.,M.P', '0', 'TPKS', 'Tenaga Pengajar', '', 'ann@poltek-kampar.ac.id', NULL, '2023-12-15 09:34:28', '2023-12-21 06:39:05'),
 (8, '110922102', '1022129101', 'Niken ellani Paititis,S.P.,M.T', '0', 'TPKS', '', '', 'niken@poltek-kampar.ac.id', NULL, '2023-12-15 09:37:19', '2023-12-15 10:25:23'),
 (9, '110320085', '1023088402', 'Razita Hariani,ST.,MT', '0', 'TPKS', 'Asisten Ahli (AA)', '', 'razita@poltek-kampar.ac.id', NULL, '2023-12-15 09:41:23', '2023-12-15 09:41:23'),
 (10, '110306005', '1001088001', 'Fatmayati, S.T., M.Si', '0', 'TPS', 'Lektor (L)', '', 'dakufatma@poltek-kampar.ac.id', NULL, '2023-12-15 09:43:50', '2023-12-15 09:43:50'),
@@ -392,7 +394,7 @@ CREATE TABLE `penelitianpkms_kontraks` (
 --
 
 INSERT INTO `penelitianpkms_kontraks` (`id`, `id_pengajuan`, `no_kontrak`, `pihak_satu`, `pihak_dua`, `mengetahui`, `created_at`, `updated_at`) VALUES
-(1, 1, '12/P3M/2023', '2023-12-15', '2023-12-15', NULL, '2023-12-15 01:30:51', '2023-12-15 01:30:59');
+(1, 1, '12/P3M/2023', '2023-12-15', '2023-12-15', '2023-12-15', '2023-12-15 01:30:51', '2023-12-15 01:30:59');
 
 -- --------------------------------------------------------
 
@@ -407,6 +409,7 @@ CREATE TABLE `penelitianpkms_laporanprogres` (
   `file_progress` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `validasi` enum('No Upload','prosess','Terima','Tolak') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'No Upload',
   `steps` int DEFAULT NULL,
+  `alasan_tolak` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -415,10 +418,10 @@ CREATE TABLE `penelitianpkms_laporanprogres` (
 -- Dumping data untuk tabel `penelitianpkms_laporanprogres`
 --
 
-INSERT INTO `penelitianpkms_laporanprogres` (`id`, `id_pengajuan`, `id_jenis_progress`, `file_progress`, `validasi`, `steps`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 'example (1).pdf', 'Terima', 1, '2023-12-15 01:26:35', '2023-12-15 01:36:15'),
-(2, 1, 2, 'export.pdf', 'Terima', 2, '2023-12-15 01:26:35', '2023-12-15 01:36:49'),
-(3, 1, 3, 'surat.pdf', 'Terima', 3, '2023-12-15 01:26:35', '2023-12-15 01:39:35');
+INSERT INTO `penelitianpkms_laporanprogres` (`id`, `id_pengajuan`, `id_jenis_progress`, `file_progress`, `validasi`, `steps`, `alasan_tolak`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 'Membuat batas Desa dengan KML dan Google Maps.pdf', 'Terima', 1, NULL, '2023-12-15 01:26:35', '2023-12-31 12:05:53'),
+(2, 1, 2, 'export.pdf', 'Terima', 2, NULL, '2023-12-15 01:26:35', '2023-12-15 01:36:49'),
+(3, 1, 3, 'surat.pdf', 'Terima', 3, NULL, '2023-12-15 01:26:35', '2023-12-15 01:39:35');
 
 -- --------------------------------------------------------
 
@@ -435,6 +438,7 @@ CREATE TABLE `penelitianpkms_pengajuans` (
   `file_presentasi` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status_pengajuan` enum('Prosess','In Review','Tolak','Terima') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Prosess',
   `status_pemenang` enum('Pemenang','Tolak','In Review') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `alasan_tolak` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -443,8 +447,8 @@ CREATE TABLE `penelitianpkms_pengajuans` (
 -- Dumping data untuk tabel `penelitianpkms_pengajuans`
 --
 
-INSERT INTO `penelitianpkms_pengajuans` (`id`, `id_periode`, `id_dosen`, `id_skema`, `file_proposal`, `file_presentasi`, `status_pengajuan`, `status_pemenang`, `created_at`, `updated_at`) VALUES
-(1, 1, 2, 1, 'example.pdf', 'samplepptx.pptx', 'Terima', 'Pemenang', '2023-12-15 01:26:35', '2023-12-15 01:30:32');
+INSERT INTO `penelitianpkms_pengajuans` (`id`, `id_periode`, `id_dosen`, `id_skema`, `file_proposal`, `file_presentasi`, `status_pengajuan`, `status_pemenang`, `alasan_tolak`, `created_at`, `updated_at`) VALUES
+(1, 1, 2, 1, 'example.pdf', 'samplepptx.pptx', 'Terima', 'Pemenang', 'Tidak Sesuai Format', '2023-12-15 01:26:35', '2023-12-31 12:04:15');
 
 -- --------------------------------------------------------
 
@@ -466,8 +470,8 @@ CREATE TABLE `penelitianpkms_reviewers` (
 --
 
 INSERT INTO `penelitianpkms_reviewers` (`id`, `id_pengajuan`, `id_dosen`, `nama_reviewer`, `created_at`, `updated_at`) VALUES
-(1, 1, 3, 'Muhammad Ridwan, ST., MT', '2023-12-15 01:26:49', '2023-12-15 01:26:49'),
-(2, 1, 4, 'Ade Kurniawan, S.Kom.', '2023-12-15 01:26:49', '2023-12-15 01:26:49');
+(1, 1, 3, 'Muhammad Ridwan, ST., MT', '2023-12-15 01:26:49', '2023-12-31 12:03:37'),
+(2, 1, 4, 'Ade Kurniawan, S.Kom.', '2023-12-15 01:26:49', '2023-12-31 12:03:37');
 
 -- --------------------------------------------------------
 
@@ -572,8 +576,8 @@ CREATE TABLE `penilaian_reviewers` (
 --
 
 INSERT INTO `penilaian_reviewers` (`id`, `id_reviewer`, `id_pengajuan`, `id_dosen_reviewer`, `catatan`, `total_nilai`, `hasil_review`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 3, '-', 425, 1, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
-(2, 2, 1, 4, '-', 360, 1, '2023-12-15 01:29:55', '2023-12-15 01:29:55');
+(1, 1, 1, 3, '-', 500, 1, '2023-12-31 11:25:47', '2023-12-31 11:25:47'),
+(2, 2, 1, 4, '-', 375, 1, '2023-12-31 11:27:05', '2023-12-31 11:27:05');
 
 -- --------------------------------------------------------
 
@@ -598,32 +602,32 @@ CREATE TABLE `penilaian_reviewer_kriterias` (
 --
 
 INSERT INTO `penilaian_reviewer_kriterias` (`id`, `id_penilaian_review`, `id_pengajuan`, `id_dosen_review`, `id_indikator`, `skor`, `bobot_x_skor`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 3, 1, 5, 50, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
-(2, 1, 1, 3, 2, 5, 50, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
-(3, 1, 1, 3, 3, 5, 50, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
-(4, 1, 1, 3, 4, 5, 50, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
-(5, 1, 1, 3, 5, 5, 50, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
-(6, 1, 1, 3, 6, 5, 50, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
-(7, 1, 1, 3, 7, 5, 50, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
-(8, 1, 1, 3, 13, 3, 15, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
-(9, 1, 1, 3, 8, 3, 15, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
-(10, 1, 1, 3, 9, 2, 10, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
-(11, 1, 1, 3, 10, 2, 10, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
-(12, 1, 1, 3, 11, 3, 15, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
-(13, 1, 1, 3, 12, 2, 10, '2023-12-15 01:28:05', '2023-12-15 01:28:05'),
-(14, 2, 1, 4, 1, 5, 50, '2023-12-15 01:29:55', '2023-12-15 01:29:55'),
-(15, 2, 1, 4, 2, 5, 50, '2023-12-15 01:29:55', '2023-12-15 01:29:55'),
-(16, 2, 1, 4, 3, 3, 30, '2023-12-15 01:29:55', '2023-12-15 01:29:55'),
-(17, 2, 1, 4, 4, 3, 30, '2023-12-15 01:29:55', '2023-12-15 01:29:55'),
-(18, 2, 1, 4, 5, 2, 20, '2023-12-15 01:29:55', '2023-12-15 01:29:55'),
-(19, 2, 1, 4, 6, 3, 30, '2023-12-15 01:29:55', '2023-12-15 01:29:55'),
-(20, 2, 1, 4, 7, 3, 30, '2023-12-15 01:29:55', '2023-12-15 01:29:55'),
-(21, 2, 1, 4, 13, 4, 20, '2023-12-15 01:29:55', '2023-12-15 01:29:55'),
-(22, 2, 1, 4, 8, 5, 25, '2023-12-15 01:29:55', '2023-12-15 01:29:55'),
-(23, 2, 1, 4, 9, 5, 25, '2023-12-15 01:29:55', '2023-12-15 01:29:55'),
-(24, 2, 1, 4, 10, 5, 25, '2023-12-15 01:29:55', '2023-12-15 01:29:55'),
-(25, 2, 1, 4, 11, 2, 10, '2023-12-15 01:29:55', '2023-12-15 01:29:55'),
-(26, 2, 1, 4, 12, 3, 15, '2023-12-15 01:29:55', '2023-12-15 01:29:55');
+(1, 1, 1, 3, 1, 5, 50, '2023-12-31 11:25:47', '2023-12-31 11:25:47'),
+(2, 1, 1, 3, 2, 5, 50, '2023-12-31 11:25:47', '2023-12-31 11:25:47'),
+(3, 1, 1, 3, 3, 5, 50, '2023-12-31 11:25:47', '2023-12-31 11:25:47'),
+(4, 1, 1, 3, 4, 5, 50, '2023-12-31 11:25:47', '2023-12-31 11:25:47'),
+(5, 1, 1, 3, 5, 5, 50, '2023-12-31 11:25:47', '2023-12-31 11:25:47'),
+(6, 1, 1, 3, 6, 5, 50, '2023-12-31 11:25:47', '2023-12-31 11:25:47'),
+(7, 1, 1, 3, 7, 5, 50, '2023-12-31 11:25:47', '2023-12-31 11:25:47'),
+(8, 1, 1, 3, 13, 5, 25, '2023-12-31 11:25:47', '2023-12-31 11:25:47'),
+(9, 1, 1, 3, 8, 5, 25, '2023-12-31 11:25:47', '2023-12-31 11:25:47'),
+(10, 1, 1, 3, 9, 5, 25, '2023-12-31 11:25:47', '2023-12-31 11:25:47'),
+(11, 1, 1, 3, 10, 5, 25, '2023-12-31 11:25:47', '2023-12-31 11:25:47'),
+(12, 1, 1, 3, 11, 5, 25, '2023-12-31 11:25:47', '2023-12-31 11:25:47'),
+(13, 1, 1, 3, 12, 5, 25, '2023-12-31 11:25:47', '2023-12-31 11:25:47'),
+(14, 2, 1, 4, 1, 5, 50, '2023-12-31 11:27:05', '2023-12-31 11:27:05'),
+(15, 2, 1, 4, 2, 5, 50, '2023-12-31 11:27:05', '2023-12-31 11:27:05'),
+(16, 2, 1, 4, 3, 5, 50, '2023-12-31 11:27:05', '2023-12-31 11:27:05'),
+(17, 2, 1, 4, 4, 3, 30, '2023-12-31 11:27:05', '2023-12-31 11:27:05'),
+(18, 2, 1, 4, 5, 3, 30, '2023-12-31 11:27:05', '2023-12-31 11:27:05'),
+(19, 2, 1, 4, 6, 3, 30, '2023-12-31 11:27:05', '2023-12-31 11:27:05'),
+(20, 2, 1, 4, 7, 2, 20, '2023-12-31 11:27:05', '2023-12-31 11:27:05'),
+(21, 2, 1, 4, 13, 5, 25, '2023-12-31 11:27:05', '2023-12-31 11:27:05'),
+(22, 2, 1, 4, 8, 4, 20, '2023-12-31 11:27:05', '2023-12-31 11:27:05'),
+(23, 2, 1, 4, 9, 2, 10, '2023-12-31 11:27:05', '2023-12-31 11:27:05'),
+(24, 2, 1, 4, 10, 2, 10, '2023-12-31 11:27:05', '2023-12-31 11:27:05'),
+(25, 2, 1, 4, 11, 5, 25, '2023-12-31 11:27:05', '2023-12-31 11:27:05'),
+(26, 2, 1, 4, 12, 5, 25, '2023-12-31 11:27:05', '2023-12-31 11:27:05');
 
 -- --------------------------------------------------------
 
@@ -663,9 +667,9 @@ CREATE TABLE `skemas` (
 --
 
 INSERT INTO `skemas` (`id`, `kode_program`, `nama_skema`, `status_skema`, `ketua_jabfung`, `jumlah_anggota`, `created_at`, `updated_at`) VALUES
-(1, 'P-PL', 'Penelitian Dosen Muda', 1, 'Asisten Ahli (AA)', 2, '2023-11-09 21:01:26', '2023-12-15 10:40:10'),
+(1, 'P-PL', 'Penelitian Dosen Muda', 1, 'Asisten Ahli (AA),Tenaga Pengajar', 2, '2023-11-09 21:01:26', '2023-12-22 08:24:26'),
 (2, 'P-PL', 'Penilitan Dasar', 1, 'Lektor (L)', 2, '2023-11-09 21:01:26', '2023-12-15 10:44:39'),
-(3, 'P-PKM', 'Pengabdian Kepada Masyarakat', 1, 'Asisten Ahli (AA)', 5, '2023-11-09 21:01:26', '2023-12-15 10:49:36');
+(3, 'P-PKM', 'Pengabdian Kepada Masyarakat', 1, 'All Jabfung', 5, '2023-11-09 21:01:26', '2023-12-21 06:43:00');
 
 -- --------------------------------------------------------
 
@@ -686,14 +690,14 @@ CREATE TABLE `syarats` (
 --
 
 INSERT INTO `syarats` (`id`, `id_skema`, `persyaratan`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Dosen atau peneliti di lingkungan Politeknik Kampar', NULL, '2023-12-15 10:40:10'),
-(2, 1, 'Jumlah peneliti terdiri minimal oleh 2 (dua) orang dengan satu disiplin ilmu', NULL, '2023-12-15 10:40:10'),
-(5, 1, 'Ketua Peneliti memiliki gelar akademik S2', NULL, '2023-12-15 10:40:10'),
-(6, 1, 'Ketua peneliti belum memiliki jabatan fungsional atau maksimal Asisten Ahli (AA)', NULL, '2023-12-15 10:40:10'),
+(1, 1, 'Dosen atau peneliti di lingkungan Politeknik Kampar', NULL, '2023-12-22 08:24:26'),
+(2, 1, 'Jumlah peneliti terdiri minimal oleh 2 (dua) orang dengan satu disiplin ilmu', NULL, '2023-12-22 08:24:26'),
+(5, 1, 'Ketua Peneliti memiliki gelar akademik S2', NULL, '2023-12-22 08:24:26'),
+(6, 1, 'Ketua peneliti belum memiliki jabatan fungsional atau maksimal Asisten Ahli (AA)', NULL, '2023-12-22 08:24:26'),
 (7, 2, 'Dosen atau peneliti dilingkungan Politeknik Kampar', NULL, '2023-12-15 10:44:39'),
 (8, 2, 'Jumlah peneliti terdiri dari minimal 2 (dua) orang, baik yang satu disiplin ilmu dan atau lintas disiplin', NULL, '2023-12-15 10:44:39'),
-(9, 3, 'Dosen yang akan melakukan  pengabdian  kepada masyarakat dengan dana internal Politeknik Kampar terdiri dari % orang dengan satu disiplin ilmu atau lintas disiplin ilmu', NULL, '2023-12-15 10:49:36'),
-(10, 3, 'Dosen yang mengajukan sebagai Ketua pelaksana pengabdian kepada masyarakat memiliki jabatan fungsional minimal Asisten Ashi (AA)', NULL, '2023-12-15 10:49:36'),
+(9, 3, 'Dosen yang akan melakukan  pengabdian  kepada masyarakat dengan dana internal Politeknik Kampar terdiri dari % orang dengan satu disiplin ilmu atau lintas disiplin ilmu', NULL, '2023-12-21 06:43:00'),
+(10, 3, 'Dosen yang mengajukan sebagai Ketua pelaksana pengabdian kepada masyarakat memiliki jabatan fungsional minimal Asisten Ashi (AA)', NULL, '2023-12-21 06:43:00'),
 (13, 2, 'ketua penelitian minimal memiliki gelar akademik S2', NULL, NULL),
 (14, 2, 'Ketua penelitian memiliki jabatan fungsional minimal Lektor', NULL, NULL),
 (15, 2, 'Tugas dan peran setiap peneliti diuraikan dengan jelas dan ditanda tangani', NULL, NULL);
@@ -892,7 +896,7 @@ ALTER TABLE `data_informasis`
 -- AUTO_INCREMENT untuk tabel `data_jabfungs`
 --
 ALTER TABLE `data_jabfungs`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT untuk tabel `data_jenis_laporans`
