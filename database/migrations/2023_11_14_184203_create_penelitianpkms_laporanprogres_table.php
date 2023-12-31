@@ -18,8 +18,9 @@ class CreatePenelitianpkmsLaporanprogresTable extends Migration
             $table->integer('id_pengajuan');
             $table->integer('id_jenis_progress');
             $table->string('file_progress');
-            $table->enum('validasi',['prosess','Terima','Tolak']);
+            $table->enum('validasi', ['prosess', 'Terima', 'Tolak']);
             $table->integer('steps');
+            $table->string('alasan_tolak');
             $table->timestamps();
         });
     }
