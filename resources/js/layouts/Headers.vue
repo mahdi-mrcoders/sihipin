@@ -4,8 +4,10 @@
             <div class="navbar-menu-wrapper d-flex align-items-center justify-content-between">
                 <div class="navbar-nav navbar-nav-left">
                     <a class="navbar-brand brand-logo" :href="'/dashboard'">
-                        <img src="/assets/images/logop3m.png" alt="" class="" style="width:5% !important;background-color:#FF9130"> 
-                        <span class="ms-2 fs-4 fw-bolder text-dark">SIHIPIN (SISTEM INFORMASI HIBAH PENELITIAN INTERNAL POLITEKNIK KAMPAR)</span>
+                        <img src="/assets/images/logop3m.png" alt="" class=""
+                            style="width:5% !important;background-color:#FF9130">
+                        <span class="ms-2 fs-4 fw-bolder text-dark">SIHPPMA (Sistem Informasi Hibah Penelitian Dan
+                            Pengabdian Masyarakat)</span>
                     </a>
                 </div>
                 <ul class="navbar-nav navbar-nav-right">
@@ -48,7 +50,7 @@ export default {
             user: {},
             loggedIn: localStorage.getItem('loggedIn'),
             uuid: localStorage.getItem('uuid'),
-            foto:null
+            foto: null
         }
     },
     created() {
@@ -74,7 +76,7 @@ export default {
         myprofile() {
             return this.$router.push({ path: '/my-profile' })
         },
-        async getFoto(email){
+        async getFoto(email) {
             const response = await this.axios.get(`/api/dosen/byemail/${email}`)
             this.foto = `/storage/${response.data.foto}`
         }

@@ -97,7 +97,6 @@ class DataPenilaianController extends Controller
             'id_reviewer' => Reviewer::where('id_pengajuan', $request->id_pengajuan)->where('id_dosen', $request->id_dosen)->first()->id,
             'id_pengajuan' => $request->id_pengajuan,
             'id_dosen_reviewer' => $request->id_dosen,
-            'catatan' => $request->catatan,
             'total_nilai' => $request->totalnilai,
             'hasil_review' => intval($request->hasil)
         ];
@@ -124,7 +123,7 @@ class DataPenilaianController extends Controller
         }
 
 
-        if (count($request->alasan) !== 0 ) {
+        if (count($request->alasan) !== 0) {
             foreach ($request->alasan as $key => $alasan) {
                 Penolakans::create([
                     'id_penilaian_review' => $idPeenilaianReview,
@@ -143,7 +142,7 @@ class DataPenilaianController extends Controller
         return response()->json([
             'postPenilaian' => $postPenilaian,
             'postKirteria' => $postNilaiKriteria,
-            'postPenolakan' => count($request->alasan) !== 0  ? 'ada':'tidak ada'
+            'postPenolakan' => count($request->alasan) !== 0  ? 'ada' : 'tidak ada'
         ]);
     }
 
@@ -182,7 +181,6 @@ class DataPenilaianController extends Controller
             'id_reviewer' => $request->id_penilain_review,
             'id_pengajuan' => $request->id_pengajuan,
             'id_dosen_reviewer' => $request->id_dosen,
-            'catatan' => $request->catatan,
             'total_nilai' => $request->totalnilai,
             'hasil_review' => intval($request->hasil)
         ];
@@ -230,10 +228,10 @@ class DataPenilaianController extends Controller
 
             foreach ($listAlasan as $list) {
                 if (!in_array($list, $request->alasan)) {
-                        Penolakans::where('id_penilaian_review',$request->id_penilain_review)
-                        ->where('id_pengajuan',$request->id_pengajuan)
-                        ->where('id_dosen_review',$request->id_dosen)
-                        ->where('id_indikator',$list)
+                    Penolakans::where('id_penilaian_review', $request->id_penilain_review)
+                        ->where('id_pengajuan', $request->id_pengajuan)
+                        ->where('id_dosen_review', $request->id_dosen)
+                        ->where('id_indikator', $list)
                         ->delete();
                 }
             }

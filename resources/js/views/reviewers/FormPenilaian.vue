@@ -165,13 +165,13 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <!-- <tr>
                                             <td colspan="6">
                                                 <label for="">Catatan Reviwer:</label>
                                                 <textarea name="" id="" rows="5" class="form-control border border-dark"
                                                     v-model="catatanReviewer"></textarea>
                                             </td>
-                                        </tr>
+                                        </tr> -->
                                     </tfoot>
                                 </table>
                                 <div class="alert alert-success" role="alert">
@@ -414,7 +414,7 @@ export default {
                                 title: "Success",
                                 text: "Penilaian Berhasil Dilakukan Anda Akan dikembalikan Helaman Sebelumnya",
                                 icon: "success"
-                            }).then((result)=>{
+                            }).then((result) => {
                                 this.$router.push({ name: 'review-usulan-proposal' })
                             })
                         }).catch(error => {
@@ -426,7 +426,7 @@ export default {
                                 title: "Success",
                                 text: "Penilaian Berhasil Dilakukan Anda Akan dikembalikan Helaman Sebelumnya",
                                 icon: "success"
-                            }).then((result)=>{
+                            }).then((result) => {
                                 this.$router.push({ name: 'review-usulan-proposal' })
                             })
                         }).catch(error => {
