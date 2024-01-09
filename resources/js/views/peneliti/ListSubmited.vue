@@ -55,8 +55,8 @@
                                             <i class="fa-regular fa-lg me-1 cursor-pointer" data-toggle="tooltip"
                                                 data-placement="top" :class="getFileExtension(fileP.file_progress)"
                                                 :title="`${fileP.jenis_laporan}:${fileP.file_progress}`"
-                                                @click="fetchDocxFile(fileP.file_progress)"
-                                                v-show="fileP.validasi != 'No Upload' ? true : false"></i>
+                                                v-show="fileP.validasi != 'No Upload' ? true : false"
+                                                @click="fetchDocxFile(fileP.file_progress)"></i>
                                         </span>
 
                                     </td>
@@ -99,7 +99,7 @@
                                                     :class="progres.validasi == 'prosess' ? 'bg-info' : progres.validasi == 'Terima' ? 'bg-success' : 'bg-danger'">{{
                                                         progres.validasi }}</span>
                                                 <i class="fa-solid fa-circle-info fa-lg" v-if="progres.validasi == 'Tolak'"
-                                style="cursor:pointer" @click="showInfo(progres.alasan_tolak)"></i>
+                                                    style="cursor:pointer" @click="showInfo(progres.alasan_tolak)"></i>
                                             </li>
                                         </ul>
 
@@ -706,14 +706,17 @@ export default {
                 console.error('Error fetching docx:', error);
             }
         },
-        getFileExtension(filename) {
-            const ext = filename.slice((filename.lastIndexOf('.') - 1 >>> 0) + 2)
-            console.log(ext)
-            if (ext == 'docx') {
-                return 'fa-file-word'
-            } else if (ext == 'pdf') {
-                return 'fa-file-pdf'
+        getFileExtension(filename = null) {
+            if (filename != null) {
+                const ext = filename.slice((filename.lastIndexOf('.') - 1 >>> 0) + 2)
+                console.log(filename)
+                if (ext == 'docx') {
+                    return 'fa-file-word'
+                } else if (ext == 'pdf') {
+                    return 'fa-file-pdf'
+                }
             }
+
         },
         closeAndclear() {
             this.docxFile = null
