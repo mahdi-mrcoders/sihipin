@@ -31,7 +31,7 @@ class PenelitianPkmsController extends Controller
             $idPeriode = DataPeriode::where('status_periode', "Y")->first()->id;
         }
 
-        if (request()->get('level') == 1) {
+        if (request()->get('level') == 1 || request()->get('level') == 4) {
             $dataSubmited = Pengajuan::with(['informasi', 'anggota', 'dataDosen', 'dataSkema', 'dataKontrak', 'dataProgress', 'dataReviewer', 'dataNilai', 'periode'])
                 ->where('id_periode', $idPeriode)
                 ->orderBy('id', 'desc')

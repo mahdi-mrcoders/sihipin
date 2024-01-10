@@ -14,27 +14,47 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-sm-4">
+                            <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="">Periode</label>
                                     <select name="" id="" class="form-control" v-model="selectedFilter.periode">
-                                        <option :value="''">Pilih Periode</option>
+                                        <option :value="null">Pilih Periode</option>
                                         <option v-for="list in listPeriode" :key="list.id" :value="list.id">{{
                                             list.nama_periode }}-{{ list.periode }}</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <div class="form-group">
                                     <label for="">Skema</label>
                                     <select name="" id="" class="form-control" v-model="selectedFilter.skema">
-                                        <option :value="''">Pilih Periode</option>
+                                        <option :value="null">Pilih Periode</option>
                                         <option v-for="skema in listSkema" :key="skema.id" :value="skema.id"> {{
                                             skema.kode_program }} : {{ skema.nama_skema }}</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="">Status Usulan</label>
+                                    <select name="" id="" class="form-control" v-model="selectedFilter.usulan">
+                                        <option :value="null">Pilih Status Usulan</option>
+                                        <option v-for="stusulan in statusUsulan" :key="stusulan" :value="stusulan"> {{
+                                            stusulan }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="">Status Akhir</label>
+                                    <select name="" id="" class="form-control" v-model="selectedFilter.akhir">
+                                        <option :value="null">Pilih Status Akhir</option>
+                                        <option v-for="stakhir in statusAkhir" :key="stakhir" :value="stakhir">{{ stakhir }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
                                 <div class="form-group">
                                     <label for="">Tangal Pengajuan</label>
                                     <flat-pickr v-model="selectedFilter.datepengajuan" :config="datePickerConfig"
@@ -43,6 +63,7 @@
                             </div>
                             <div class="col-sm-12">
                                 <button class="btn btn-primary btn-block" @click="applyFilter">Filter</button>
+                                <button class="btn btn-secondary btn-block" @click="resetFilter">Clear Filter</button>
                                 <button class="btn btn-warning btn-block" @click="printTable">Print Data</button>
                             </div>
                         </div>
@@ -57,7 +78,8 @@
                                         <th>Dosen Pengaju</th>
                                         <th>Judul</th>
                                         <th>Tanggal Pengajuan</th>
-                                        <th>Status Pengaju</th>
+                                        <th>Status Usulan</th>
+                                        <th>Status Akhir</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -77,6 +99,15 @@
                                                 v-if="list.status_pengajuan == 'Tolak'">Tolak</label>
                                             <label class="badge bg-success"
                                                 v-if="list.status_pengajuan == 'Terima'">Terima</label>
+
+                                        </td>
+                                        <td>
+                                            <label class="badge bg-warning" v-if="list.status_pemenang == 'In Review'">In
+                                                Review</label>
+                                            <label class="badge bg-danger"
+                                                v-if="list.status_pemenang == 'Tolak'">Tolak</label>
+                                            <label class="badge bg-success"
+                                                v-if="list.status_pemenang == 'Pemenang'">Terima/Pemenang</label>
 
                                         </td>
                                     </tr>
@@ -108,13 +139,17 @@ export default {
                 dateFormat: 'Y-m-d', // Format tampilan tanggal dan waktu
             },
             dateSelect: '',
+            statusUsulan: ['Tolak', 'Terima'],
+            statusAkhir: ['In Review', 'Tolak', 'Pemenang'],
             listSkema: {},
             listPeriode: {},
             filteredItems: [],
             selectedFilter: {
                 periode: null,
                 skema: null,
-                datepengajuan: null
+                datepengajuan: null,
+                usulan: null,
+                akhir: null
             },
         }
     },
@@ -125,23 +160,45 @@ export default {
 
     },
     methods: {
+        resetFilter() {
+            this.selectedFilter = {
+                periode: null,
+                skema: null,
+                datepengajuan: null,
+                usulan: null,
+                akhir: null
+            };
+            this.applyFilter(); // Reapply filter after resetting
+        },
         applyFilter() {
-            const searchTerm = this.selectedFilter;
-            if (searchTerm.periode || searchTerm.skema || searchTerm.datepengajuan) {
-                this.filteredItems = this.dataTable.filter(item => {
-                    if (searchTerm.periode != null && searchTerm.skema == null && searchTerm.datepengajuan == null) {
-                        return item.id_periode === this.selectedFilter.periode
-                    } else if (searchTerm.periode != null && searchTerm.skema != null && searchTerm.datepengajuan == null) {
-                        return item.id_periode === this.selectedFilter.periode && item.id_skema == this.selectedFilter.skema;
-                    } else if (searchTerm.periode != null && searchTerm.skema != null && searchTerm.datepengajuan != null) {
-                        return item.id_periode === this.selectedFilter.periode && item.id_skema == this.selectedFilter.skema && item.tanggal_pengajuan == searchTerm.datepengajuan;
-                    }
+            const { periode, skema, datepengajuan, usulan, akhir } = this.selectedFilter;
 
-                });
-            } else {
-                this.filteredItems = this.dataTable
+            if (!(periode || skema || datepengajuan || usulan || akhir)) {
+                this.filteredItems = this.dataTable;
+                return;
             }
 
+            const filters = [];
+
+            if (periode != null) {
+                filters.push(item => item.id_periode === periode);
+            }
+            if (skema != null) {
+                filters.push(item => item.id_skema === skema);
+            }
+            if (datepengajuan != null) {
+                filters.push(item => item.tanggal_pengajuan === datepengajuan);
+            }
+            if (usulan != null) {
+                filters.push(item => item.status_pengajuan === usulan);
+            }
+            if (akhir != null) {
+                filters.push(item => item.status_pemenang === akhir);
+            }
+
+            this.filteredItems = this.dataTable.filter(item =>
+                filters.every(filterFunction => filterFunction(item))
+            );
         },
         ResultState(result) {
             this.isClicked = false
@@ -168,6 +225,7 @@ export default {
         async getListSubmited() {
             await this.axios.get(`/api/penelitian?level=${this.level}&idsn=${this.idsn}`).then(response => {
                 this.dataTable = response.data
+                console.log(response.data)
                 this.applyFilter()
             }).catch(error => {
                 console.log(error)

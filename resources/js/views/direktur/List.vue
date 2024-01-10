@@ -213,6 +213,7 @@ export default {
         async getListSubmited() {
             await this.axios.get(`/api/penelitian?level=${this.level}&idsn=${this.idsn}`).then(response => {
                 this.dataTable = response.data
+                console.log(response.data)
                 this.filteredData()
             }).catch(error => {
                 console.log(error)
