@@ -64,14 +64,17 @@ export default {
             this.$router.push({ name: 'login' })
         },
         async getDataUser() {
-            await this.axios.get(`/api/pengguna/${this.uuid}`).then(response => {
-                this.user.level = response.data.level
-                this.user.username = response.data.username
-                this.user.email = response.data.email_dosen
-                this.getFoto(response.data.email_dosen)
-            }).catch(error => {
-                // console.log(error)
-            })
+            if (this.uuid != null) {
+                await this.axios.get(`/api/pengguna/${this.uuid}`).then(response => {
+                    this.user.level = response.data.level
+                    this.user.username = response.data.username
+                    this.user.email = response.data.email_dosen
+                    this.getFoto(response.data.email_dosen)
+                }).catch(error => {
+                    // console.log(error)
+                })
+            }
+
         },
         myprofile() {
             return this.$router.push({ path: '/my-profile' })

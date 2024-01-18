@@ -19,8 +19,8 @@
                             <div class="brand-logo mt-5 ">
                                 <img src="/assets/images/logop3m.png" alt="logo" class="mx-auto d-block">
                             </div>
-                            <h4 class="text-center">Welcome back!</h4>
-                            <h6 class="font-weight-light text-center">SIHIPIN POLITEKNIK KAMPAR</h6>
+                            <h4 class="text-center">Welcome back To!</h4>
+                            <h6 class="font-weight-light text-center">SIHPPMA POLITEKNIK KAMPAR</h6>
                             <form class="pt-3" @submit.prevent="sigins">
                                 <div class="form-group">
                                     <label for="exampleInputEmail">Username</label>
@@ -53,7 +53,7 @@
                             </form>
                         </div>
                     </div>
-                    <div class="col-lg-6 d-sm-none d-lg-flex d-flex flex-column flex-grow bg-light pt-2 pb-2"
+                    <div class="col-lg-6 d-none d-lg-flex d-flex flex-column flex-grow bg-light pt-2 pb-2"
                         id="card-informasi">
                         <div class="mb-3 d-lg-none d-sm-block">
                             <ul class="nav nav-tabs">
@@ -111,13 +111,15 @@ export default {
             this.dataForm = response.data[0]
         },
         showFormLogin() {
-            $('#card-login').removeClass('d-sm-none');
-            $('#card-informasi').addClass('d-sm-none')
+            console.log('show form login')
+            $('#card-login').removeClass('d-none');
+            $('#card-informasi').addClass('d-none')
 
         },
         showInformation() {
-            $('#card-informasi').removeClass('d-sm-none');
-            $('#card-login').addClass('d-sm-none')
+            console.log('show informasi')
+            $('#card-informasi').removeClass('d-none');
+            $('#card-login').addClass('d-none')
 
         },
         async sigins() {
