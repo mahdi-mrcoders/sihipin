@@ -70,7 +70,7 @@ class DataFileController extends Controller
 
     public function filemedia()
     {
-        $dataFile = MediaFile::latest()->get();
+        $dataFile = MediaFile::get();
        
         return response()->json($dataFile);
     }
@@ -100,6 +100,11 @@ class DataFileController extends Controller
             $dataFile->file = $fileName;
             $dataFile->save();
 
+            return response()->json($dataFile);
+        }else{
+            $dataFile = MediaFile::find($id);
+            $dataFile->nama_data = $request->nama_data;
+            $dataFile->save();
             return response()->json($dataFile);
         }
     }

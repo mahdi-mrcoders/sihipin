@@ -12,26 +12,41 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4" v-show="level == 1 ? true:false">
-                <div class="card">
+            <div class="col-lg-4">
+                <div class="card" v-show="level == 1 ? true : false">
                     <div class="card-body">
                         <form class="forms-sample" @submit.prevent="create">
                             <div class="form-group">
                                 <label for="exampleInputUsername1">Nama Buku</label>
+                                <input type="hidden" v-model="upFile.id">
                                 <input type="text" class="form-control" id="exampleInputUsername1" placeholder="nama buku"
-                                    v-model="dataFile.nama_data" required>
+                                    v-model="upFile.nama_data" required>
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">File</label>
-                                <input type="file" class="form-control" id="exampleInputEmail1" @change="changeFile">
+                                <input type="file" class="form-control" id="exampleInputEmail1" @change="changeFile"
+                                    ref="inputFile">
                             </div>
                             <button type="submit" class="btn btn-primary me-2">Submit</button>
                             <button class="btn btn-light">Cancel</button>
                         </form>
                     </div>
+
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">List File Uploded</h4>
+                        <ul class="list-arrow">
+                            <li v-for="(data, index) in dataFile" :key="data.id">{{ data.nama_data }} <i
+                                    class="fa-solid fa-eye" style="color: #2f8c92;cursor:pointer"
+                                    @click="downloadFile(data.file)"></i> <i class="fa-solid fa-square-pen"
+                                    style="cursor:pointer" @click="editFile(data)" v-show="level == 1 ? true : false"></i> <i class="fa-solid fa-trash-can"
+                                    style="color: #c22419;cursor:pointer" v-show="level == 1 ? true : false"></i></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            <div :class="level == 1 ? 'col-lg-8':'col-lg-12'">
+            <div class="col-lg-8">
                 <object :data="blob" type="application/pdf" width="100%" height="460"></object>
             </div>
         </div>
@@ -43,9 +58,14 @@ export default {
         return {
             files: null,
             blob: null, // Inisialisasi variabel untuk menampilkan preview PDF
-            dataFile: {
+            upFile: {
                 nama_data: '',
                 id: ''
+            },
+            dataFile: {
+                nama_data: '',
+                id: '',
+                file: ''
             },
             level: localStorage.getItem("level")
 
@@ -80,14 +100,18 @@ export default {
         },
         async getDataFile() {
             const response = await this.$http.get('/api/bukupanduan');
-
+            this.dataFile = response.data
             if (response.data.length > 0) {
-                this.dataFile = response.data[0]
                 this.downloadFile(response.data[0].file)
 
             } else {
                 this.downloadFile('preview.pdf')
             }
+        },
+        editFile(data) {
+            this.upFile.id = data.id
+            this.upFile.nama_data = data.nama_data
+            this.downloadFile(data.file)
         },
         async downloadFile(filename) {
             const response = await this.axios.get(`/api/filepdf/${filename}`, { responseType: 'blob' });
@@ -95,36 +119,49 @@ export default {
             this.blob = window.URL.createObjectURL(blob);
         },
         async create() {
-            if (!this.blob) {
-                this.$swal({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Silahkan Pilih File',
-                })
-            }
+            // console.log(this.blob)
 
             const formData = new FormData()
             formData.append('file', this.files)
-            formData.append('nama_data', this.dataFile.nama_data)
+            formData.append('nama_data', this.upFile.nama_data)
 
-            if (this.dataFile.id == '') {
-                const response = await this.axios.post('/api/bukupanduan', formData)
+            if (this.upFile.id == '') {
+                if (!this.file) {
+                    this.$swal({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Silahkan Pilih File',
+                    })
+                } else {
+                    const response = await this.axios.post('/api/bukupanduan', formData)
+                    if (response.status == 200) {
+                        this.getDataFile()
+                        this.blob = null
+                        this.files = null
+                        this.upFile.nama_data = ''
+                        this.upFile.id = ''
+                        this.$refs.inputFile.value = null;
+                    } else {
+                        console.log(response)
+                    }
+                }
+
+            } else {
+                formData.append('_method', 'patch')
+                const response = await this.axios.post(`/api/bukupanduan/${this.upFile.id}`, formData)
                 if (response.status == 200) {
                     this.getDataFile()
+                    this.blob = null
+                    this.files = null
+                    this.upFile.nama_data = ''
+                    this.upFile.id = ''
+                    this.$refs.inputFile.value = null;
                 } else {
                     console.log(response)
                 }
-            }else{
 
-                formData.append('_method','patch')
-                const response = await this.axios.post(`/api/bukupanduan/${this.dataFile.id}`, formData)
-                if (response.status == 200) {
-                    this.getDataFile()
-                } else {
-                    console.log(response)
-                }
             }
-            
+
 
 
         },
