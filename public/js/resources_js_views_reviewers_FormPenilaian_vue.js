@@ -73,24 +73,44 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     this.getDataPengajuan();
   },
   methods: {
-    getUserReviewer: function getUserReviewer() {
+    limitInputToFiveDigits: function limitInputToFiveDigits(event, indexa, indexb) {
       var _this2 = this;
+      var inputValue = event.target.value;
+
+      // Menghapus karakter non-numeric
+      inputValue = inputValue.replace(/\D/g, '');
+      if (inputValue > 5) {
+        this.$swal({
+          title: "Out Of Range",
+          text: "Nilai Tidak Boleh Lebih > 5",
+          icon: "error"
+        }).then(function (result) {
+          _this2.skorsNilai[indexa][indexb] = 0;
+        });
+      } else {
+        this.skorsNilai[indexa][indexb] = inputValue;
+      }
+
+      // Memperbarui nilai di dalam array
+    },
+    getUserReviewer: function getUserReviewer() {
+      var _this3 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return _this2.axios.get("/api/pengguna/".concat(localStorage.getItem('uuid'))).then(function (response) {
-                _this2.axios.get("/api/dosen/byemail/".concat(response.data.email_dosen)).then(function (data) {
-                  _this2.userReviewer = data.data;
-                  _this2.getDataPenilaian();
+              return _this3.axios.get("/api/pengguna/".concat(localStorage.getItem('uuid'))).then(function (response) {
+                _this3.axios.get("/api/dosen/byemail/".concat(response.data.email_dosen)).then(function (data) {
+                  _this3.userReviewer = data.data;
+                  _this3.getDataPenilaian();
                 })["catch"](function (error) {
                   var _console;
-                  /* eslint-disable */(_console = console).log.apply(_console, _toConsumableArray(oo_oo("3245256737_330_20_330_38_4", error)));
+                  /* eslint-disable */(_console = console).log.apply(_console, _toConsumableArray(oo_oo("2896030492_354_20_354_38_4", error)));
                 });
               })["catch"](function (error) {
                 var _console2;
-                /* eslint-disable */(_console2 = console).log.apply(_console2, _toConsumableArray(oo_oo("3245256737_333_16_333_34_4", error)));
+                /* eslint-disable */(_console2 = console).log.apply(_console2, _toConsumableArray(oo_oo("2896030492_357_16_357_34_4", error)));
               });
             case 2:
             case "end":
@@ -100,19 +120,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     getDataPengajuan: function getDataPengajuan() {
-      var _this3 = this;
+      var _this4 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
               _context2.next = 2;
-              return _this3.axios.get("/api/penelitian/".concat(_this3.$route.params.id)).then(function (response) {
-                _this3.pengajuan = response.data;
-                _this3.amount = parseInt(response.data.informasi.biaya);
-                _this3.submitedNilai.id_pengajuan = response.data.id;
+              return _this4.axios.get("/api/penelitian/".concat(_this4.$route.params.id)).then(function (response) {
+                _this4.pengajuan = response.data;
+                _this4.amount = parseInt(response.data.informasi.biaya);
+                _this4.submitedNilai.id_pengajuan = response.data.id;
               })["catch"](function (error) {
                 var _console3;
-                /* eslint-disable */(_console3 = console).log.apply(_console3, _toConsumableArray(oo_oo("3245256737_343_16_343_34_4", error)));
+                /* eslint-disable */(_console3 = console).log.apply(_console3, _toConsumableArray(oo_oo("2896030492_367_16_367_34_4", error)));
               });
             case 2:
             case "end":
@@ -122,37 +142,37 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     getDataPenilaian: function getDataPenilaian() {
-      var _this4 = this;
+      var _this5 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
             case 0:
               _context3.next = 2;
-              return _this4.axios.get("/api/datapenilaian?idp=".concat(_this4.$route.params.id, "&idsn=").concat(_this4.userReviewer.id)).then(function (response) {
-                _this4.data = response.data.data;
+              return _this5.axios.get("/api/datapenilaian?idp=".concat(_this5.$route.params.id, "&idsn=").concat(_this5.userReviewer.id)).then(function (response) {
+                _this5.data = response.data.data;
                 if (response.data.nilai == null) {
-                  _this4.stateSubmit = true;
+                  _this5.stateSubmit = true;
                 } else {
-                  _this4.stateSubmit = false;
-                  _this4.submitedNilai.id_penilain_review = response.data.nilai.id;
-                  _this4.submitedNilai._method = 'patch';
+                  _this5.stateSubmit = false;
+                  _this5.submitedNilai.id_penilain_review = response.data.nilai.id;
+                  _this5.submitedNilai._method = 'patch';
                 }
-                _this4.catatanReviewer = response.data.nilai == null ? '' : response.data.nilai.catatan;
-                _this4.selectHasil = response.data.nilai == null ? '' : response.data.nilai.hasil_review;
-                _this4.idAlasan = response.data.nilai == null ? [] : response.data.nilai.alasan;
+                _this5.catatanReviewer = response.data.nilai == null ? '' : response.data.nilai.catatan;
+                _this5.selectHasil = response.data.nilai == null ? '' : response.data.nilai.hasil_review;
+                _this5.idAlasan = response.data.nilai == null ? [] : response.data.nilai.alasan;
                 response.data.data.forEach(function (elm, indx) {
-                  _this4.hasilNilai[indx] = [];
-                  _this4.indikatorId[indx] = [];
-                  _this4.skorsNilai[indx] = [];
+                  _this5.hasilNilai[indx] = [];
+                  _this5.indikatorId[indx] = [];
+                  _this5.skorsNilai[indx] = [];
                   elm.indikator.forEach(function (value, key) {
-                    _this4.indikatorId[indx][key] = value.id;
-                    _this4.hasilNilai[indx][key] = value.nilai == null ? 0 : value.nilai;
-                    _this4.skorsNilai[indx][key] = value.skor == null ? 0 : value.skor;
+                    _this5.indikatorId[indx][key] = value.id;
+                    _this5.hasilNilai[indx][key] = value.nilai == null ? 0 : value.nilai;
+                    _this5.skorsNilai[indx][key] = value.skor == null ? 0 : value.skor;
                   });
                 });
               })["catch"](function (error) {
                 var _console4;
-                /* eslint-disable */(_console4 = console).log.apply(_console4, _toConsumableArray(oo_oo("3245256737_372_16_372_34_4", error)));
+                /* eslint-disable */(_console4 = console).log.apply(_console4, _toConsumableArray(oo_oo("2896030492_396_16_396_34_4", error)));
               });
             case 2:
             case "end":
@@ -173,7 +193,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     },
     submitPenilaian: function submitPenilaian() {
-      var _this5 = this;
+      var _this6 = this;
       this.$swal({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -185,48 +205,48 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }).then(function (result) {
         if (!result.isDismissed) {
           var _ref, _ref2, _ref3, _console5;
-          var NilaiIndikator = (_ref = []).concat.apply(_ref, _toConsumableArray(_this5.hasilNilai));
-          var IdIndikator = (_ref2 = []).concat.apply(_ref2, _toConsumableArray(_this5.indikatorId));
-          var NilaiSkors = (_ref3 = []).concat.apply(_ref3, _toConsumableArray(_this5.skorsNilai));
-          _this5.submitedNilai.compid = IdIndikator;
-          _this5.submitedNilai.compskors = NilaiSkors;
-          _this5.submitedNilai.compnilai = NilaiIndikator;
-          _this5.submitedNilai.totalnilai = _this5.total;
-          _this5.submitedNilai.hasil = _this5.selectHasil;
-          _this5.submitedNilai.catatan = _this5.catatanReviewer;
-          _this5.submitedNilai.alasan = _this5.idAlasan;
-          _this5.submitedNilai.id_dosen = _this5.userReviewer.id;
+          var NilaiIndikator = (_ref = []).concat.apply(_ref, _toConsumableArray(_this6.hasilNilai));
+          var IdIndikator = (_ref2 = []).concat.apply(_ref2, _toConsumableArray(_this6.indikatorId));
+          var NilaiSkors = (_ref3 = []).concat.apply(_ref3, _toConsumableArray(_this6.skorsNilai));
+          _this6.submitedNilai.compid = IdIndikator;
+          _this6.submitedNilai.compskors = NilaiSkors;
+          _this6.submitedNilai.compnilai = NilaiIndikator;
+          _this6.submitedNilai.totalnilai = _this6.total;
+          _this6.submitedNilai.hasil = _this6.selectHasil;
+          _this6.submitedNilai.catatan = _this6.catatanReviewer;
+          _this6.submitedNilai.alasan = _this6.idAlasan;
+          _this6.submitedNilai.id_dosen = _this6.userReviewer.id;
           /* eslint-disable */
-          (_console5 = console).log.apply(_console5, _toConsumableArray(oo_oo("3245256737_410_20_410_51_4", _this5.submitedNilai)));
-          if (_this5.stateSubmit) {
-            _this5.axios.post('/api/datapenilaian', _this5.submitedNilai).then(function (response) {
-              _this5.$swal({
+          (_console5 = console).log.apply(_console5, _toConsumableArray(oo_oo("2896030492_434_20_434_51_4", _this6.submitedNilai)));
+          if (_this6.stateSubmit) {
+            _this6.axios.post('/api/datapenilaian', _this6.submitedNilai).then(function (response) {
+              _this6.$swal({
                 title: "Success",
                 text: "Penilaian Berhasil Dilakukan Anda Akan dikembalikan Helaman Sebelumnya",
                 icon: "success"
               }).then(function (result) {
-                _this5.$router.push({
+                _this6.$router.push({
                   name: 'review-usulan-proposal'
                 });
               });
             })["catch"](function (error) {
               var _console6;
-              /* eslint-disable */(_console6 = console).log.apply(_console6, _toConsumableArray(oo_oo("3245256737_421_28_421_46_4", error)));
+              /* eslint-disable */(_console6 = console).log.apply(_console6, _toConsumableArray(oo_oo("2896030492_445_28_445_46_4", error)));
             });
           } else {
-            _this5.axios.post("/api/datapenilaian/".concat(_this5.$route.params.id), _this5.submitedNilai).then(function (response) {
-              _this5.$swal({
+            _this6.axios.post("/api/datapenilaian/".concat(_this6.$route.params.id), _this6.submitedNilai).then(function (response) {
+              _this6.$swal({
                 title: "Success",
                 text: "Penilaian Berhasil Dilakukan Anda Akan dikembalikan Helaman Sebelumnya",
                 icon: "success"
               }).then(function (result) {
-                _this5.$router.push({
+                _this6.$router.push({
                   name: 'review-usulan-proposal'
                 });
               });
             })["catch"](function (error) {
               var _console7;
-              /* eslint-disable */(_console7 = console).log.apply(_console7, _toConsumableArray(oo_oo("3245256737_433_28_433_46_4", error)));
+              /* eslint-disable */(_console7 = console).log.apply(_console7, _toConsumableArray(oo_oo("2896030492_457_28_457_46_4", error)));
             });
           }
         }
@@ -467,7 +487,7 @@ var _hoisted_51 = {
   key: 0
 };
 var _hoisted_52 = ["onUpdate:modelValue"];
-var _hoisted_53 = ["value", "onKeyup"];
+var _hoisted_53 = ["value", "onInput", "onKeyup"];
 var _hoisted_54 = ["value"];
 var _hoisted_55 = {
   key: 1
@@ -475,7 +495,7 @@ var _hoisted_55 = {
 var _hoisted_56 = ["rowspan"];
 var _hoisted_57 = ["rowspan"];
 var _hoisted_58 = ["onUpdate:modelValue"];
-var _hoisted_59 = ["value", "onKeyup"];
+var _hoisted_59 = ["value", "onInput", "onKeyup"];
 var _hoisted_60 = ["value"];
 var _hoisted_61 = {
   key: 2
@@ -602,11 +622,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         return $data.indikatorId[kriteriaIndex][0] = $event;
       }
     }, null, 8 /* PROPS */, _hoisted_52), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.indikatorId[kriteriaIndex][0]]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-      type: "number",
+      type: "text",
       "class": "form-control",
       min: "0",
       max: "5",
       value: $data.skorsNilai[(kriteriaIndex, 0)],
+      onInput: function onInput($event) {
+        return $options.limitInputToFiveDigits($event, 0, kriteriaIndex);
+      },
       onKeyup: function onKeyup($event) {
         return $options.hitungNilai($event, kriteriaIndex, 0, kriteria.indikator[0].bobot);
       }
@@ -629,9 +652,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           return $data.indikatorId[kriteriaIndex][indikatorIndex] = $event;
         }
       }, null, 8 /* PROPS */, _hoisted_58), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.indikatorId[kriteriaIndex][indikatorIndex]]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-        type: "number",
+        type: "text",
         "class": "form-control",
         value: $data.skorsNilai[kriteriaIndex][indikatorIndex],
+        onInput: function onInput($event) {
+          return $options.limitInputToFiveDigits($event, kriteriaIndex, indikatorIndex);
+        },
         onKeyup: function onKeyup($event) {
           return $options.hitungNilai($event, kriteriaIndex, indikatorIndex, indikator.bobot);
         }

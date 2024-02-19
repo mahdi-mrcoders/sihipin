@@ -93,8 +93,9 @@
                                                 <td>
                                                     <input type="hidden" class="form-control"
                                                         v-model="indikatorId[kriteriaIndex][0]">
-                                                    <input type="number" class="form-control" min="0" max="5"
+                                                    <input type="text" class="form-control" min="0" max="5"
                                                         :value="skorsNilai[kriteriaIndex, 0]"
+                                                        @input="limitInputToFiveDigits($event, 0, kriteriaIndex)"
                                                         @keyup="hitungNilai($event, kriteriaIndex, 0, kriteria.indikator[0].bobot)">
                                                 </td>
                                                 <td><input type="number" class="form-control" :readonly="true"
@@ -119,8 +120,9 @@
                                                     <td>
                                                         <input type="hidden" class="form-control"
                                                             v-model="indikatorId[kriteriaIndex][indikatorIndex]">
-                                                        <input type="number" class="form-control"
+                                                        <input type="text" class="form-control"
                                                             :value="skorsNilai[kriteriaIndex][indikatorIndex]"
+                                                            @input="limitInputToFiveDigits($event, kriteriaIndex, indikatorIndex)"
                                                             @keyup="hitungNilai($event, kriteriaIndex, indikatorIndex, indikator.bobot)">
                                                     </td>
                                                     <td><input type="number" class="form-control" :readonly="true"
@@ -321,6 +323,28 @@ export default {
 
     },
     methods: {
+        limitInputToFiveDigits(event, indexa, indexb) {
+            let inputValue = event.target.value;
+
+            // Menghapus karakter non-numeric
+            inputValue = inputValue.replace(/\D/g, '');
+
+            if (inputValue > 5) {
+                this.$swal({
+                    title: "Out Of Range",
+                    text: "Nilai Tidak Boleh Lebih > 5",
+                    icon: "error"
+                }).then((result) => {
+                    this.skorsNilai[indexa][indexb] = 0;
+                })
+            } else {
+                this.skorsNilai[indexa][indexb] = inputValue;
+            }
+
+            // Memperbarui nilai di dalam array
+
+
+        },
         async getUserReviewer() {
             await this.axios.get(`/api/pengguna/${localStorage.getItem('uuid')}`).then(response => {
                 this.axios.get(`/api/dosen/byemail/${response.data.email_dosen}`).then((data) => {
