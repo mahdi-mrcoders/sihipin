@@ -12,6 +12,16 @@
         </div>
         <div class="col-sm-4">
             <div class="form-group">
+                <label for="">Filtering By Skema</label>
+                <select name="" id="" class="form-control" v-model="filterSkema" @change="filteredSkema">
+                    <option :value="''">Pilih Periode</option>
+                    <option v-for="skema in listSkema" :key="skema.id" :value="skema.id"> {{
+                        skema.kode_program }} : {{ skema.nama_skema }}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
                 <label for="" class="d-block">Filtering By Rata Nilai</label>
                 <button class="btn btn-secondary" @click="sortByRataNilai">Sort By Rata Nilai</button>
             </div>
@@ -117,35 +127,59 @@ export default {
     data() {
         return {
             selectedFilter: '',
+            filterSkema: '',
             listPeriode: {},
+            listSkema: {},
             dataTable: [],
             filterTable: [],
             level: localStorage.getItem("level"),
             uuid: localStorage.getItem('uuid'),
             idsn: null,
             dataPengajuan: {},
-            dataKontrak: {}
+            dataKontrak: {},
+            sortByRataNilaiFlag:false
         }
     },
     mounted() {
         this.getDataUser()
         this.getPeriode()
+        this.getSkema()
 
     },
     methods: {
-        sortByRataNilai() {
-            this.filterTable.sort((a, b) => {
-                return b.ratanilai - a.ratanilai;
-            });
-        },
-        filteredData() {
-            if (this.selectedFilter != '') {
+        filterAndSortData() {
+            if (this.selectedFilter !== '' && this.filterSkema !== '') {
                 this.filterTable = this.dataTable.filter(item => {
-                    return item.id_periode == this.selectedFilter
+                    return item.id_periode === this.selectedFilter && item.id_skema === this.filterSkema;
+                });
+            } else if (this.selectedFilter !== '') {
+                this.filterTable = this.dataTable.filter(item => {
+                    return item.id_periode === this.selectedFilter;
+                });
+            } else if (this.filterSkema !== '') {
+                this.filterTable = this.dataTable.filter(item => {
+                    return item.id_skema === this.filterSkema;
                 });
             } else {
-                this.filterTable = this.dataTable
+                this.filterTable = this.dataTable;
             }
+
+            // Sort by rata nilai if needed
+            if (this.sortByRataNilaiFlag) {
+                this.filterTable.sort((a, b) => {
+                    return b.ratanilai - a.ratanilai;
+                });
+            }
+        },
+        sortByRataNilai() {
+            this.sortByRataNilaiFlag = true;
+            this.filterAndSortData();
+        },
+        filteredData() {
+            this.filterAndSortData();
+        },
+        filteredSkema() {
+            this.filterAndSortData();
         },
         async getPeriode() {
             await this.axios.get('/api/dataperiode').then(response => {
@@ -155,6 +189,13 @@ export default {
                         this.selectedFilter = item.status_periode == 'Y' ? item.id : ''
                     }
                 });
+            }).catch(error => {
+
+            })
+        },
+        async getSkema() {
+            await this.axios.get('/api/dataskema').then(response => {
+                this.listSkema = response.data
             }).catch(error => {
 
             })

@@ -25,44 +25,65 @@ class PenelitianPkmsController extends Controller
     {
         $dataSubmited = [];
         $dataPeriode = request()->get('periode');
+        $idPeriode = null; // Initialize idPeriode
+
+        // Check if periode is set
         if ($dataPeriode) {
             $idPeriode = $dataPeriode;
-        } else {
-            $idPeriode = DataPeriode::where('status_periode', "Y")->first()->id;
         }
 
-        if (request()->get('level') == 1 || request()->get('level') == 4) {
-            $dataSubmited = Pengajuan::with(['informasi', 'anggota', 'dataDosen', 'dataSkema', 'dataKontrak', 'dataProgress', 'dataReviewer', 'dataNilai', 'periode'])
-                ->where('id_periode', $idPeriode)
-                ->orderBy('id', 'desc')
-                ->get()
-                ->map(function ($submited) {
+        $level = request()->get('level');
+        $idDosen = request()->get('idsn');
+
+        // Use switch instead of if-else for readability
+        switch ($level) {
+            case 1:
+            case 4:
+                $query = Pengajuan::with(['informasi', 'anggota', 'dataDosen', 'dataSkema', 'dataKontrak', 'dataProgress', 'dataReviewer', 'dataNilai', 'periode'])
+                    ->orderBy('id', 'desc');
+
+                if ($idPeriode) {
+                    $query->where('id_periode', $idPeriode);
+                }
+
+                $dataSubmited = $query->get()->map(function ($submited) {
                     return $this->transformData($submited);
                 });
-        } else if (request()->get('level') == 3) {
-            $dataSubmited = Pengajuan::with(['informasi', 'anggota', 'dataDosen', 'dataSkema', 'dataKontrak', 'dataProgress', 'dataReviewer', 'dataNilai', 'periode'])
-                ->where('id_periode', $idPeriode)
-                ->where('id_dosen', request()->get('idsn'))
-                ->orderBy('id', 'desc')
-                ->get()
-                ->map(function ($submited) {
+                break;
+
+            case 3:
+                $query = Pengajuan::with(['informasi', 'anggota', 'dataDosen', 'dataSkema', 'dataKontrak', 'dataProgress', 'dataReviewer', 'dataNilai', 'periode'])
+                    ->where('id_dosen', $idDosen)
+                    ->orderBy('id', 'desc');
+
+                if ($idPeriode) {
+                    $query->where('id_periode', $idPeriode);
+                }
+
+                $dataSubmited = $query->get()->map(function ($submited) {
                     return $this->transformData($submited);
                 });
-        } else if (request()->get('level') == 2) {
-            $getDataOnReviewer = Reviewer::where('id_dosen', request()->get('idsn'))->get();
-            $pengajuanIds = $getDataOnReviewer->pluck('id_pengajuan');
-            $id_dosen = request()->get('idsn');
-            $dataSubmited = Pengajuan::with(['informasi', 'anggota', 'dataDosen', 'dataSkema', 'dataKontrak', 'dataProgress', 'dataReviewer', 'dataNilai', 'periode'])
-                ->where('id_periode', $idPeriode)
-                ->whereIn('id', $pengajuanIds)
-                ->whereHas('dataReviewer', function ($query) use ($id_dosen) {
-                    $query->where('id_dosen', $id_dosen);
-                })
-                ->orderBy('id', 'desc')
-                ->get()
-                ->map(function ($submited) {
+                break;
+
+            case 2:
+                $pengajuanIds = Reviewer::where('id_dosen', $idDosen)->pluck('id_pengajuan');
+
+                $query = Pengajuan::with(['informasi', 'anggota', 'dataDosen', 'dataSkema', 'dataKontrak', 'dataProgress', 'dataReviewer', 'dataNilai', 'periode'])
+                    ->whereIn('id', $pengajuanIds)
+                    ->orderBy('id', 'desc');
+
+                if ($idPeriode) {
+                    $query->where('id_periode', $idPeriode);
+                }
+
+                $dataSubmited = $query->get()->map(function ($submited) {
                     return $this->transformData($submited);
                 });
+                break;
+
+            default:
+                // Handle other cases if needed
+                break;
         }
 
         return response()->json($dataSubmited);

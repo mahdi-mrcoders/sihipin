@@ -923,35 +923,59 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   data: function data() {
     return {
       selectedFilter: '',
+      filterSkema: '',
       listPeriode: {},
+      listSkema: {},
       dataTable: [],
       filterTable: [],
       level: localStorage.getItem("level"),
       uuid: localStorage.getItem('uuid'),
       idsn: null,
       dataPengajuan: {},
-      dataKontrak: {}
+      dataKontrak: {},
+      sortByRataNilaiFlag: false
     };
   },
   mounted: function mounted() {
     this.getDataUser();
     this.getPeriode();
+    this.getSkema();
   },
   methods: {
-    sortByRataNilai: function sortByRataNilai() {
-      this.filterTable.sort(function (a, b) {
-        return b.ratanilai - a.ratanilai;
-      });
-    },
-    filteredData: function filteredData() {
+    filterAndSortData: function filterAndSortData() {
       var _this = this;
-      if (this.selectedFilter != '') {
+      if (this.selectedFilter !== '' && this.filterSkema !== '') {
         this.filterTable = this.dataTable.filter(function (item) {
-          return item.id_periode == _this.selectedFilter;
+          return item.id_periode === _this.selectedFilter && item.id_skema === _this.filterSkema;
+        });
+      } else if (this.selectedFilter !== '') {
+        this.filterTable = this.dataTable.filter(function (item) {
+          return item.id_periode === _this.selectedFilter;
+        });
+      } else if (this.filterSkema !== '') {
+        this.filterTable = this.dataTable.filter(function (item) {
+          return item.id_skema === _this.filterSkema;
         });
       } else {
         this.filterTable = this.dataTable;
       }
+
+      // Sort by rata nilai if needed
+      if (this.sortByRataNilaiFlag) {
+        this.filterTable.sort(function (a, b) {
+          return b.ratanilai - a.ratanilai;
+        });
+      }
+    },
+    sortByRataNilai: function sortByRataNilai() {
+      this.sortByRataNilaiFlag = true;
+      this.filterAndSortData();
+    },
+    filteredData: function filteredData() {
+      this.filterAndSortData();
+    },
+    filteredSkema: function filteredSkema() {
+      this.filterAndSortData();
     },
     getPeriode: function getPeriode() {
       var _this2 = this;
@@ -975,19 +999,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee);
       }))();
     },
-    getDataUser: function getDataUser() {
+    getSkema: function getSkema() {
       var _this3 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
               _context2.next = 2;
-              return _this3.axios.get("/api/pengguna/".concat(_this3.uuid)).then(function (response) {
-                _this3.getDataDosen(response.data.email_dosen);
-              })["catch"](function (error) {
-                var _console;
-                /* eslint-disable */(_console = console).log.apply(_console, _toConsumableArray(oo_oo("1215341653_166_16_166_34_4", error)));
-              });
+              return _this3.axios.get('/api/dataskema').then(function (response) {
+                _this3.listSkema = response.data;
+              })["catch"](function (error) {});
             case 2:
             case "end":
               return _context2.stop();
@@ -995,19 +1016,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2);
       }))();
     },
-    getDataDosen: function getDataDosen(email) {
+    getDataUser: function getDataUser() {
       var _this4 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
             case 0:
               _context3.next = 2;
-              return _this4.axios.get("/api/dosen/byemail/".concat(email)).then(function (responses) {
-                _this4.idsn = responses.data.id;
-                _this4.getListSubmited();
+              return _this4.axios.get("/api/pengguna/".concat(_this4.uuid)).then(function (response) {
+                _this4.getDataDosen(response.data.email_dosen);
               })["catch"](function (error) {
-                var _console2;
-                /* eslint-disable */(_console2 = console).log.apply(_console2, _toConsumableArray(oo_oo("1215341653_175_16_175_34_4", error)));
+                var _console;
+                /* eslint-disable */(_console = console).log.apply(_console, _toConsumableArray(oo_oo("2297986257_207_16_207_34_4", error)));
               });
             case 2:
             case "end":
@@ -1016,25 +1036,46 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee3);
       }))();
     },
-    getListSubmited: function getListSubmited() {
+    getDataDosen: function getDataDosen(email) {
       var _this5 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
         return _regeneratorRuntime().wrap(function _callee4$(_context4) {
           while (1) switch (_context4.prev = _context4.next) {
             case 0:
               _context4.next = 2;
-              return _this5.axios.get("/api/penelitian?level=".concat(_this5.level, "&idsn=").concat(_this5.idsn)).then(function (response) {
-                _this5.dataTable = response.data;
-                _this5.filteredData();
+              return _this5.axios.get("/api/dosen/byemail/".concat(email)).then(function (responses) {
+                _this5.idsn = responses.data.id;
+                _this5.getListSubmited();
               })["catch"](function (error) {
-                var _console3;
-                /* eslint-disable */(_console3 = console).log.apply(_console3, _toConsumableArray(oo_oo("1215341653_183_16_183_34_4", error)));
+                var _console2;
+                /* eslint-disable */(_console2 = console).log.apply(_console2, _toConsumableArray(oo_oo("2297986257_216_16_216_34_4", error)));
               });
             case 2:
             case "end":
               return _context4.stop();
           }
         }, _callee4);
+      }))();
+    },
+    getListSubmited: function getListSubmited() {
+      var _this6 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+        return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+          while (1) switch (_context5.prev = _context5.next) {
+            case 0:
+              _context5.next = 2;
+              return _this6.axios.get("/api/penelitian?level=".concat(_this6.level, "&idsn=").concat(_this6.idsn)).then(function (response) {
+                _this6.dataTable = response.data;
+                _this6.filteredData();
+              })["catch"](function (error) {
+                var _console3;
+                /* eslint-disable */(_console3 = console).log.apply(_console3, _toConsumableArray(oo_oo("2297986257_224_16_224_34_4", error)));
+              });
+            case 2:
+            case "end":
+              return _context5.stop();
+          }
+        }, _callee5);
       }))();
     },
     getHasilREview: function getHasilREview(review, data, index) {
@@ -1058,72 +1099,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return 'N/A';
     },
     validasiHasil: function validasiHasil(data) {
-      var _this6 = this;
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
-        var detailData, inputOptions, _yield$_this6$$swal, status;
-        return _regeneratorRuntime().wrap(function _callee5$(_context5) {
-          while (1) switch (_context5.prev = _context5.next) {
-            case 0:
-              detailData = "\n            <ul class=\"list-group list-group-flush\">\n                <li class=\"list-group-item\"><strong>Kode Usulan :</strong> <br><label class=\"text-muted lh-sm\">".concat(data.kode_skema, "-").concat(data.id, "</label></li>\n                <li class=\"list-group-item\"><strong>Nama Skema :</strong><br><label class=\"text-muted lh-sm\">").concat(data.nama_skema, "</label></li>\n                <li class=\"list-group-item\"><strong>Judul Usulan :</strong> <br><label class=\"text-muted lh-sm\">").concat(data.informasi.judul_penelitian, "</label></li>\n            </ul>\n            ");
-              inputOptions = new Promise(function (resolve) {
-                setTimeout(function () {
-                  resolve({
-                    "Tolak": "Tolak",
-                    "Terima": "Terima"
-                  });
-                }, 100);
-              });
-              if (!(data.datanilai.length == 0)) {
-                _context5.next = 6;
-                break;
-              }
-              _this6.$swal({
-                title: "Informasi",
-                text: "Hasil Review Kosong, Tidak Dapat Menvalidasi Usulan",
-                icon: "error"
-              });
-              _context5.next = 15;
-              break;
-            case 6:
-              _context5.next = 8;
-              return _this6.$swal({
-                title: "Pilih Status Validasi Usulan",
-                html: detailData,
-                input: "radio",
-                inputOptions: inputOptions,
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-                showCancelButton: true,
-                inputValidator: function inputValidator(value) {
-                  if (!value) {
-                    return "Anda perlu memilih sesuatu!";
-                  }
-                }
-              });
-            case 8:
-              _yield$_this6$$swal = _context5.sent;
-              status = _yield$_this6$$swal.value;
-              if (!status) {
-                _context5.next = 15;
-                break;
-              }
-              _this6.dataPengajuan.id = data.id;
-              _this6.dataPengajuan.status = status;
-              _context5.next = 15;
-              return _this6.axios.post('/api/updatevalidasi', _this6.dataPengajuan).then(function (response) {
-                _this6.getDataUser();
-              })["catch"](function (error) {
-                var _console4;
-                /* eslint-disable */(_console4 = console).log.apply(_console4, _toConsumableArray(oo_oo("1215341653_249_24_249_42_4", error)));
-              });
-            case 15:
-            case "end":
-              return _context5.stop();
-          }
-        }, _callee5);
-      }))();
-    },
-    validasiPemenang: function validasiPemenang(data) {
       var _this7 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
         var detailData, inputOptions, _yield$_this7$$swal, status;
@@ -1134,8 +1109,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               inputOptions = new Promise(function (resolve) {
                 setTimeout(function () {
                   resolve({
-                    "Tolak": "Gagal",
-                    "Pemenang": "Pemenang"
+                    "Tolak": "Tolak",
+                    "Terima": "Terima"
                   });
                 }, 100);
               });
@@ -1153,7 +1128,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             case 6:
               _context6.next = 8;
               return _this7.$swal({
-                title: "Pilih Status Validasi Pemenang",
+                title: "Pilih Status Validasi Usulan",
                 html: detailData,
                 input: "radio",
                 inputOptions: inputOptions,
@@ -1176,12 +1151,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               _this7.dataPengajuan.id = data.id;
               _this7.dataPengajuan.status = status;
               _context6.next = 15;
-              return _this7.axios.post('/api/updatevalidasipemenang', _this7.dataPengajuan).then(function (response) {
-                // console.log(response.data)
+              return _this7.axios.post('/api/updatevalidasi', _this7.dataPengajuan).then(function (response) {
                 _this7.getDataUser();
               })["catch"](function (error) {
-                var _console5;
-                /* eslint-disable */(_console5 = console).log.apply(_console5, _toConsumableArray(oo_oo("1215341653_301_24_301_42_4", error)));
+                var _console4;
+                /* eslint-disable */(_console4 = console).log.apply(_console4, _toConsumableArray(oo_oo("2297986257_290_24_290_42_4", error)));
               });
             case 15:
             case "end":
@@ -1190,28 +1164,95 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee6);
       }))();
     },
-    createKontrak: function createKontrak(data) {
+    validasiPemenang: function validasiPemenang(data) {
       var _this8 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
-        var detailData, _yield$_this8$$swal, values;
+        var detailData, inputOptions, _yield$_this8$$swal, status;
         return _regeneratorRuntime().wrap(function _callee7$(_context7) {
           while (1) switch (_context7.prev = _context7.next) {
             case 0:
               detailData = "\n            <ul class=\"list-group list-group-flush\">\n                <li class=\"list-group-item\"><strong>Kode Usulan :</strong> <br><label class=\"text-muted lh-sm\">".concat(data.kode_skema, "-").concat(data.id, "</label></li>\n                <li class=\"list-group-item\"><strong>Nama Skema :</strong><br><label class=\"text-muted lh-sm\">").concat(data.nama_skema, "</label></li>\n                <li class=\"list-group-item\"><strong>Judul Usulan :</strong> <br><label class=\"text-muted lh-sm\">").concat(data.informasi.judul_penelitian, "</label></li>\n            </ul>\n            ");
+              inputOptions = new Promise(function (resolve) {
+                setTimeout(function () {
+                  resolve({
+                    "Tolak": "Gagal",
+                    "Pemenang": "Pemenang"
+                  });
+                }, 100);
+              });
               if (!(data.datanilai.length == 0)) {
-                _context7.next = 5;
+                _context7.next = 6;
                 break;
               }
               _this8.$swal({
                 title: "Informasi",
-                text: "Hasil Review Kosong, Tidak Dapat Membuat No Kontrak",
+                text: "Hasil Review Kosong, Tidak Dapat Menvalidasi Usulan",
                 icon: "error"
               });
               _context7.next = 15;
               break;
-            case 5:
-              _context7.next = 7;
+            case 6:
+              _context7.next = 8;
               return _this8.$swal({
+                title: "Pilih Status Validasi Pemenang",
+                html: detailData,
+                input: "radio",
+                inputOptions: inputOptions,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showCancelButton: true,
+                inputValidator: function inputValidator(value) {
+                  if (!value) {
+                    return "Anda perlu memilih sesuatu!";
+                  }
+                }
+              });
+            case 8:
+              _yield$_this8$$swal = _context7.sent;
+              status = _yield$_this8$$swal.value;
+              if (!status) {
+                _context7.next = 15;
+                break;
+              }
+              _this8.dataPengajuan.id = data.id;
+              _this8.dataPengajuan.status = status;
+              _context7.next = 15;
+              return _this8.axios.post('/api/updatevalidasipemenang', _this8.dataPengajuan).then(function (response) {
+                // console.log(response.data)
+                _this8.getDataUser();
+              })["catch"](function (error) {
+                var _console5;
+                /* eslint-disable */(_console5 = console).log.apply(_console5, _toConsumableArray(oo_oo("2297986257_342_24_342_42_4", error)));
+              });
+            case 15:
+            case "end":
+              return _context7.stop();
+          }
+        }, _callee7);
+      }))();
+    },
+    createKontrak: function createKontrak(data) {
+      var _this9 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
+        var detailData, _yield$_this9$$swal, values;
+        return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+          while (1) switch (_context8.prev = _context8.next) {
+            case 0:
+              detailData = "\n            <ul class=\"list-group list-group-flush\">\n                <li class=\"list-group-item\"><strong>Kode Usulan :</strong> <br><label class=\"text-muted lh-sm\">".concat(data.kode_skema, "-").concat(data.id, "</label></li>\n                <li class=\"list-group-item\"><strong>Nama Skema :</strong><br><label class=\"text-muted lh-sm\">").concat(data.nama_skema, "</label></li>\n                <li class=\"list-group-item\"><strong>Judul Usulan :</strong> <br><label class=\"text-muted lh-sm\">").concat(data.informasi.judul_penelitian, "</label></li>\n            </ul>\n            ");
+              if (!(data.datanilai.length == 0)) {
+                _context8.next = 5;
+                break;
+              }
+              _this9.$swal({
+                title: "Informasi",
+                text: "Hasil Review Kosong, Tidak Dapat Membuat No Kontrak",
+                icon: "error"
+              });
+              _context8.next = 15;
+              break;
+            case 5:
+              _context8.next = 7;
+              return _this9.$swal({
                 title: "Buat Kontrak Usulan Penelitian",
                 input: "text",
                 html: detailData,
@@ -1225,30 +1266,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }
               });
             case 7:
-              _yield$_this8$$swal = _context7.sent;
-              values = _yield$_this8$$swal.value;
+              _yield$_this9$$swal = _context8.sent;
+              values = _yield$_this9$$swal.value;
               if (!values) {
-                _context7.next = 15;
+                _context8.next = 15;
                 break;
               }
-              _this8.dataKontrak.id = data.id;
-              _this8.dataKontrak.level = _this8.level;
-              _this8.dataKontrak.no_kontrak = values;
-              _context7.next = 15;
-              return _this8.axios.post('/api/createkontrak', _this8.dataKontrak).then(function (response) {
+              _this9.dataKontrak.id = data.id;
+              _this9.dataKontrak.level = _this9.level;
+              _this9.dataKontrak.no_kontrak = values;
+              _context8.next = 15;
+              return _this9.axios.post('/api/createkontrak', _this9.dataKontrak).then(function (response) {
                 var _console6;
-                _this8.getDataUser();
+                _this9.getDataUser();
                 /* eslint-disable */
-                (_console6 = console).log.apply(_console6, _toConsumableArray(oo_oo("1215341653_342_24_342_50_4", response.data)));
+                (_console6 = console).log.apply(_console6, _toConsumableArray(oo_oo("2297986257_383_24_383_50_4", response.data)));
               })["catch"](function (error) {
                 var _console7;
-                /* eslint-disable */(_console7 = console).log.apply(_console7, _toConsumableArray(oo_oo("1215341653_344_24_344_42_4", error)));
+                /* eslint-disable */(_console7 = console).log.apply(_console7, _toConsumableArray(oo_oo("2297986257_385_24_385_42_4", error)));
               });
             case 15:
             case "end":
-              return _context7.stop();
+              return _context8.stop();
           }
-        }, _callee7);
+        }, _callee8);
       }))();
     },
     showInfo: function showInfo(info) {
@@ -2508,85 +2549,82 @@ var _hoisted_8 = {
 };
 var _hoisted_9 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+    "for": ""
+  }, "Filtering By Skema", -1 /* HOISTED */);
+});
+var _hoisted_10 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
+    value: ''
+  }, "Pilih Periode", -1 /* HOISTED */);
+});
+var _hoisted_11 = ["value"];
+var _hoisted_12 = {
+  "class": "col-sm-4"
+};
+var _hoisted_13 = {
+  "class": "form-group"
+};
+var _hoisted_14 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "for": "",
     "class": "d-block"
   }, "Filtering By Rata Nilai", -1 /* HOISTED */);
 });
-var _hoisted_10 = {
+var _hoisted_15 = {
   "class": "table-responsive"
 };
-var _hoisted_11 = {
+var _hoisted_16 = {
   "class": "table"
 };
-var _hoisted_12 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_17 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "No"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Kode Usulan"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Periode"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     style: {
       "width": "20%"
     }
   }, "Skema judul Usulan"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Peneliti & anggota"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Team Reviewer"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Hasil Reviewer"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Rata Nilai"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Keterangan"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Action")])], -1 /* HOISTED */);
 });
-var _hoisted_13 = {
-  key: 0
-};
-var _hoisted_14 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
-});
-var _hoisted_15 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
-});
-var _hoisted_16 = {
-  "class": "d-block"
-};
-var _hoisted_17 = {
-  style: {
-    "list-style-type": "none"
-  }
-};
 var _hoisted_18 = {
-  style: {
-    "list-style-type": "none"
-  }
+  key: 0
 };
 var _hoisted_19 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
 });
-var _hoisted_20 = {
-  key: 0,
-  "class": "badge bg-info"
-};
+var _hoisted_20 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+});
 var _hoisted_21 = {
-  key: 1,
-  "class": "badge bg-warning"
+  "class": "d-block"
 };
 var _hoisted_22 = {
-  key: 2,
-  "class": "badge bg-danger"
-};
-var _hoisted_23 = {
-  key: 3,
-  "class": "badge bg-success"
-};
-var _hoisted_24 = ["onClick"];
-var _hoisted_25 = {
   style: {
     "list-style-type": "none"
   }
 };
-var _hoisted_26 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_23 = {
+  style: {
+    "list-style-type": "none"
+  }
+};
+var _hoisted_24 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
 });
-var _hoisted_27 = {
+var _hoisted_25 = {
   key: 0,
+  "class": "badge bg-info"
+};
+var _hoisted_26 = {
+  key: 1,
   "class": "badge bg-warning"
 };
-var _hoisted_28 = {
-  key: 1,
+var _hoisted_27 = {
+  key: 2,
   "class": "badge bg-danger"
 };
-var _hoisted_29 = {
-  key: 2,
+var _hoisted_28 = {
+  key: 3,
   "class": "badge bg-success"
 };
+var _hoisted_29 = ["onClick"];
 var _hoisted_30 = {
   style: {
     "list-style-type": "none"
@@ -2597,44 +2635,64 @@ var _hoisted_31 = /*#__PURE__*/_withScopeId(function () {
 });
 var _hoisted_32 = {
   key: 0,
-  "for": ""
+  "class": "badge bg-warning"
 };
 var _hoisted_33 = {
   key: 1,
-  "for": ""
+  "class": "badge bg-danger"
 };
 var _hoisted_34 = {
+  key: 2,
+  "class": "badge bg-success"
+};
+var _hoisted_35 = {
   style: {
     "list-style-type": "none"
   }
 };
-var _hoisted_35 = {
-  key: 0
-};
 var _hoisted_36 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
 });
-var _hoisted_37 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_37 = {
+  key: 0,
+  "for": ""
+};
+var _hoisted_38 = {
+  key: 1,
+  "for": ""
+};
+var _hoisted_39 = {
+  style: {
+    "list-style-type": "none"
+  }
+};
+var _hoisted_40 = {
+  key: 0
+};
+var _hoisted_41 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
 });
-var _hoisted_38 = {
+var _hoisted_42 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+});
+var _hoisted_43 = {
   key: 1
 };
-var _hoisted_39 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_44 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
 });
-var _hoisted_40 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_45 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
 });
-var _hoisted_41 = ["onClick"];
-var _hoisted_42 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_46 = ["onClick"];
+var _hoisted_47 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1 /* HOISTED */);
 });
-var _hoisted_43 = ["onClick"];
-var _hoisted_44 = {
+var _hoisted_48 = ["onClick"];
+var _hoisted_49 = {
   key: 1
 };
-var _hoisted_45 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_50 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     colspan: "10"
   }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
@@ -2642,7 +2700,7 @@ var _hoisted_45 = /*#__PURE__*/_withScopeId(function () {
     role: "alert"
   }, " Belum Ada Data ")])], -1 /* HOISTED */);
 });
-var _hoisted_46 = [_hoisted_45];
+var _hoisted_51 = [_hoisted_50];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
     name: "",
@@ -2659,15 +2717,30 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       key: list.id,
       value: list.id
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.nama_periode) + "-" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.periode), 9 /* TEXT, PROPS */, _hoisted_6);
-  }), 128 /* KEYED_FRAGMENT */))], 544 /* HYDRATE_EVENTS, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.selectedFilter]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }), 128 /* KEYED_FRAGMENT */))], 544 /* HYDRATE_EVENTS, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.selectedFilter]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+    name: "",
+    id: "",
+    "class": "form-control",
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+      return $data.filterSkema = $event;
+    }),
+    onChange: _cache[3] || (_cache[3] = function () {
+      return $options.filteredSkema && $options.filteredSkema.apply($options, arguments);
+    })
+  }, [_hoisted_10, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.listSkema, function (skema) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
+      key: skema.id,
+      value: skema.id
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(skema.kode_program) + " : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(skema.nama_skema), 9 /* TEXT, PROPS */, _hoisted_11);
+  }), 128 /* KEYED_FRAGMENT */))], 544 /* HYDRATE_EVENTS, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.filterSkema]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-secondary",
-    onClick: _cache[2] || (_cache[2] = function () {
+    onClick: _cache[4] || (_cache[4] = function () {
       return $options.sortByRataNilai && $options.sortByRataNilai.apply($options, arguments);
     })
-  }, "Sort By Rata Nilai")])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_11, [_hoisted_12, $data.filterTable.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tbody", _hoisted_13, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.filterTable, function (list, index) {
+  }, "Sort By Rata Nilai")])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_16, [_hoisted_17, $data.filterTable.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tbody", _hoisted_18, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.filterTable, function (list, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
       key: list.id
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(index + 1), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.kode_skema) + "-" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.id), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.periode), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.nama_skema), 1 /* TEXT */), _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.informasi.judul_penelitian), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Ketua : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.ketua_peneliti), 1 /* TEXT */), _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Jumlah Anggota : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.anggota.length), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(list.reviewer, function (rev, key) {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(index + 1), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.kode_skema) + "-" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.id), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.periode), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.nama_skema), 1 /* TEXT */), _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.informasi.judul_penelitian), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Ketua : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.ketua_peneliti), 1 /* TEXT */), _hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Jumlah Anggota : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.anggota.length), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(list.reviewer, function (rev, key) {
       return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
         key: rev.id,
         style: {
@@ -2680,8 +2753,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         style: {
           "list-style-type": "none"
         }
-      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_16, "REV " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(key + 1) + " : ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getHasilREview(rev, list.datanilai, key)), 1 /* TEXT */)]);
-    }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.ratanilai), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Status usulan : "), _hoisted_19, list.status_pengajuan == 'Prosess' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_20, "Proses")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), list.status_pengajuan == 'In Review' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_21, "In Review")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), list.status_pengajuan == 'Tolak' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_22, "Tolak ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), list.status_pengajuan == 'Terima' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_23, "Terima")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), list.status_pengajuan == 'Tolak' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", {
+      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_21, "REV " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(key + 1) + " : ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getHasilREview(rev, list.datanilai, key)), 1 /* TEXT */)]);
+    }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.ratanilai), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Status usulan : "), _hoisted_24, list.status_pengajuan == 'Prosess' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_25, "Proses")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), list.status_pengajuan == 'In Review' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_26, "In Review")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), list.status_pengajuan == 'Tolak' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_27, "Tolak ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), list.status_pengajuan == 'Terima' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_28, "Terima")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), list.status_pengajuan == 'Tolak' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", {
       key: 4,
       "class": "fa-solid fa-circle-info fa-lg",
       style: {
@@ -2690,18 +2763,18 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return $options.showInfo(list.alasan_tolak);
       }
-    }, null, 8 /* PROPS */, _hoisted_24)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Status Review : "), _hoisted_26, list.status_pemenang == 'In Review' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_27, "In Review")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), list.status_pemenang == 'Tolak' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_28, "Tolak")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), list.status_pemenang == 'Pemenang' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_29, "Selesai")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" No Kontrak :"), _hoisted_31, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(), list.kontrak ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_32, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.kontrak.no_kontrak), 1 /* TEXT */)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_33, "-"))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_34, [list.kontrak ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Sign Pihak 1 : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.kontrak.pihak_satu), 1 /* TEXT */), _hoisted_36, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Sign Pihak 2 : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.kontrak.pihak_dua), 1 /* TEXT */), _hoisted_37, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Sign Mengetahui : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.kontrak.mengetahui), 1 /* TEXT */)])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_38, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Sign Pihak 1 : -"), _hoisted_39, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Sign Pihak 2 : -"), _hoisted_40, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Sign Mengetahui : - ")]))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <label class=\"badge bg-info\" @click=\"validasiHasil(list)\">Validasi Usulan</label>\r\n                        <hr> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+    }, null, 8 /* PROPS */, _hoisted_29)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Status Review : "), _hoisted_31, list.status_pemenang == 'In Review' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_32, "In Review")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), list.status_pemenang == 'Tolak' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_33, "Tolak")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), list.status_pemenang == 'Pemenang' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_34, "Selesai")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" No Kontrak :"), _hoisted_36, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(), list.kontrak ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_37, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.kontrak.no_kontrak), 1 /* TEXT */)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_38, "-"))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_39, [list.kontrak ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_40, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Sign Pihak 1 : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.kontrak.pihak_satu), 1 /* TEXT */), _hoisted_41, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Sign Pihak 2 : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.kontrak.pihak_dua), 1 /* TEXT */), _hoisted_42, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Sign Mengetahui : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(list.kontrak.mengetahui), 1 /* TEXT */)])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_43, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Sign Pihak 1 : -"), _hoisted_44, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Sign Pihak 2 : -"), _hoisted_45, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Sign Mengetahui : - ")]))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <label class=\"badge bg-info\" @click=\"validasiHasil(list)\">Validasi Usulan</label>\r\n                        <hr> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
       "class": "badge bg-info",
       onClick: function onClick($event) {
         return $options.validasiPemenang(list);
       }
-    }, "Validasi Akhir", 8 /* PROPS */, _hoisted_41), _hoisted_42, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+    }, "Validasi Akhir", 8 /* PROPS */, _hoisted_46), _hoisted_47, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
       "class": "badge bg-info",
       onClick: function onClick($event) {
         return $options.createKontrak(list);
       }
-    }, "Kontrak Usulan", 8 /* PROPS */, _hoisted_43)])]);
-  }), 128 /* KEYED_FRAGMENT */))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tbody", _hoisted_44, [].concat(_hoisted_46)))])])], 64 /* STABLE_FRAGMENT */);
+    }, "Kontrak Usulan", 8 /* PROPS */, _hoisted_48)])]);
+  }), 128 /* KEYED_FRAGMENT */))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tbody", _hoisted_49, [].concat(_hoisted_51)))])])], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
