@@ -40,8 +40,10 @@
                             <li v-for="(data, index) in dataFile" :key="data.id">{{ data.nama_data }} <i
                                     class="fa-solid fa-eye" style="color: #2f8c92;cursor:pointer"
                                     @click="downloadFile(data.file)"></i> <i class="fa-solid fa-square-pen"
-                                    style="cursor:pointer" @click="editFile(data)" v-show="level == 1 ? true : false"></i> <i class="fa-solid fa-trash-can"
-                                    style="color: #c22419;cursor:pointer" v-show="level == 1 ? true : false"></i></li>
+                                    style="cursor:pointer" @click="editFile(data)" v-show="level == 1 ? true : false"></i>
+                                <i class="fa-solid fa-trash-can" style="color: #c22419;cursor:pointer"
+                                    v-show="level == 1 ? true : false"></i>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -135,6 +137,13 @@ export default {
                 } else {
                     const response = await this.axios.post('/api/bukupanduan', formData)
                     if (response.status == 200) {
+                        this.$swal({
+                            position: "top-end",
+                            icon: "success",
+                            title: "Your work has been saved",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
                         this.getDataFile()
                         this.blob = null
                         this.files = null
@@ -150,6 +159,13 @@ export default {
                 formData.append('_method', 'patch')
                 const response = await this.axios.post(`/api/bukupanduan/${this.upFile.id}`, formData)
                 if (response.status == 200) {
+                    this.$swal({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Your work has been update",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
                     this.getDataFile()
                     this.blob = null
                     this.files = null
