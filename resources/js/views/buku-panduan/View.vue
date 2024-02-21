@@ -128,8 +128,7 @@ export default {
             formData.append('nama_data', this.upFile.nama_data)
 
             if (this.upFile.id == '') {
-                console.log(this.file)
-                if (!this.blob) {
+                if (!this.files) {
                     this.$swal({
                         icon: 'error',
                         title: 'Oops...',
@@ -155,6 +154,7 @@ export default {
                         console.log(response)
                     }
                 }
+                
 
             } else {
                 formData.append('_method', 'patch')
