@@ -61,6 +61,7 @@ export default {
             localStorage.removeItem("loggedIn")
             localStorage.removeItem("uuid")
             localStorage.removeItem("level")
+            localStorage.clear();
             this.$router.push({ name: 'login' })
         },
         async getDataUser() {

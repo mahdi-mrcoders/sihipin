@@ -189,14 +189,14 @@ class PenelitianPkmsController extends Controller
             'jangka_waktu' => $request->waktu_penelitian,
             'biaya' => $request->biaya_penelitian,
         ];
-        $insertInformasi = Informasi::create($dataInformasi);
+        // $insertInformasi = Informasi::create($dataInformasi);
         foreach ($request->jumlah_anggota as $key => $value) {
             $dataAnggota[] = [
                 'id_pengajuan' => $idPengajuan,
                 'nama_anggota' => $value
             ];
         }
-        $insertAnggota = Anggota::insert($dataAnggota);
+        // $insertAnggota = Anggota::insert($dataAnggota);
 
         $getJenisLaporan = JenisLaporan::all();
         foreach ($getJenisLaporan as $steps => $item) {
