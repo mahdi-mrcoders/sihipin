@@ -50,13 +50,32 @@ export default {
             user: {},
             loggedIn: localStorage.getItem('loggedIn'),
             uuid: localStorage.getItem('uuid'),
-            foto: null
+            foto: null,
+            sessionTimeout: 7200, // Waktu dalam detik sebelum sesi timeout
+            logoutTimer: null
         }
     },
     created() {
         this.getDataUser()
+        this.setupLogoutTimer();
+        // Tambahkan event listener untuk menangani aktivitas pengguna
+        document.addEventListener("mousemove", this.resetLogoutTimer);
+        document.addEventListener("keypress", this.resetLogoutTimer);
+
     },
     methods: {
+        // Mengatur timer untuk logout
+        setupLogoutTimer() {
+            this.logoutTimer = setTimeout(() => {
+                console.log('logout')
+                this.logout();
+            }, this.sessionTimeout * 1000); // Ubah ke milidetik
+        },
+        // Mengatur ulang timer untuk logout
+        resetLogoutTimer() {
+            clearTimeout(this.logoutTimer);
+            this.setupLogoutTimer();
+        },
         logout() {
             localStorage.removeItem("loggedIn")
             localStorage.removeItem("uuid")
@@ -89,6 +108,11 @@ export default {
         if (!this.loggedIn) {
             this.$router.push({ name: 'login' })
         }
+    },
+    beforeDestroy() {
+        // Membersihkan event listener saat komponen dihancurkan
+        document.removeEventListener("mousemove", this.resetLogoutTimer);
+        document.removeEventListener("keypress", this.resetLogoutTimer);
     }
 }
 </script>
