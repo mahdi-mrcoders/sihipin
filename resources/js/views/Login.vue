@@ -20,7 +20,7 @@
                                 <img src="/assets/images/logop3m.png" alt="logo" class="mx-auto d-block">
                             </div>
                             <h4 class="text-center">Welcome back To!</h4>
-                            <h6 class="font-weight-light text-center">SIHPPMA POLITEKNIK KAMPAR</h6>
+                            <h6 class="font-weight-light text-center">SIHPMA POLITEKNIK KAMPAR</h6>
                             <form class="pt-3" @submit.prevent="sigins">
                                 <div class="form-group">
                                     <label for="exampleInputEmail">Username</label>

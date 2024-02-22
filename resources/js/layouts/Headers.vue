@@ -6,7 +6,7 @@
                     <a class="navbar-brand brand-logo" :href="'/dashboard'">
                         <img src="/assets/images/logop3m.png" alt="" class=""
                             style="width:5% !important;background-color:#FF9130">
-                        <span class="ms-2 fs-4 fw-bolder text-dark">SIHPPMA (Sistem Informasi Hibah Penelitian Dan
+                        <span class="ms-2 fs-4 fw-bolder text-dark">SIHPMA (Sistem Informasi Hibah Penelitian Dan
                             Pengabdian Masyarakat)</span>
                     </a>
                 </div>
