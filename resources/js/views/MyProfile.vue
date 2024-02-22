@@ -131,7 +131,6 @@ export default {
             try {
                 const response = await this.axios.get('/api/datajabfung')
                 const optionJabfung = {}
-                console.log(response.data)
                 response.data.forEach(item => {
                     optionJabfung[item.nama_jabfung] = item.nama_jabfung
                 });
@@ -160,7 +159,7 @@ export default {
             try {
                 const response = await this.axios.get('/api/datagolpang')
                 const optiongolpang = {}
-                console.log(response.data)
+                
                 response.data.forEach(item => {
                     optiongolpang[item.nama_pangkat] = item.nama_pangkat
                 });
@@ -178,7 +177,7 @@ export default {
                     }
                 });
                 if (fruit) {
-                    this.profile.golongan_pangkat = fruit
+                    this.profile.pangkat_golongan = fruit
                 }
             } catch (error) {
 
