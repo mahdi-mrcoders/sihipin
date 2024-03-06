@@ -663,19 +663,20 @@ export default {
             const ext = data.slice((data.lastIndexOf('.') - 1 >>> 0) + 2)
             if (ext == 'docx') {
                 try {
-                    const response = await this.axios.get(`/api/filedocx/${data}`, { responseType: 'blob' });
-                    const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
-                    const docxOptions = Object.assign(docx.defaultOptions, {
-                        debug: true,
-                        experimental: true
-                    });
-                    this.docxFile = 'sample.docx'
-                    const container = document.querySelector("#container-file");
-                    docx.renderAsync(blob, container, null, docxOptions)
-                        .then((x) => {
-                            console.log(x);
-                        });
-                    $('#previewFile').modal('show');
+                    // const response = await this.axios.get(`/api/filedocx/${data}`, { responseType: 'blob' });
+                    // const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+                    // const docxOptions = Object.assign(docx.defaultOptions, {
+                    //     debug: true,
+                    //     experimental: true
+                    // });
+                    // this.docxFile = 'sample.docx'
+                    // const container = document.querySelector("#container-file");
+                    // docx.renderAsync(blob, container, null, docxOptions)
+                    //     .then((x) => {
+                    //         console.log(x);
+                    //     });
+                    // $('#previewFile').modal('show');
+                    window.location.href = `/api/file/${data}`
 
                 } catch (error) {
                     console.error('Error fetching docx:', error);
@@ -683,10 +684,11 @@ export default {
 
             } else {
                 try {
-                    const response = await this.axios.get(`/api/filepdf/${data}?data=surat-masuk`, { responseType: 'blob' });
-                    const blob = new Blob([response.data], { type: 'application/pdf' });
-                    this.pdfDocument = window.URL.createObjectURL(blob);
-                    $('#previewFile').modal('show');
+                    // const response = await this.axios.get(`/api/filepdf/${data}?data=surat-masuk`, { responseType: 'blob' });
+                    // const blob = new Blob([response.data], { type: 'application/pdf' });
+                    // this.pdfDocument = window.URL.createObjectURL(blob);
+                    // $('#previewFile').modal('show');
+                    window.location.href = `/api/file/${data}`
                 } catch (error) {
                     console.error('Error fetching PDF:', error);
                 }

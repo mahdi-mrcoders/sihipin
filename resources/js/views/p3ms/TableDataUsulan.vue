@@ -1,4 +1,26 @@
 <template>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="">Filtering By Periode</label>
+                <select name="" id="" class="form-control" v-model="selectedFilter" @change="filteredData">
+                    <option :value="''">Pilih Periode</option>
+                    <option v-for="list in listPeriode" :key="list.id" :value="list.id">{{
+                    list.nama_periode }}-{{ list.periode }}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="">Filtering By Skema</label>
+                <select name="" id="" class="form-control" v-model="filterSkema" @change="filteredSkema">
+                    <option :value="''">Pilih Periode</option>
+                    <option v-for="skema in listSkema" :key="skema.id" :value="skema.id"> {{
+                    skema.kode_program }} : {{ skema.nama_skema }}</option>
+                </select>
+            </div>
+        </div>
+    </div>
     <div class="table-responsive">
         <table class="table">
             <thead>
@@ -14,11 +36,11 @@
                 </tr>
             </thead>
             <tbody v-if="dataTable.length > 0">
-                <tr v-for="(list, index) in dataTable" :key="list.id">
+                <tr v-for="(list, index) in filterTable" :key="list.id">
                     <td>{{ index + 1 }}</td>
                     <td>
-                        <i class="fa-regular fa-file-word fa-lg me-1 cursor-pointer"
-                            @click="fetchDocxFile(list.file_proposal)" data-toggle="tooltip" data-placement="top"
+                        <i class="fa-regular fa-file fa-lg me-1 cursor-pointer"
+                            @click="fetchFile(list.file_proposal)" data-toggle="tooltip" data-placement="top"
                             :title="`File Proposal : ${list.file_proposal}`"></i>
                         <i class="fa-regular fa-file-powerpoint fa-lg me-1 cursor-pointer" data-toggle="tooltip"
                             data-placement="top" :title="`File Pptx :${list.file_presentasi}`"
@@ -30,7 +52,8 @@
                     <td>{{ list.nama_skema }}<br>{{ list.informasi.judul_penelitian }}</td>
                     <td>Ketua : {{ list.ketua_peneliti }}<br>Jumlah Anggota : {{ list.anggota.length }}</td>
                     <td>
-                        <li v-for="(rev, key) in list.reviewer" :key="rev.id" style="list-style-type:none">REV {{ key + 1 }}
+                        <li v-for="(rev, key) in list.reviewer" :key="rev.id" style="list-style-type:none">REV {{ key +
+                    1 }}
                             :
                             {{ rev.nama_reviewer }}</li>
                     </td>
@@ -77,7 +100,12 @@ export default {
     components: { FormModalReviewer },
     data() {
         return {
-            dataTable: {},
+            selectedFilter: '',
+            filterSkema: '',
+            listPeriode: {},
+            listSkema: {},
+            dataTable: [],
+            filterTable: [],
             level: localStorage.getItem("level"),
             uuid: localStorage.getItem('uuid'),
             idsn: null,
@@ -89,8 +117,54 @@ export default {
     },
     mounted() {
         this.getDataUser()
+        this.getPeriode()
+        this.getSkema()
     },
     methods: {
+        filterAndSortData() {
+            if (this.selectedFilter !== '' && this.filterSkema !== '') {
+                this.filterTable = this.dataTable.filter(item => {
+                    return item.id_periode === this.selectedFilter && item.id_skema === this.filterSkema;
+                });
+            } else if (this.selectedFilter !== '') {
+                this.filterTable = this.dataTable.filter(item => {
+                    return item.id_periode === this.selectedFilter;
+                });
+            } else if (this.filterSkema !== '') {
+                this.filterTable = this.dataTable.filter(item => {
+                    return item.id_skema === this.filterSkema;
+                });
+            } else {
+                this.filterTable = this.dataTable;
+            }
+
+
+        },
+        filteredData() {
+            this.filterAndSortData();
+        },
+        filteredSkema() {
+            this.filterAndSortData();
+        },
+        async getPeriode() {
+            await this.axios.get('/api/dataperiode').then(response => {
+                this.listPeriode = response.data
+                response.data.forEach(item => {
+                    if (item.status_periode == 'Y') {
+                        this.selectedFilter = item.status_periode == 'Y' ? item.id : ''
+                    }
+                });
+            }).catch(error => {
+
+            })
+        },
+        async getSkema() {
+            await this.axios.get('/api/dataskema').then(response => {
+                this.listSkema = response.data
+            }).catch(error => {
+
+            })
+        },
         ResultState(result) {
             this.isClicked = false
             this.tableList = {}
@@ -116,6 +190,7 @@ export default {
         async getListSubmited() {
             await this.axios.get(`/api/penelitian?level=${this.level}&idsn=${this.idsn}`).then(response => {
                 this.dataTable = response.data
+                this.filteredData()
             }).catch(error => {
                 console.log(error)
             })
@@ -211,6 +286,14 @@ export default {
             }
 
 
+        },
+        async fetchFile(filename) {
+            try {
+                window.location.href = `/api/file/${filename}`
+                // $('#previewFile').modal('show');
+            } catch (error) {
+                console.error('Error fetching docx:', error);
+            }
         },
     }
 }
