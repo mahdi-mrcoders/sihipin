@@ -1,9 +1,9 @@
-
 <style>
 .cursor-pointer {
     cursor: pointer;
 }
 </style>
+
 <template>
     <div class="content-wrapper">
         <div class="row">
@@ -97,9 +97,10 @@
                                                 style="list-style-type:none">
                                                 {{ progres.jenis_laporan }}: <br><span class="badge "
                                                     :class="progres.validasi == 'prosess' ? 'bg-info' : progres.validasi == 'Terima' ? 'bg-success' : 'bg-danger'">{{
-                                                        progres.validasi }}</span>
-                                                <i class="fa-solid fa-circle-info fa-lg" v-if="progres.validasi == 'Tolak'"
-                                                    style="cursor:pointer" @click="showInfo(progres.alasan_tolak)"></i>
+                            progres.validasi }}</span>
+                                                <i class="fa-solid fa-circle-info fa-lg"
+                                                    v-if="progres.validasi == 'Tolak'" style="cursor:pointer"
+                                                    @click="showInfo(progres.alasan_tolak)"></i>
                                             </li>
                                         </ul>
 
@@ -108,7 +109,8 @@
                                         <ul style="font-size:10px;padding-left:0;margin-bottom:0"
                                             v-if="list.kontrak != null">
                                             Status Validasi No Kontrak : {{ list.kontrak.no_kontrak }}
-                                            <li style="list-style-type:none">Pihak 1 : {{ list.kontrak.pihak_satu }}</li>
+                                            <li style="list-style-type:none">Pihak 1 : {{ list.kontrak.pihak_satu }}
+                                            </li>
                                             <li style="list-style-type:none">Pihak 2 :{{ list.kontrak.pihak_dua }}</li>
                                             <li style="list-style-type:none">Direktur:{{ list.kontrak.mengetahui }}</li>
                                         </ul>
@@ -123,14 +125,19 @@
                                         <label for="" class="badge bg-warning cursor-pointer"
                                             @click="uploadFilePresentasi(list.id)">Upload File Presentasi</label>
                                     </td>
-                                    <td v-else-if="list.status_pengajuan == 'Terima' && list.status_pemenang == 'Pemenang'">
-                                        <label class="badge bg-info" @click="validasiKontrak(list)">Validasi Kontrak</label>
+                                    <td
+                                        v-else-if="list.status_pengajuan == 'Terima' && list.status_pemenang == 'Pemenang'">
+                                        <label class="badge bg-info" @click="validasiKontrak(list)">Validasi
+                                            Kontrak</label>
                                         <hr>
                                         <label class="badge bg-info" @click="uploadLaporan(list)"
                                             v-if="actionButtonLaporan(list)">Upload Progress</label>
-                                        <label class="badge bg-success" v-if="!actionButtonLaporan(list)">Selesai</label>
+                                        <label class="badge bg-success"
+                                            v-if="!actionButtonLaporan(list)">Selesai</label>
                                     </td>
-                                    <td v-else>
+                                    <td v-if="list.status_pengajuan == 'Tolak' || list.status_pengajuan == 'Prosess'">
+                                        <label class="badge bg-secondary" @click="reUploadFile(list.id)">Re Upload File
+                                            Usulan</label>
                                     </td>
                                 </tr>
 
@@ -173,7 +180,8 @@
                                     <td>{{ skemas.nama_skema }}</td>
                                     <td>
                                         <ol>
-                                            <li v-for="syarats in skemas.syarat" :key="syarats.id">{{ syarats.persyaratan }}
+                                            <li v-for="syarats in skemas.syarat" :key="syarats.id">{{
+                            syarats.persyaratan }}
                                             </li>
                                         </ol>
                                     </td>
@@ -204,12 +212,14 @@
                 </div>
                 <div class="modal-body">
                     <div id="container-file" v-show="docxFile != null ? true : false"></div>
-                    <object :data="pdfDocument" width="100%" height="700px" v-show="pdfDocument != null ? true : false" />
+                    <object :data="pdfDocument" width="100%" height="700px"
+                        v-show="pdfDocument != null ? true : false" />
                 </div>
             </div>
         </div>
     </div>
 </template>
+
 <script>
 
 export default {
@@ -625,6 +635,45 @@ export default {
 
             }
         },
+        async reUploadFile(id) {
+            const { value: file } = await this.$swal({
+                title: 'Re Upload File Usulan Proposal',
+                inputLabel: `File Upload`,
+                input: "file",
+                inputAttributes: {
+                    "aria-label": "Upload your File"
+                },
+                inputValidator: (value) => {
+                    if (!value) {
+                        return 'Silahkan Upload File Terlebih dahulu'
+                    }
+                }
+            });
+            if (file) {
+                const formData = new FormData()
+                formData.append('file', file)
+                formData.append('id_pengajuan', id)
+
+                await this.axios.post('/api/reuploadfile', formData, { headers: { "Content-Type": "multipart/form-data" } }).then(response => {
+                    console.log(response.data)
+                    
+                    if (response.data.code == 200) {
+                        this.$swal({
+                            position: "top-end",
+                            icon: "success",
+                            title: "Your work has been saved",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        this.getDataUser()
+                    }
+                }).catch(error => {
+                    console.log()
+                })
+
+
+            }
+        },
         timeFrameForm(times) {
             const curentTime = moment().format('YYYY-MM-DD HH:mm:ss')
             return curentTime >= times.start && curentTime <= times.end
@@ -711,7 +760,6 @@ export default {
         getFileExtension(filename = null) {
             if (filename != null) {
                 const ext = filename.slice((filename.lastIndexOf('.') - 1 >>> 0) + 2)
-                console.log(filename)
                 if (ext == 'docx') {
                     return 'fa-file-word'
                 } else if (ext == 'pdf') {
@@ -740,6 +788,7 @@ export default {
     }
 }
 </script>
+
 <style scoped>
 tr>th,
 td {

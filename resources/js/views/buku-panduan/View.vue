@@ -37,12 +37,11 @@
                     <div class="card-body">
                         <h4 class="card-title">List File Uploded</h4>
                         <ul class="list-arrow">
-                            <li v-for="(data, index) in dataFile" :key="data.id">{{ data.nama_data }} <i
-                                    class="fa-solid fa-eye" style="color: #2f8c92;cursor:pointer"
-                                    @click="downloadFile(data.file)"></i> <i class="fa-solid fa-square-pen"
-                                    style="cursor:pointer" @click="editFile(data)" v-show="level == 1 ? true : false"></i>
-                                <i class="fa-solid fa-trash-can" style="color: #c22419;cursor:pointer"
-                                    v-show="level == 1 ? true : false"></i>
+                            <li v-for="(data, index) in dataFile" :key="data.id">{{ data.nama_data }} 
+                                <i class="fa-solid fa-eye p-1" style="color: #2f8c92;cursor:pointer" @click="downloadFile(data.file)"></i>
+                                <i class="fa-solid fa-download p-1" style="color: #3f0303" @click="fetchFile(data.file)"></i>
+                                <i class="fa-solid fa-square-pen p-1" style="cursor:pointer" @click="editFile(data)" v-show="level == 1 ? true : false"></i>
+                                <i class="fa-solid fa-trash-can p-1" style="color: #c22419;cursor:pointer" v-show="level == 1 ? true : false" @click="deleteFile(data.id)"></i>
                             </li>
                         </ul>
                     </div>
@@ -182,6 +181,41 @@ export default {
 
 
         },
+        async fetchFile(filename) {
+            try {
+                window.location.href = `/api/file/${filename}`
+                // $('#previewFile').modal('show');
+            } catch (error) {
+                console.error('Error fetching docx:', error);
+            }
+        },
+        deleteFile(id) {
+            this.$swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                this.axios.delete(`/api/bukupanduan/${id}`).then(response => {
+                    this.$swal({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Your work has been delete",
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then((result) => {
+                        this.getDataFile()
+                    })
+                }).catch(error => {
+                    console.log(error)
+                })
+
+
+            })
+        }
 
 
     }

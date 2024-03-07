@@ -108,4 +108,12 @@ class DataFileController extends Controller
             return response()->json($dataFile);
         }
     }
+
+    public function filemediadelete($id)
+    {
+        MediaFile::where('id',$id)->delete();
+        return response()->json([
+            'message'=>'data dosen Deleted Successfully!!'
+        ]);
+    }
 }

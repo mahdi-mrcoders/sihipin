@@ -43,6 +43,7 @@ Route::post('updatevalidasipemenang', [PenelitianPkmsController::class, 'updatev
 Route::post('createkontrak', [PenelitianPkmsController::class, 'createkontrak']);
 Route::get('progress/{id}', [PenelitianPkmsController::class, 'getprogress']);
 Route::post('uploadprogress', [PenelitianPkmsController::class, 'uploadprogress']);
+Route::post('reuploadfile', [PenelitianPkmsController::class, 'updatepengajuan']);
 Route::patch('validasiprogress/{id}', [PenelitianPkmsController::class, 'validasiprogres']);
 
 Route::resource('datareviewer', DataReviewer::class, ['except' => ['create', 'edit']]);
@@ -74,6 +75,7 @@ Route::get('/file/{filename}', function ($filename) {
 Route::get('bukupanduan', [DataFileController::class, 'filemedia']);
 Route::post('bukupanduan', [DataFileController::class, 'filemediacreate']);
 Route::patch('bukupanduan/{id}', [DataFileController::class, 'filemediaupdate']);
+Route::delete('bukupanduan/{id}', [DataFileController::class, 'filemediadelete']);
 
 
 Route::patch('uploadppt/{id}', [DataFileController::class, 'filepresentasi']);

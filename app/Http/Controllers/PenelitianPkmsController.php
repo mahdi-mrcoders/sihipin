@@ -364,4 +364,26 @@ class PenelitianPkmsController extends Controller
 
         return response()->json($dataSubmited);
     }
+
+    function updatepengajuan(Request $request)
+    {
+        $dataUpdate = [
+            'Status_pengajuan' => 'Prosess',
+            'Status_pemenang' => NULL
+        ];
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $fileName = $file->getClientOriginalName();
+            $file->storeAs('uploads', $fileName, 'public');
+            $dataUpdate['file_proposal'] = $fileName;
+        }
+
+        Pengajuan::where('id', $request->id_pengajuan)->update($dataUpdate);
+        $response=[
+            'code'=>200,
+            'status'=>'OK',
+            'message'=>'Upload File Successfully'
+        ];
+        return response()->json($response);
+    }
 }

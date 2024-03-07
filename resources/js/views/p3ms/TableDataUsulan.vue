@@ -32,6 +32,7 @@
                     <th style="width:20%">Skema judul Usulan</th>
                     <th>Peneliti & anggota</th>
                     <th>Team Reviewer</th>
+                    <th>Keterangan</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -58,6 +59,16 @@
                             {{ rev.nama_reviewer }}</li>
                     </td>
                     <td>
+                        <li style="list-style-type:none">Status usulan : <br>
+                            <label class="badge bg-info" v-if="list.status_pengajuan == 'Prosess'">Proses</label>
+                            <label class="badge bg-warning" v-if="list.status_pengajuan == 'In Review'">In Review</label>
+                            <label class="badge bg-danger" v-if="list.status_pengajuan == 'Tolak'">Tolak </label>
+                            <label class="badge bg-success" v-if="list.status_pengajuan == 'Terima'">Terima</label>
+                            <i class="fa-solid fa-circle-info fa-lg" v-if="list.status_pengajuan == 'Tolak'"
+                                style="cursor:pointer" @click="showInfo(list.alasan_tolak)"></i>
+                        </li>
+                    </td>
+                    <td>
                         <label class="badge bg-danger" @click="validasiHasil(list)">Tolak Usulan</label>
                         <hr>
                         <label class="badge bg-info" @click="setReviewer(list.id)">Terima dan Atur Reviewer</label>
@@ -67,7 +78,7 @@
             </tbody>
             <tbody v-else>
                 <tr>
-                    <td colspan="8">
+                    <td colspan="9">
                         <div class="alert alert-info text-center" role="alert">
                             Belum Ada Data
                         </div>
@@ -298,3 +309,14 @@ export default {
     }
 }
 </script>
+<style scoped>
+tr>th,
+td {
+    font-size: 14px;
+}
+
+i.files:hover {
+    cursor: pointer;
+}
+
+</style>
