@@ -1,4 +1,3 @@
-
 <style>
 .cursor-pointer {
     cursor: pointer;
@@ -41,7 +40,7 @@
                                     <td>{{ index + 1 }}</td>
                                     <td>
                                         <i class="fa-regular fa-file-word fa-lg me-1 cursor-pointer"
-                                            @click="fetchDocxFile(list.file_proposal)" data-toggle="tooltip"
+                                            @click="fetchFile(list.file_proposal)" data-toggle="tooltip"
                                             data-placement="top" :title="`File Proposal : ${list.file_proposal}`"></i>
                                         <i class="fa-regular fa-file-powerpoint fa-lg me-1 cursor-pointer"
                                             data-toggle="tooltip" data-placement="top"
@@ -59,7 +58,8 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <label class="badge bg-danger" v-if="list.status_pengajuan == 'Tolak'">Tolak</label>
+                                        <label class="badge bg-danger"
+                                            v-if="list.status_pengajuan == 'Tolak'">Tolak</label>
                                         <label class="badge bg-warning"
                                             v-if="list.status_pengajuan == 'Prosess'">Proses</label>
                                         <label class="badge bg-warning" v-if="list.status_pengajuan == 'In Review'">In
@@ -72,19 +72,20 @@
                                             <li v-for="(nilai, nums) in list.datanilai" :key="nilai.id"
                                                 style="font-size:12px">
                                                 <span v-if="nilai.hasil_review == 1" class="badge bg-success">RV {{ nums
-                                                    + 1 }} : Terima : {{ nilai.total_nilai }}</span>
+                            + 1 }} : Terima : {{ nilai.total_nilai }}</span>
                                                 <span v-if="nilai.hasil_review == 2" class="badge bg-success">RV {{ nums
-                                                    + 1 }} : Terima/Revisi : {{ nilai.total_nilai }}</span>
-                                                <span v-if="nilai.hasil_review == 3" class="badge bg-danger">RV {{ nums +
-                                                    1 }} : Tolak : {{ nilai.total_nilai }}</span>
+                            + 1 }} : Terima/Revisi : {{ nilai.total_nilai }}</span>
+                                                <span v-if="nilai.hasil_review == 3" class="badge bg-danger">RV {{ nums
+                            +
+                            1 }} : Tolak : {{ nilai.total_nilai }}</span>
                                             </li>
                                             <li style="font-size:12px">
                                                 Total : {{ totalNilai(list.datanilai) }}
                                             </li>
                                         </ul>
                                     </td>
-                                    <td v-if="list.status_pemenang =='In Review'">
-                                        <router-link  class="badge bg-info"
+                                    <td v-if="list.status_pemenang == 'In Review'">
+                                        <router-link class="badge bg-info"
                                             :to='{ name: "nilai-submited-penelitian", params: { id: list.id } }'>Lakukan
                                             Penilaian</router-link>
                                     </td>
@@ -164,7 +165,7 @@ export default {
             if (data && data.length > 0 && data[0].total_nilai !== undefined) {
 
                 const sum = data.reduce((accumulator, currentValue) => accumulator + currentValue.total_nilai, 0);
-                return sum/2
+                return sum / 2
             }
             return 'N/A';
         },
@@ -194,6 +195,14 @@ export default {
                 // this.pdfDocument = ;
                 // window.URL.createObjectURL()
                 window.location.href = `/api/fileppt/${filename}`
+                // $('#previewFile').modal('show');
+            } catch (error) {
+                console.error('Error fetching docx:', error);
+            }
+        },
+        async fetchFile(filename) {
+            try {
+                window.location.href = `/api/file/${filename}`
                 // $('#previewFile').modal('show');
             } catch (error) {
                 console.error('Error fetching docx:', error);
