@@ -446,14 +446,13 @@ export default {
                         })
                     } else {
                         this.axios.post(`/api/datapenilaian/${this.$route.params.id}`, this.submitedNilai).then(response => {
-                            console.log(response.data)
-                            // this.$swal({
-                            //     title: "Success",
-                            //     text: "Penilaian Berhasil Dilakukan Anda Akan dikembalikan Helaman Sebelumnya",
-                            //     icon: "success"
-                            // }).then((result) => {
-                            //     this.$router.push({ name: 'review-usulan-proposal' })
-                            // })
+                            this.$swal({
+                                title: "Success",
+                                text: "Penilaian Berhasil Dilakukan Anda Akan dikembalikan Helaman Sebelumnya",
+                                icon: "success"
+                            }).then((result) => {
+                                this.$router.push({ name: 'review-usulan-proposal' })
+                            })
                         }).catch(error => {
                             console.log(error)
                         })
