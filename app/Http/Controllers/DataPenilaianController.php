@@ -178,9 +178,6 @@ class DataPenilaianController extends Controller
     public function update(Request $request, $id)
     {
         $postPenilaian = [
-            'id_reviewer' => $request->id_penilain_review,
-            'id_pengajuan' => $request->id_pengajuan,
-            'id_dosen_reviewer' => $request->id_dosen,
             'total_nilai' => $request->totalnilai,
             'hasil_review' => intval($request->hasil)
         ];

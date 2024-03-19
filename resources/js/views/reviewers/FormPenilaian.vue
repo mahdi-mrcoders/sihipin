@@ -374,7 +374,7 @@ export default {
                     this.stateSubmit = true
                 } else {
                     this.stateSubmit = false
-                    this.submitedNilai.id_penilain_review = response.data.nilai.id
+                    this.submitedNilai.id_penilain_review = response.data.nilai.id_reviewer
                     this.submitedNilai._method = 'patch'
                 }
                 this.catatanReviewer = response.data.nilai == null ? '' : response.data.nilai.catatan
@@ -446,13 +446,14 @@ export default {
                         })
                     } else {
                         this.axios.post(`/api/datapenilaian/${this.$route.params.id}`, this.submitedNilai).then(response => {
-                            this.$swal({
-                                title: "Success",
-                                text: "Penilaian Berhasil Dilakukan Anda Akan dikembalikan Helaman Sebelumnya",
-                                icon: "success"
-                            }).then((result) => {
-                                this.$router.push({ name: 'review-usulan-proposal' })
-                            })
+                            console.log(response.data)
+                            // this.$swal({
+                            //     title: "Success",
+                            //     text: "Penilaian Berhasil Dilakukan Anda Akan dikembalikan Helaman Sebelumnya",
+                            //     icon: "success"
+                            // }).then((result) => {
+                            //     this.$router.push({ name: 'review-usulan-proposal' })
+                            // })
                         }).catch(error => {
                             console.log(error)
                         })
