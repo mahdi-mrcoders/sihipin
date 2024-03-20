@@ -96,31 +96,14 @@
                   </td>
                   <td>
                     <ul style="list-style: none; padding-left: 0">
-                      <li
-                        v-for="(nilai, nums) in list.datanilai"
-                        :key="nilai.id"
-                        style="font-size: 12px"
-                      >
+                      <li v-for="(nilai, nums) in list.datanilai" :key="nilai.id" style="font-size: 12px">
                         <span style="font-size: 10px">
                           {{ nameReviewer(list.reviewer, nilai.id_reviewer) }}
                           <span class="badge d-block" :class="nilai.hasil_review == 1 || nilai.hasil_review == 2 ? 'bg-success':'bg-danger'"> {{ statusReview(nilai.hasil_review) }} : {{ nilai.total_nilai }}</span>
                         </span>
-                        
-                        <!-- <span v-if="nilai.hasil_review == 1" class="badge bg-success"
-                          >{{ nameReviewer(list.reviewer, nilai.id_reviewer) }} <br />
-                          Terima : {{ nilai.total_nilai }}</span
-                        >
-                        <span v-if="nilai.hasil_review == 2" class="badge bg-success"
-                          >{{ nameReviewer(list.reviewer, nilai.id_reviewer) }} <br />
-                          Terima/Revisi : {{ nilai.total_nilai }}</span
-                        >
-                        <span v-if="nilai.hasil_review == 3" class="badge bg-danger"
-                          >{{ nameReviewer(list.reviewer, nilai.id_reviewer) }}
-                          <br />Tolak : {{ nilai.total_nilai }}</span
-                        > -->
                       </li>
                       <li style="font-size: 12px">
-                        Total : {{ totalNilai(list.datanilai) }}
+                        Nilai Akhir : {{ totalNilai(list.datanilai) }}
                       </li>
                     </ul>
                   </td>

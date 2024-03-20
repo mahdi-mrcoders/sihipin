@@ -3,10 +3,11 @@
         <div class="container-fluid">
             <div class="navbar-menu-wrapper d-flex align-items-center justify-content-between">
                 <div class="navbar-nav navbar-nav-left">
-                    <a class="navbar-brand brand-logo" :href="'/dashboard'">
-                        <img src="/assets/images/logop3m.png" alt="" class=""
-                            style="width:5% !important;background-color:#FF9130">
-                        <span class="ms-2 fs-4 fw-bolder text-dark">SIPMA (Sistem Informasi Pengabdian Masyarakat)</span>
+                    <a class="navbar-brand brand-logo d-flex justify-content-start" :href="'/dashboard'">
+                        <img src="/assets/images/logop3m.png" alt="" class="d-block d-lg-none" style="width:15% !important;background-color:#FF9130">
+                        <img src="/assets/images/logop3m.png" alt="" class="d-none d-lg-block" style="width:5% !important;background-color:#FF9130">
+                        <span class="ms-2 fs-4 fw-bolder text-dark d-none d-lg-block align-self-center">SIPMA (Sistem Informasi Pengabdian Masyarakat)</span>
+                        <span class="ms-2 fs-4 fw-bolder text-dark d-block d-lg-none align-self-center">SIPMA</span>
                     </a>
                 </div>
                 <ul class="navbar-nav navbar-nav-right">

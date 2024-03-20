@@ -6,7 +6,7 @@
                 <select name="" id="" class="form-control" v-model="selectedFilter" @change="filteredData">
                     <option :value="''">Pilih Periode</option>
                     <option v-for="list in listPeriode" :key="list.id" :value="list.id">{{
-                        list.nama_periode }}-{{ list.periode }}</option>
+                    list.nama_periode }}-{{ list.periode }}</option>
                 </select>
             </div>
         </div>
@@ -16,7 +16,7 @@
                 <select name="" id="" class="form-control" v-model="filterSkema" @change="filteredSkema">
                     <option :value="''">Pilih Periode</option>
                     <option v-for="skema in listSkema" :key="skema.id" :value="skema.id"> {{
-                        skema.kode_program }} : {{ skema.nama_skema }}</option>
+                    skema.kode_program }} : {{ skema.nama_skema }}</option>
                 </select>
             </div>
         </div>
@@ -52,14 +52,17 @@
                     <td>{{ list.nama_skema }}<br>{{ list.informasi.judul_penelitian }}</td>
                     <td>Ketua : {{ list.ketua_peneliti }}<br>Jumlah Anggota : {{ list.anggota.length }}</td>
                     <td>
-                        <li v-for="(rev, key) in list.reviewer" :key="rev.id" style="list-style-type:none">REV {{ key + 1 }}
+                        <li v-for="(rev, key) in list.reviewer" :key="rev.id" style="list-style-type:none">REV {{ key +
+                    1 }}
                             :
                             {{ rev.nama_reviewer }}</li>
                     </td>
                     <td>
-                        <li v-for="(rev, key) in list.reviewer" :key="rev.id" style="list-style-type:none">
-                            <span class="d-block">REV {{ key + 1 }} : </span><span>{{ getHasilREview(rev, list.datanilai,
-                                key) }}</span>
+                        <li v-for="(nilai, nums) in list.datanilai" :key="nilai.id" style="font-size: 12px">
+                            <span style="font-size: 10px">
+                              {{ nameReviewer(list.reviewer, nilai.id_reviewer) }}
+                              <span class="badge d-block" :class="nilai.hasil_review == 1 || nilai.hasil_review == 2 ? 'bg-success':'bg-danger'"> {{ statusReview(nilai.hasil_review) }} : {{ nilai.total_nilai }}</span>
+                            </span>
                         </li>
                     </td>
                     <td>
@@ -70,7 +73,8 @@
                     <td>
                         <li style="list-style-type:none">Status usulan : <br>
                             <label class="badge bg-info" v-if="list.status_pengajuan == 'Prosess'">Proses</label>
-                            <label class="badge bg-warning" v-if="list.status_pengajuan == 'In Review'">In Review</label>
+                            <label class="badge bg-warning" v-if="list.status_pengajuan == 'In Review'">In
+                                Review</label>
                             <label class="badge bg-danger" v-if="list.status_pengajuan == 'Tolak'">Tolak </label>
                             <label class="badge bg-success" v-if="list.status_pengajuan == 'Terima'">Terima</label>
                             <i class="fa-solid fa-circle-info fa-lg" v-if="list.status_pengajuan == 'Tolak'"
@@ -137,7 +141,7 @@ export default {
             idsn: null,
             dataPengajuan: {},
             dataKontrak: {},
-            sortByRataNilaiFlag:false
+            sortByRataNilaiFlag: false
         }
     },
     mounted() {
@@ -147,6 +151,13 @@ export default {
 
     },
     methods: {
+        statusReview(hasil) {
+            return (hasil == 1 ? 'Terima' : (hasil == 2 ? 'Terima/Revisi' : 'Tolak'))
+        },
+        nameReviewer(reviewers, id_reviewer) {
+            const name = reviewers.find((reviewer) => reviewer.id === id_reviewer);
+            return name.nama_reviewer;
+        },
         filterAndSortData() {
             if (this.selectedFilter !== '' && this.filterSkema !== '') {
                 this.filterTable = this.dataTable.filter(item => {
