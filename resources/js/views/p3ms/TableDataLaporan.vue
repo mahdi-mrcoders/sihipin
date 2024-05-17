@@ -157,12 +157,12 @@ export default {
         },
         async getListSubmited() {
             await this.axios.get(`/api/penelitian?level=${this.level}&idsn=${this.idsn}`).then(response => {
-
-                response.data.forEach(item => {
-                    if (item.status_pengajuan == 'Terima' && item.status_pemenang == 'Pemenang') {
-                        this.dataTable = [item]
-                    }
-                });
+                this.dataTable = response.data
+                // response.data.forEach(item => {
+                //     if (item.status_pengajuan == 'Terima' && item.status_pemenang == 'Pemenang') {
+                //         this.dataTable = [item]
+                //     }
+                // });
             }).catch(error => {
                 console.log(error)
             })
