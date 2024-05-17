@@ -80,7 +80,7 @@
                                         <td><i class="fa-solid fa-download" style="cursor:pointer;"
                                                 @click="fetchFile(progres.file_progress)" v-show="progres.file_progress != null"></i> {{
                                                     progres.file_progress }}</td>
-                                        <td>{{ progres.updated_at }}</td>
+                                        <td><span v-show="progres.file_progress != null">{{ progres.updated_at }}</span></td>
                                         <td>
                                             {{ progres.alasan_tolak }}
                                         </td>
