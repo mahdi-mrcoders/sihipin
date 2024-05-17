@@ -1,12 +1,17 @@
 <template>
     <div class="row">
+        <div class="col-sm-12 mb-2">
+            <button class="btn btn-sm btn-primary" @click="refresh"><i class="fa-solid fa-arrows-rotate"></i> Refresh
+                Data</button>
+        </div>
+        <hr>
         <div class="col-sm-4">
             <div class="form-group">
                 <label for="">Filtering By Periode</label>
                 <select name="" id="" class="form-control" v-model="selectedFilter" @change="filteredData">
                     <option :value="''">Pilih Periode</option>
                     <option v-for="list in listPeriode" :key="list.id" :value="list.id">{{
-                    list.nama_periode }}-{{ list.periode }}</option>
+                list.nama_periode }}-{{ list.periode }}</option>
                 </select>
             </div>
         </div>
@@ -16,7 +21,7 @@
                 <select name="" id="" class="form-control" v-model="filterSkema" @change="filteredSkema">
                     <option :value="''">Pilih Periode</option>
                     <option v-for="skema in listSkema" :key="skema.id" :value="skema.id"> {{
-                    skema.kode_program }} : {{ skema.nama_skema }}</option>
+                skema.kode_program }} : {{ skema.nama_skema }}</option>
                 </select>
             </div>
         </div>
@@ -26,6 +31,7 @@
                 <input type="text" v-model="query" @input="search" placeholder="Search..." class="form-control">
             </div>
         </div>
+        <hr>
     </div>
     <div class="table-responsive">
         <table class="table">
@@ -110,7 +116,7 @@
                                         <td><i class="fa-solid fa-download" style="cursor:pointer;"
                                                 @click="fetchFile(progres.file_progress)"
                                                 v-show="progres.file_progress != null"></i> {{
-                    progres.file_progress }}</td>
+                progres.file_progress }}</td>
                                         <td><span v-show="progres.file_progress != null">{{ progres.updated_at }}</span>
                                         </td>
                                         <td>
@@ -153,6 +159,16 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+    <div class="modal fade" id="refresh-data-laporan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-transparent border-0">
+                <div class="modal-body text-center">
+                    <img src="/assets/images/loader.gif">
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -199,6 +215,14 @@ export default {
             }
 
 
+        },
+        refresh() {
+            let myModal = new bootstrap.Modal(document.getElementById('refresh-data-laporan'))
+            myModal.show();
+            this.getDataUser()
+            setTimeout(() => {
+                myModal.hide()
+            }, 3000);
         },
         search() {
             this.filterTable = this.dataTable.filter(item => {

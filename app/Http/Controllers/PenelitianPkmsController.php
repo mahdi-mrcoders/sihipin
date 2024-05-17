@@ -13,6 +13,7 @@ use App\Models\Penelitianpkms_kontrak as Kontraks;
 use App\Models\Penelitianpkms_laporanprogres as LProgress;
 use App\Models\DataJenisLaporan as JenisLaporan;
 use App\Models\DataPeriode;
+use Illuminate\Support\Facades\Storage;
 
 class PenelitianPkmsController extends Controller
 {
@@ -334,23 +335,6 @@ class PenelitianPkmsController extends Controller
         return response()->json($data);
     }
 
-    function uploadprogress(Request $request)
-    {
-        $dataProgress = [
-            'id_pengajuan' => $request->id_pengajuan,
-            'id_jenis_progress' => $request->id_jenis_progress,
-            'validasi' => 'prosess'
-        ];
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $fileName = $file->getClientOriginalName();
-            $file->storeAs('uploads', $fileName, 'public');
-            $dataProgress['file_progress'] = $fileName;
-        }
-
-        LProgress::where('id', $request->id_progress)->update($dataProgress);
-        return response()->json($dataProgress);
-    }
 
     public function validasiprogres(Request $request, $id)
     {
@@ -379,11 +363,69 @@ class PenelitianPkmsController extends Controller
         }
 
         Pengajuan::where('id', $request->id_pengajuan)->update($dataUpdate);
-        $response=[
-            'code'=>200,
-            'status'=>'OK',
-            'message'=>'Upload File Successfully'
+        $response = [
+            'code' => 200,
+            'status' => 'OK',
+            'message' => 'Upload File Successfully'
         ];
         return response()->json($response);
+    }
+
+    function uploadProgress(Request $request)
+    {
+        $getNRPPeneliti = Pengajuan::with(['dataDosen:id,nrp'])
+            ->where('id', $request->id_pengajuan)
+            ->first();
+
+        $getFileLaporan = LProgress::findOrfail($request->id_progress)->first();
+
+        $dataProgress = $this->prepareDataProgress($request);
+        $file = $request->file('file');
+
+        if ($file) {
+            if($getFileLaporan->file_progress){
+                Storage::delete('public/uploads/' . $getFileLaporan->file_progress);
+            }
+            $newFileName = $this->generateFileName($request->id_jenis_progress, $file->getClientOriginalExtension(),$getNRPPeneliti->dataDosen->nrp);
+            $this->storeFile($file, $newFileName);
+            $dataProgress['file_progress'] = $newFileName;
+        }
+
+        // Uncomment this line if you want to update the database record
+        LProgress::where('id', $request->id_progress)->update($dataProgress);
+
+        return response()->json($dataProgress);
+    }
+
+    private function prepareDataProgress($request)
+    {
+        return [
+            'id_pengajuan' => $request->id_pengajuan,
+            'id_jenis_progress' => $request->id_jenis_progress,
+            'validasi' => 'prosess',
+            'alasan_tolak'=>null
+        ];
+    }
+
+    private function generateFileName($progressType, $extension,$nrp)
+    {
+        switch ($progressType) {
+            case 1:
+                $nameFile = '[nrp='.$nrp.']laporan-progress-' . time();
+                break;
+            case 2:
+                $nameFile = '[nrp='.$nrp.']laporan-75-' . time();
+                break;
+            default:
+                $nameFile = '[nrp='.$nrp.']laporan-akhir-' . time();
+                break;
+        }
+
+        return $nameFile . '.' . $extension;
+    }
+
+    private function storeFile($file, $newFileName)
+    {
+        $file->storeAs('uploads', $newFileName, 'public');
     }
 }

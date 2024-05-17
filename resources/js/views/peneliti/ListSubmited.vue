@@ -518,6 +518,13 @@ export default {
             const steps3 = data.progress.find(item => item.steps === 3);
             if (steps1.validasi == 'Terima' && steps2.validasi == 'Terima' && steps3.validasi == 'Terima') {
                 showed = false
+                this.$swal({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Your work has been saved",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             }
 
             return showed
@@ -558,6 +565,8 @@ export default {
                         }
                     } else if (data.kontrak.mengetahui == null) {
                         this.showStatusError('Oops...', 'Action Tidak Dapat Dilakukan, No Kontrak Belum di validasi direktur, Please Wait');
+                    }else{
+                        this.showStatusError('Oops...', 'Action Tidak Dapat Dilakukan, No Kontrak Belum di anda validasi, Please Wait');
                     }
                 }
             }
@@ -607,9 +616,10 @@ export default {
             const { value: file } = await this.$swal({
                 title: title,
                 html: detail,
-                inputLabel: `File Upload ${progress.jenis_laporan}`,
+                inputLabel: `File Upload ${progress.jenis_laporan} pdf/docx`,
                 input: "file",
                 inputAttributes: {
+                    'accept': '.pdf,.doc,.docx',
                     "aria-label": "Upload your profile picture"
                 },
                 inputValidator: (value) => {
@@ -656,7 +666,7 @@ export default {
 
                 await this.axios.post('/api/reuploadfile', formData, { headers: { "Content-Type": "multipart/form-data" } }).then(response => {
                     console.log(response.data)
-                    
+
                     if (response.data.code == 200) {
                         this.$swal({
                             position: "top-end",

@@ -172,7 +172,7 @@ export default {
     },
     mounted() {
         var myModal = new bootstrap.Modal(document.getElementById('maintane'))
-        myModal.show();
+        myModal.hide();
         if (this.loggedIn) {
             this.$router.push({ name: 'dashboard' })
         }
