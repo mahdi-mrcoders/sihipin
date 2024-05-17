@@ -78,9 +78,9 @@
                                         <td>{{ ind + 1 }}</td>
                                         <td>{{ progres.jenis_laporan }}</td>
                                         <td><i class="fa-solid fa-download" style="cursor:pointer;"
-                                                @click="fetchFile(progres.file_progress)"></i> {{
+                                                @click="fetchFile(progres.file_progress)" v-show="progres.file_progress != null"></i> {{
                                                     progres.file_progress }}</td>
-                                        <td>{{ progres.created_at }}</td>
+                                        <td>{{ progres.updated_at }}</td>
                                         <td>
                                             {{ progres.alasan_tolak }}
                                         </td>
