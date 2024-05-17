@@ -1,4 +1,32 @@
 <template>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="">Filtering By Periode</label>
+                <select name="" id="" class="form-control" v-model="selectedFilter" @change="filteredData">
+                    <option :value="''">Pilih Periode</option>
+                    <option v-for="list in listPeriode" :key="list.id" :value="list.id">{{
+                    list.nama_periode }}-{{ list.periode }}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="">Filtering By Skema</label>
+                <select name="" id="" class="form-control" v-model="filterSkema" @change="filteredSkema">
+                    <option :value="''">Pilih Periode</option>
+                    <option v-for="skema in listSkema" :key="skema.id" :value="skema.id"> {{
+                    skema.kode_program }} : {{ skema.nama_skema }}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="">Searching By Name/Judul Usulan</label>
+                <input type="text" v-model="query" @input="search" placeholder="Search..." class="form-control">
+            </div>
+        </div>
+    </div>
     <div class="table-responsive">
         <table class="table">
             <thead>
@@ -6,14 +34,14 @@
                     <th>No</th>
                     <th>Kode Usulan</th>
                     <th>Periode</th>
-                    <th>Skema judul Usulan</th>
+                    <th style="width:20%">Skema judul Usulan</th>
                     <th>Peneliti & anggota</th>
                     <th>Keterangan</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody v-if="dataTable.length > 0">
-                <template v-for="(list, index) in dataTable" :key="list.id">
+                <template v-for="(list, index) in filterTable" :key="list.id">
                     <tr v-if="list.status_pengajuan === 'Terima' && list.status_pemenang === 'Pemenang'">
                         <td>{{ index + 1 }}</td>
                         <td>{{ list.kode_skema }}-{{ list.id }}</td>
@@ -29,9 +57,11 @@
                                 <label class="badge bg-success" v-if="list.status_pengajuan == 'Terima'">Terima</label>
                             </li>
                             <li style="list-style-type:none">Status Pemenang : <br>
-                                <label class="badge bg-warning" v-if="list.status_pemenang == 'In Review'">In Review</label>
+                                <label class="badge bg-warning" v-if="list.status_pemenang == 'In Review'">In
+                                    Review</label>
                                 <label class="badge bg-danger" v-if="list.status_pemenang == 'Tolak'">Tolak</label>
-                                <label class="badge bg-success" v-if="list.status_pemenang == 'Pemenang'">Pemenang</label>
+                                <label class="badge bg-success"
+                                    v-if="list.status_pemenang == 'Pemenang'">Pemenang</label>
                             </li>
                             <li style="list-style-type:none">
                                 No Kontrak :<br> <label for="" v-if="list.kontrak">{{ list.kontrak.no_kontrak }}</label>
@@ -78,17 +108,21 @@
                                         <td>{{ ind + 1 }}</td>
                                         <td>{{ progres.jenis_laporan }}</td>
                                         <td><i class="fa-solid fa-download" style="cursor:pointer;"
-                                                @click="fetchFile(progres.file_progress)" v-show="progres.file_progress != null"></i> {{
-                                                    progres.file_progress }}</td>
-                                        <td><span v-show="progres.file_progress != null">{{ progres.updated_at }}</span></td>
+                                                @click="fetchFile(progres.file_progress)"
+                                                v-show="progres.file_progress != null"></i> {{
+                    progres.file_progress }}</td>
+                                        <td><span v-show="progres.file_progress != null">{{ progres.updated_at }}</span>
+                                        </td>
                                         <td>
                                             {{ progres.alasan_tolak }}
                                         </td>
                                         <td>
                                             <label class="badge bg-danger" v-if="progres.validasi == 'No Upload'">No
                                                 Upload</label>
-                                            <label class="badge bg-info" v-if="progres.validasi == 'prosess'">Proses</label>
-                                            <label class="badge bg-danger" v-if="progres.validasi == 'Tolak'">Tolak</label>
+                                            <label class="badge bg-info"
+                                                v-if="progres.validasi == 'prosess'">Proses</label>
+                                            <label class="badge bg-danger"
+                                                v-if="progres.validasi == 'Tolak'">Tolak</label>
                                             <label class="badge bg-success"
                                                 v-if="progres.validasi == 'Terima'">Terima</label>
                                         </td>
@@ -126,8 +160,14 @@
 export default {
     data() {
         return {
+            query: '',
+            selectedFilter: '',
+            filterSkema: '',
+            listPeriode: {},
+            listSkema: {},
             opened: [],
             dataTable: {},
+            filterTable: [],
             level: localStorage.getItem("level"),
             uuid: localStorage.getItem('uuid'),
             idsn: null,
@@ -137,8 +177,60 @@ export default {
     },
     mounted() {
         this.getDataUser()
+        this.getPeriode()
+        this.getSkema()
     },
     methods: {
+        filterAndSortData() {
+            if (this.selectedFilter !== '' && this.filterSkema !== '') {
+                this.filterTable = this.dataTable.filter(item => {
+                    return item.id_periode === this.selectedFilter && item.id_skema === this.filterSkema;
+                });
+            } else if (this.selectedFilter !== '') {
+                this.filterTable = this.dataTable.filter(item => {
+                    return item.id_periode === this.selectedFilter;
+                });
+            } else if (this.filterSkema !== '') {
+                this.filterTable = this.dataTable.filter(item => {
+                    return item.id_skema === this.filterSkema;
+                });
+            } else {
+                this.filterTable = this.dataTable;
+            }
+
+
+        },
+        search() {
+            this.filterTable = this.dataTable.filter(item => {
+                return item.ketua_peneliti.toLowerCase().includes(this.query.toLowerCase()) ||
+                    item.informasi.judul_penelitian.toLowerCase().includes(this.query.toLowerCase());
+            });
+        },
+        filteredData() {
+            this.filterAndSortData();
+        },
+        filteredSkema() {
+            this.filterAndSortData();
+        },
+        async getPeriode() {
+            await this.axios.get('/api/dataperiode').then(response => {
+                this.listPeriode = response.data
+                response.data.forEach(item => {
+                    if (item.status_periode == 'Y') {
+                        this.selectedFilter = item.status_periode == 'Y' ? item.id : ''
+                    }
+                });
+            }).catch(error => {
+
+            })
+        },
+        async getSkema() {
+            await this.axios.get('/api/dataskema').then(response => {
+                this.listSkema = response.data
+            }).catch(error => {
+
+            })
+        },
         async getDataUser() {
             await this.axios.get(`/api/pengguna/${this.uuid}`).then(response => {
                 this.getDataDosen(response.data.email_dosen)
@@ -158,6 +250,7 @@ export default {
         async getListSubmited() {
             await this.axios.get(`/api/penelitian?level=${this.level}&idsn=${this.idsn}`).then(response => {
                 this.dataTable = response.data
+                this.filteredData()
                 // response.data.forEach(item => {
                 //     if (item.status_pengajuan == 'Terima' && item.status_pemenang == 'Pemenang') {
                 //         this.dataTable = [item]

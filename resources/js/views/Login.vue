@@ -3,7 +3,8 @@
         <div class="container-fluid page-body-wrapper full-page-wrapper">
             <div class="content-wrapper d-flex align-items-stretch auth auth-img-bg">
                 <div class="row flex-grow">
-                    <div class="col-lg-6 d-lg-flex d-sm-flex d-flex align-items-center justify-content-center" id="card-login">
+                    <div class="col-lg-6 d-lg-flex d-sm-flex d-flex align-items-center justify-content-center"
+                        id="card-login">
                         <div class="auth-form-transparent text-left p-3 mt-1 w-75">
                             <div class="mb-3 d-lg-none d-sm-block">
                                 <ul class="nav nav-tabs">
@@ -43,7 +44,8 @@
                                             </span>
                                         </div>
                                         <input type="password" class="form-control form-control-lg border-left-0"
-                                            id="exampleInputPassword" placeholder="Password" v-model="dataForm.password">
+                                            id="exampleInputPassword" placeholder="Password"
+                                            v-model="dataForm.password">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -68,7 +70,7 @@
                         <div class="card text-dark h-100  bg-ligh w-100">
                             <div class="card-header text-center">INFORMATION</div>
                             <div class="card-body" v-html="dataForm.informasi">
-                                
+
                             </div>
                             <div class="card-footer">
                                 <p class="text-dark font-weight-medium text-center align-self-end">Copyright
@@ -85,6 +87,30 @@
         </div>
         <!-- page-body-wrapper ends -->
     </div>
+
+    <div class="modal fade" id="maintane" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-body d-flex justify-content-center ">
+                    <div class="misc-wrapper align-self-center text-center">
+                        <h2 class="mb-2 mx-2">Under Maintenance!</h2>
+                        <p class="mb-4 mx-2">
+                            Sorry for the inconvenience but we're performing some maintenance at the moment
+                        </p>
+                        <div class="mt-4">
+                            <img src="https://demos.themeselection.com/sneat-bootstrap-html-admin-template-free/assets/img/illustrations/girl-doing-yoga-light.png"
+                                alt="girl-doing-yoga-light" width="500" class="img-fluid"
+                                data-app-dark-img="illustrations/girl-doing-yoga-dark.png"
+                                data-app-light-img="illustrations/girl-doing-yoga-light.png">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 <script>
 var elmLogin = $('#card-login')
@@ -98,11 +124,11 @@ export default {
             uuid: localStorage.getItem("uuid"),
             level: localStorage.getItem("level"),
             loginFailed: null,
-            dataForm:{}
+            dataForm: {}
 
         }
     },
-    created(){
+    created() {
         this.getDataInformasi()
     },
     methods: {
@@ -145,6 +171,8 @@ export default {
         }
     },
     mounted() {
+        var myModal = new bootstrap.Modal(document.getElementById('maintane'))
+        myModal.show();
         if (this.loggedIn) {
             this.$router.push({ name: 'dashboard' })
         }

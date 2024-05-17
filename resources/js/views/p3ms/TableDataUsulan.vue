@@ -1,5 +1,8 @@
 <template>
     <div class="row">
+        <div class="col-sm-12">
+            <hr>
+        </div>
         <div class="col-sm-4">
             <div class="form-group">
                 <label for="">Filtering By Periode</label>
@@ -18,6 +21,12 @@
                     <option v-for="skema in listSkema" :key="skema.id" :value="skema.id"> {{
                     skema.kode_program }} : {{ skema.nama_skema }}</option>
                 </select>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="">Searching By Name/Judul Usulan</label>
+                <input type="text" v-model="query" @input="search" placeholder="Search..." class="form-control">
             </div>
         </div>
     </div>
@@ -40,8 +49,8 @@
                 <tr v-for="(list, index) in filterTable" :key="list.id">
                     <td>{{ index + 1 }}</td>
                     <td>
-                        <i class="fa-regular fa-file fa-lg me-1 cursor-pointer"
-                            @click="fetchFile(list.file_proposal)" data-toggle="tooltip" data-placement="top"
+                        <i class="fa-regular fa-file fa-lg me-1 cursor-pointer" @click="fetchFile(list.file_proposal)"
+                            data-toggle="tooltip" data-placement="top"
                             :title="`File Proposal : ${list.file_proposal}`"></i>
                         <i class="fa-regular fa-file-powerpoint fa-lg me-1 cursor-pointer" data-toggle="tooltip"
                             data-placement="top" :title="`File Pptx :${list.file_presentasi}`"
@@ -61,7 +70,8 @@
                     <td>
                         <li style="list-style-type:none">Status usulan : <br>
                             <label class="badge bg-info" v-if="list.status_pengajuan == 'Prosess'">Proses</label>
-                            <label class="badge bg-warning" v-if="list.status_pengajuan == 'In Review'">In Review</label>
+                            <label class="badge bg-warning" v-if="list.status_pengajuan == 'In Review'">In
+                                Review</label>
                             <label class="badge bg-danger" v-if="list.status_pengajuan == 'Tolak'">Tolak </label>
                             <label class="badge bg-success" v-if="list.status_pengajuan == 'Terima'">Terima</label>
                             <i class="fa-solid fa-circle-info fa-lg" v-if="list.status_pengajuan == 'Tolak'"
@@ -111,6 +121,7 @@ export default {
     components: { FormModalReviewer },
     data() {
         return {
+            query: '',
             selectedFilter: '',
             filterSkema: '',
             listPeriode: {},
@@ -150,6 +161,12 @@ export default {
             }
 
 
+        },
+        search() {
+            this.filterTable = this.dataTable.filter(item => {
+                return item.ketua_peneliti.toLowerCase().includes(this.query.toLowerCase()) ||
+                    item.informasi.judul_penelitian.toLowerCase().includes(this.query.toLowerCase());
+            });
         },
         filteredData() {
             this.filterAndSortData();
@@ -318,5 +335,4 @@ td {
 i.files:hover {
     cursor: pointer;
 }
-
 </style>
