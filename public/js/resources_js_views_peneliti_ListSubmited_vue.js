@@ -50,7 +50,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       _this.dataPeriode = response.data;
     })["catch"](function (error) {
       var _console;
-      /* eslint-disable */(_console = console).log.apply(_console, _toConsumableArray(oo_oo("3989496852_253_12_253_30_4", error)));
+      /* eslint-disable */(_console = console).log.apply(_console, _toConsumableArray(oo_oo("604556824_253_12_253_30_4", error)));
     });
   },
   methods: {
@@ -70,7 +70,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
                 _this2.getDataDosen(response.data.email_dosen);
               })["catch"](function (error) {
                 var _console2;
-                /* eslint-disable */(_console2 = console).log.apply(_console2, _toConsumableArray(oo_oo("3989496852_268_16_268_34_4", error)));
+                /* eslint-disable */(_console2 = console).log.apply(_console2, _toConsumableArray(oo_oo("604556824_268_16_268_34_4", error)));
               });
             case 2:
             case "end":
@@ -92,7 +92,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
                 _this3.getListSubmited();
               })["catch"](function (error) {
                 var _console3;
-                /* eslint-disable */(_console3 = console).log.apply(_console3, _toConsumableArray(oo_oo("3989496852_278_16_278_34_4", error)));
+                /* eslint-disable */(_console3 = console).log.apply(_console3, _toConsumableArray(oo_oo("604556824_278_16_278_34_4", error)));
               });
             case 2:
             case "end":
@@ -113,7 +113,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
                 _this4.tableList = response.data;
               })["catch"](function (error) {
                 var _console4;
-                /* eslint-disable */(_console4 = console).log.apply(_console4, _toConsumableArray(oo_oo("3989496852_286_20_286_38_4", error)));
+                /* eslint-disable */(_console4 = console).log.apply(_console4, _toConsumableArray(oo_oo("604556824_286_20_286_38_4", error)));
               });
             case 3:
               _context3.next = 7;
@@ -139,7 +139,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
                 _this5.listSkema = response.data;
               })["catch"](function (error) {
                 var _console5;
-                /* eslint-disable */(_console5 = console).log.apply(_console5, _toConsumableArray(oo_oo("3989496852_297_16_297_34_4", error)));
+                /* eslint-disable */(_console5 = console).log.apply(_console5, _toConsumableArray(oo_oo("604556824_297_16_297_34_4", error)));
               });
             case 2:
             case "end":
@@ -401,10 +401,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
                 var _console6;
                 _this8.getDataUser();
                 /* eslint-disable */
-                (_console6 = console).log.apply(_console6, _toConsumableArray(oo_oo("3989496852_501_32_501_58_4", response.data)));
+                (_console6 = console).log.apply(_console6, _toConsumableArray(oo_oo("604556824_501_32_501_58_4", response.data)));
               })["catch"](function (error) {
                 var _console7;
-                /* eslint-disable */(_console7 = console).log.apply(_console7, _toConsumableArray(oo_oo("3989496852_503_32_503_50_4", error)));
+                /* eslint-disable */(_console7 = console).log.apply(_console7, _toConsumableArray(oo_oo("604556824_503_32_503_50_4", error)));
               });
             case 23:
             case "end":
@@ -456,7 +456,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
               return item.steps === 3;
             });
             /* eslint-disable */
-            (_console8 = console).log.apply(_console8, _toConsumableArray(oo_oo("3989496852_551_24_551_49_4", steps3.times)));
+            (_console8 = console).log.apply(_console8, _toConsumableArray(oo_oo("604556824_551_24_551_49_4", steps3.times)));
             if (this.shouldOpenForm1(steps1)) {
               this.uploadlaporanStepsOne('Porgress', detailData, steps1, data.id);
             } else if (this.shouldOpenForm2(steps1, steps2)) {
@@ -470,7 +470,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
                 return item.validasi === 'Tolak' && item.id_pengajuan == data.id;
               });
               this.uploadlaporanStepsOne("Re-upload ".concat(rejected.jenis_laporan), detailData, rejected, data.id);
-            } else if (!this.isWithinTimeFrame(steps1.times) || !this.isWithinTimeFrame(steps2.times) || !this.isWithinTimeFrame(steps3.times)) {
+            } else if (!this.isWithinTimeFrame(steps3.times)) {
               this.showStatusError('Oops...', 'Mohon Maaf Portal Upload Laporan Sudah Di Tutup');
             }
           } else if (data.kontrak.mengetahui == null) {
@@ -513,7 +513,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _console9;
       var curentTime = moment().format('YYYY-MM-DD HH:mm:ss');
       /* eslint-disable */
-      (_console9 = console).log.apply(_console9, _toConsumableArray(oo_oo("3989496852_611_12_611_83_4", curentTime + '>=' + times.start + '&&' + curentTime + '<=' + times.end)));
+      (_console9 = console).log.apply(_console9, _toConsumableArray(oo_oo("604556824_611_12_611_83_4", curentTime + '>=' + times.start + '&&' + curentTime + '<=' + times.end)));
       return curentTime >= times.start && curentTime <= times.end;
       // Logika pengecekan waktu yang sesuai dengan kebutuhan Anda
       // Mengembalikan true jika dalam waktu yang ditentukan, atau false sebaliknya
@@ -560,7 +560,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
                 }
               }).then(function (response) {
                 var _console10;
-                /* eslint-disable */(_console10 = console).log.apply(_console10, _toConsumableArray(oo_oo("3989496852_641_20_641_46_4", response.data)));
+                /* eslint-disable */(_console10 = console).log.apply(_console10, _toConsumableArray(oo_oo("604556824_641_20_641_46_4", response.data)));
                 _this9.getDataUser();
               })["catch"](function (error) {
                 console.log();
@@ -610,7 +610,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
                 }
               }).then(function (response) {
                 var _console11;
-                /* eslint-disable */(_console11 = console).log.apply(_console11, _toConsumableArray(oo_oo("3989496852_670_20_670_46_4", response.data)));
+                /* eslint-disable */(_console11 = console).log.apply(_console11, _toConsumableArray(oo_oo("604556824_670_20_670_46_4", response.data)));
                 if (response.data.code == 200) {
                   _this10.$swal({
                     position: "top-end",
@@ -674,7 +674,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
                 }
               }).then(function (response) {
                 var _console12;
-                /* eslint-disable */(_console12 = console).log.apply(_console12, _toConsumableArray(oo_oo("3989496852_714_20_714_46_4", response.data)));
+                /* eslint-disable */(_console12 = console).log.apply(_console12, _toConsumableArray(oo_oo("604556824_714_20_714_46_4", response.data)));
                 _this11.getDataUser();
               })["catch"](function (error) {
                 console.log();
