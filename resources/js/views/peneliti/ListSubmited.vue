@@ -548,7 +548,7 @@ export default {
                         const steps1 = data.progress.find(item => item.steps === 1);
                         const steps2 = data.progress.find(item => item.steps === 2);
                         const steps3 = data.progress.find(item => item.steps === 3);
-                        console.log(steps3.times)
+                        // console.log(steps3.times)
 
                         if (this.shouldOpenForm1(steps1)) {
                             this.uploadlaporanStepsOne('Porgress', detailData, steps1, data.id)
@@ -561,7 +561,7 @@ export default {
                         } else if (this.isOnValidationRejected(steps1, steps2, steps3)) {
                             const rejected = data.progress.find(item => item.validasi === 'Tolak' && item.id_pengajuan == data.id)
                             this.uploadlaporanStepsOne(`Re-upload ${rejected.jenis_laporan}`, detailData, rejected, data.id)
-                        } else if (!this.isWithinTimeFrame(steps3.times)) {
+                        } else if (!this.isWithinTimeFrame(steps1.times) || !this.isWithinTimeFrame(steps2.times) || !this.isWithinTimeFrame(steps3.times)) {
                             this.showStatusError('Oops...', 'Mohon Maaf Portal Upload Laporan Sudah Di Tutup');
                         }
                     } else if (data.kontrak.mengetahui == null) {
@@ -594,7 +594,7 @@ export default {
 
         // Fungsi untuk mengecek apakah form 3 harus dibuka
         shouldOpenForm3(steps2, steps3) {
-            return this.isWithinTimeFrame(steps2.times) && steps3.file_progress === null && steps3.validasi === 'No Upload' && steps2.validasi === 'Terima';
+            return this.isWithinTimeFrame(steps3.times) && steps3.file_progress === null && steps3.validasi === 'No Upload' && steps2.validasi === 'Terima';
         },
 
         // Fungsi untuk mengecek apakah sedang dalam proses validasi
@@ -608,7 +608,7 @@ export default {
         // Fungsi untuk mengecek apakah masih dalam waktu yang ditentukan
         isWithinTimeFrame(times) {
             const curentTime = moment().format('YYYY-MM-DD HH:mm:ss')
-            console.log(curentTime+'>='+times.start+'&&'+curentTime+'<='+times.end)
+            // console.log(curentTime+'>='+times.start+'&&'+curentTime+'<='+times.end)
             return curentTime >= times.start && curentTime <= times.end
             // Logika pengecekan waktu yang sesuai dengan kebutuhan Anda
             // Mengembalikan true jika dalam waktu yang ditentukan, atau false sebaliknya
