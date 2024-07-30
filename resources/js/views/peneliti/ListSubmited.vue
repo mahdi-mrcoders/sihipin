@@ -548,7 +548,7 @@ export default {
                         const steps1 = data.progress.find(item => item.steps === 1);
                         const steps2 = data.progress.find(item => item.steps === 2);
                         const steps3 = data.progress.find(item => item.steps === 3);
-                        console.log(steps3)
+                        console.log(steps3.times)
 
                         if (this.shouldOpenForm1(steps1)) {
                             this.uploadlaporanStepsOne('Porgress', detailData, steps1, data.id)
