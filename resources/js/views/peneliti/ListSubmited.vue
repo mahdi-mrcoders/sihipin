@@ -548,6 +548,7 @@ export default {
                         const steps1 = data.progress.find(item => item.steps === 1);
                         const steps2 = data.progress.find(item => item.steps === 2);
                         const steps3 = data.progress.find(item => item.steps === 3);
+                        console.log(steps3)
 
                         if (this.shouldOpenForm1(steps1)) {
                             this.uploadlaporanStepsOne('Porgress', detailData, steps1, data.id)
@@ -607,6 +608,7 @@ export default {
         // Fungsi untuk mengecek apakah masih dalam waktu yang ditentukan
         isWithinTimeFrame(times) {
             const curentTime = moment().format('YYYY-MM-DD HH:mm:ss')
+            console.log(curentTime+'>='+times.start+'&&'+curentTime+'<='+times.end)
             return curentTime >= times.start && curentTime <= times.end
             // Logika pengecekan waktu yang sesuai dengan kebutuhan Anda
             // Mengembalikan true jika dalam waktu yang ditentukan, atau false sebaliknya
